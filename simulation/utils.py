@@ -1,28 +1,61 @@
 """Shared utilities for the Quantum-HRL simulation framework."""
 
+import random
 import numpy as np
 from typing import Tuple, Dict, Any, Optional
+from scipy.stats import norm as _scipy_norm
 
 
 # ============================================================================
-# CONSTANTS matching the paper
+# CONSTANTS matching the paper (Shinde & Tarchi 2024)
 # ============================================================================
 CLIGHT = 3e8          # Speed of light (m/s)
-D0_RSU = 10.0         # Reference distance for RSU path loss (m)
-G0 = 1.0              # Reference gain at d0
-DELTA_RSU = 2.5       # Path loss exponent for RSU
-D0_LAP = 50.0         # Reference distance for LAP (m)
-D0_HAP = 100.0        # Reference distance for HAP/LEO (m)
-FC_HAP = 2e9          # Carrier frequency HAP (Hz)
-FC_LEO = 12e9         # Carrier frequency LEO (Hz)
-B_RSU = 20e6          # Bandwidth RSU (Hz)
-B_LAP = 40e6          # Bandwidth LAP (Hz)
-B_HAP = 60e6          # Bandwidth HAP (Hz)
-B_LEO = 100e6         # Bandwidth LEO (Hz)
-KAPPA = 1e-27         # Effective switched capacitance (J/(cycle^3))
+
+# --- Unified channel model constants ---
+ETA0 = 1e-3           # Reference channel gain at 1 m
+# Path-loss exponents per tier (RSU, LAP, HAP, LEO)
+DELTA_PER_TIER = [2.5, 2.2, 2.0, 2.0]
+
+# Bandwidths per tier (Hz)
+B_TIER = [20e6, 40e6, 60e6, 100e6]   # RSU, LAP, HAP, LEO
+
+N0 = 1e-13            # Noise power W (N_T * B, pre-computed for reference)
 PK_VEHICLE = 0.1      # Vehicle transmit power (W)
-SIGMA2 = 1e-11        # Noise power (W)
+P_RX = 0.02           # Receive power (W)
 FLOC_VEHICLE = 1e9    # Local CPU frequency (cycles/s)
+EPS_LOCAL = 5e-9      # Local computation energy (J/cycle)
+
+# EN computation energy per cycle per tier (J/cycle)
+EPS_EDGE_PER_TIER = [1e-9, 2e-9, 3e-9, 4e-9]   # RSU, LAP, HAP, LEO
+
+# VU and EN energy weighting factors
+W_VU = 1.0
+W_EN = 0.5
+
+# --- Legacy constants kept for backward compatibility ---
+KAPPA = 1e-27         # (no longer used in main formulas)
+SIGMA2 = 1e-11        # (no longer used in main formulas)
+
+# Reference distances (kept for backward compat but not used in unified model)
+D0_RSU = 10.0
+D0_LAP = 50.0
+D0_HAP = 100.0
+FC_HAP = 2e9
+FC_LEO = 12e9
+
+# Bandwidth aliases (kept for backward compat)
+B_RSU = B_TIER[0]
+B_LAP = B_TIER[1]
+B_HAP = B_TIER[2]
+B_LEO = B_TIER[3]
+
+# Per-tier one-way propagation delays (s) — kept for backward compat
+PROP_DELAY = {
+    'RSU': 0.0001,
+    'LAP': 0.001,
+    'HAP': 6.67e-5,
+    'LEO': 0.004,
+}
 
 # Per-tier edge compute frequencies (cycles/s)
 F_EDGE = {
@@ -30,14 +63,6 @@ F_EDGE = {
     'LAP': 10e9,
     'HAP': 20e9,
     'LEO': 40e9,
-}
-
-# Per-tier one-way propagation delays (s)
-PROP_DELAY = {
-    'RSU': 0.0001,   # ~30 us
-    'LAP': 0.001,    # ~1 ms
-    'HAP': 0.067,    # ~20 km / c
-    'LEO': 0.004,    # ~1200 km / c
 }
 
 # Tier names for indexing
@@ -51,6 +76,7 @@ M_TOTAL = int(M_TIERS.sum())
 
 # State dimension
 STATE_DIM = 20
+
 
 # =============================================================================
 # STATE NORMALIZATION
@@ -67,9 +93,7 @@ def normalize_state(s: np.ndarray) -> np.ndarray:
 def normalize_state_components(s: np.ndarray) -> np.ndarray:
     """Component-wise normalization with clipping for stability."""
     s_norm = s.copy()
-    # Clip to [-10, 10] to avoid extreme values
     s_norm = np.clip(s_norm, -10, 10)
-    # Min-max normalize each component to [0, 1]
     s_min = s_norm.min()
     s_max = s_norm.max()
     if s_max - s_min > 1e-12:
@@ -78,62 +102,49 @@ def normalize_state_components(s: np.ndarray) -> np.ndarray:
 
 
 # =============================================================================
-# CHANNEL MODELS (Section 4.2)
+# UNIFIED CHANNEL MODEL  (Section 4.2, Shinde & Tarchi 2024)
+#   h_{k,e}(i) = eta_0 * d_{k,e}(i)^{-delta}
 # =============================================================================
 
-def channel_rsu(d_km: np.ndarray) -> np.ndarray:
-    """RSU ground-to-vehicle path loss (Eq. 18)."""
-    d = np.maximum(d_km * 1000.0, D0_RSU)  # Convert to meters, enforce d >= d0
-    return G0 * (D0_RSU / d) ** DELTA_RSU
+def compute_channel_gain(tier_idx: int, d_km: float) -> float:
+    """Unified channel gain for ALL tiers (Eq. 18 unified form).
 
+    h = ETA0 * d^{-delta}   where delta varies by link type.
 
-def channel_lap(d_km: np.ndarray, theta_deg: np.ndarray) -> np.ndarray:
-    """LAP air-to-ground Rician channel (Eq. 19)."""
-    theta = np.deg2rad(theta_deg)
-    # Elevation-dependent LoS probability
-    p_los = 1.0 / (1.0 + 0.1 * np.exp(-0.1 * (theta_deg - 30)))
-    # Mean gains (relative units, will be scaled by SNR)
-    g_los = 0.8 + 0.2 * np.cos(theta) ** 2
-    g_nlos = 0.3
-    return p_los * g_los + (1 - p_los) * g_nlos
+    Args:
+        tier_idx: 0=RSU, 1=LAP, 2=HAP, 3=LEO
+        d_km:     3-D distance from vehicle to node (km)
 
-
-def channel_hap_leo(d_km: np.ndarray, fc_hz: float) -> np.ndarray:
-    """HAP/LEO free-space path loss (Eq. 20)."""
-    d = np.maximum(d_km * 1000.0, D0_HAP)
-    wavelength = CLIGHT / fc_hz
-    return (wavelength / (4 * np.pi * d)) ** 2
-
-
-def shannon_rate(bandwidth: float, snr_linear: float) -> float:
-    """Shannon capacity (Eq. 17)."""
-    return bandwidth * np.log2(1.0 + np.clip(snr_linear, 0, 100))
-
-
-def compute_channel_gain(tier_idx: int, d_km: float, theta_deg: float) -> float:
-    """Compute channel gain for a specific tier."""
-    if tier_idx == 0:  # RSU
-        return channel_rsu(np.array([d_km]))[0]
-    elif tier_idx == 1:  # LAP
-        return channel_lap(np.array([d_km]), np.array([theta_deg]))[0]
-    elif tier_idx == 2:  # HAP
-        return channel_hap_leo(np.array([d_km]), FC_HAP)[0]
-    else:  # LEO
-        return channel_hap_leo(np.array([d_km]), FC_LEO)[0]
+    Returns:
+        Channel gain (linear, dimensionless).
+    """
+    d_m = max(d_km * 1000.0, 1.0)   # convert to metres, enforce >= 1 m
+    delta = DELTA_PER_TIER[tier_idx]
+    return ETA0 * d_m ** (-delta)
 
 
 def get_bandwidth(tier_idx: int) -> float:
-    """Get bandwidth for a tier."""
-    return [B_RSU, B_LAP, B_HAP, B_LEO][tier_idx]
+    """Get bandwidth for a tier (Hz)."""
+    return B_TIER[tier_idx]
 
 
 def get_prop_delay(tier_idx: int) -> float:
-    """Get one-way propagation delay for a tier."""
-    return [PROP_DELAY['RSU'], PROP_DELAY['LAP'], PROP_DELAY['HAP'], PROP_DELAY['LEO']][tier_idx]
+    """Get one-way propagation delay for a tier (s)."""
+    tier_name = TIER_NAMES[tier_idx]
+    return PROP_DELAY[tier_name]
+
+
+def shannon_rate(bandwidth: float, snr_linear: float) -> float:
+    """Shannon capacity (Eq. 17).  R = B * log2(1 + SNR)."""
+    return bandwidth * np.log2(1.0 + np.clip(snr_linear, 0, 1e9))
 
 
 # =============================================================================
-# LATENCY AND ENERGY MODELS (Section 4.3)
+# LATENCY MODEL — PARALLEL offloading  (Section 4.3, Shinde & Tarchi 2024)
+#
+#   T_off = T_tx + T_w + T_c_edge + T_rx   (T_w ≈ 0, T_rx = T_tx)
+#   T_loc = (1-alpha) * c_k / f_{v,k}
+#   T_total = max(T_off, T_loc)             ← parallel, NOT sum
 # =============================================================================
 
 def compute_latency(
@@ -144,36 +155,57 @@ def compute_latency(
     node_idx: int,
     env_state: Dict[str, Any],
 ) -> Tuple[float, Dict[str, float]]:
-    """Compute total task latency (Eq. 21).
+    """Compute total task latency with parallel offloading (max model).
 
-    T_k = alpha * d_k / R_k,n + 2*tau_l + alpha * c_k / f_l,n + (1-alpha) * c_k / f_loc
+    T_k = max(T_off, T_loc)
+    where
+      T_off = alpha * d_bits / R  +  alpha * c_k / f_edge  +  alpha * d_bits / R
+            = T_tx + T_c_edge + T_rx
+      T_loc = (1 - alpha) * c_k / f_loc
     """
     tier_name = TIER_NAMES[tier_idx]
     bandwidth = get_bandwidth(tier_idx)
-    prop_delay = get_prop_delay(tier_idx)
 
-    # Channel gain from environment state
+    # Channel gain from environment state (pre-computed)
     g = env_state['channel_gains'][tier_idx, node_idx]
-    snr = PK_VEHICLE * g / SIGMA2
+    snr = PK_VEHICLE * g / N0
     R = shannon_rate(bandwidth, snr)
+    R = max(R, 1.0)   # guard against zero rate
 
-    # Transmission time for offloaded fraction
-    t_tx = alpha * d_bits / max(R, 1.0)
-    t_proc_edge = alpha * c_cycles / F_EDGE[tier_name]
-    t_proc_local = (1.0 - alpha) * c_cycles / FLOC_VEHICLE
-    t_rtt = 2.0 * prop_delay
+    # Offloading branch
+    t_tx = alpha * d_bits / R
+    t_rx = t_tx                              # symmetric channel
+    t_c_edge = alpha * c_cycles / F_EDGE[tier_name]
+    t_off = t_tx + t_c_edge + t_rx          # T_w simplified to 0
 
-    total_latency = t_tx + t_proc_edge + t_proc_local + t_rtt
+    # Local branch
+    t_c_local = c_cycles / FLOC_VEHICLE
+    t_loc = (1.0 - alpha) * t_c_local
+
+    # Parallel processing → max
+    total_latency = max(t_off, t_loc)
 
     components = {
         't_tx': t_tx,
-        't_proc_edge': t_proc_edge,
-        't_proc_local': t_proc_local,
-        't_rtt': t_rtt,
+        't_rx': t_rx,
+        't_c_edge': t_c_edge,
+        't_off': t_off,
+        't_c_local': t_c_local,
+        't_loc': t_loc,
         't_total': total_latency,
     }
     return total_latency, components
 
+
+# =============================================================================
+# ENERGY MODEL — includes EN energy  (Section 4.3, Shinde & Tarchi 2024)
+#
+#   E = w_k*(E_tx + E_rx) + E_local + w_e*(E_wait + E_c_edge)
+#   E_tx   = P_k * T_tx
+#   E_rx   = P_rx * T_rx
+#   E_local = (1-alpha) * c_k * eps_local
+#   E_c_edge = alpha * c_k * eps_edge[tier]
+# =============================================================================
 
 def compute_energy(
     d_bits: float,
@@ -183,25 +215,34 @@ def compute_energy(
     node_idx: int,
     env_state: Dict[str, Any],
 ) -> Tuple[float, Dict[str, float]]:
-    """Compute total energy consumption (Eq. 22).
+    """Compute total energy consumption with EN energy (Eq. 22 corrected).
 
-    E_k = P_k * alpha * d_k / R_k,n + kappa * [(1-alpha) * c_k]^3
+    E = W_VU*(E_tx + E_rx) + E_local + W_EN*E_c_edge
     """
     tier_name = TIER_NAMES[tier_idx]
     bandwidth = get_bandwidth(tier_idx)
 
     g = env_state['channel_gains'][tier_idx, node_idx]
-    snr = PK_VEHICLE * g / SIGMA2
+    snr = PK_VEHICLE * g / N0
     R = shannon_rate(bandwidth, snr)
+    R = max(R, 1.0)
 
-    e_tx = PK_VEHICLE * alpha * d_bits / max(R, 1.0)
-    e_local = KAPPA * ((1.0 - alpha) * c_cycles) ** 3
+    t_tx = alpha * d_bits / R
+    t_rx = t_tx
 
-    total_energy = e_tx + e_local
+    e_tx = PK_VEHICLE * t_tx           # Vehicle transmit energy
+    e_rx = P_RX * t_rx                 # Vehicle receive energy
+    e_local = (1.0 - alpha) * c_cycles * EPS_LOCAL           # Local computation energy
+    e_c_edge = alpha * c_cycles * EPS_EDGE_PER_TIER[tier_idx] # EN computation energy
+    # E_wait simplified to 0 for light load
+
+    total_energy = W_VU * (e_tx + e_rx) + e_local + W_EN * e_c_edge
 
     components = {
         'e_tx': e_tx,
+        'e_rx': e_rx,
         'e_local': e_local,
+        'e_c_edge': e_c_edge,
         'e_total': total_energy,
     }
     return total_energy, components
@@ -209,6 +250,9 @@ def compute_energy(
 
 # =============================================================================
 # REWARD COMPUTATION (Section 4.6)
+#
+#   F3 = 1  if  E > w_k * E_local_full  else 0
+#   where E_local_full = c_k * eps_local  (energy if whole task is local)
 # =============================================================================
 
 def compute_reward(
@@ -216,7 +260,7 @@ def compute_reward(
     energy: float,
     Tsoj: float,
     Tmax: float,
-    Emax: float,
+    c_cycles: float,           # task workload (replaces Emax)
     beta1: float = 1.0,
     beta2: float = 1.0,
     w1: float = 50.0,
@@ -226,10 +270,17 @@ def compute_reward(
     """Compute reward (Eq. 32).
 
     R_t = -(beta1*T_k + beta2*E_k) - w1*F1 - w2*F2 - w3*F3
+
+    F1 = 1 if latency > Tsoj (sojourn constraint violated)
+    F2 = 1 if latency > Tmax (deadline constraint violated)
+    F3 = 1 if energy > w_k * E_local_full (energy exceeds local-only baseline)
     """
     F1 = 1 if latency > Tsoj else 0
     F2 = 1 if latency > Tmax else 0
-    F3 = 1 if energy > Emax else 0
+
+    # F3: compare against local-only energy baseline (not an arbitrary budget)
+    e_local_full = W_VU * (c_cycles * EPS_LOCAL)
+    F3 = 1 if energy > e_local_full else 0
 
     base_reward = -(beta1 * latency + beta2 * energy)
     penalty = w1 * F1 + w2 * F2 + w3 * F3
@@ -245,11 +296,7 @@ def compute_reward(
 # =============================================================================
 
 def normalize_qubo_coefficients(costs: np.ndarray, penalty_A: float) -> np.ndarray:
-    """Normalize QUBO costs to [0, 1] for stable Ising mapping.
-
-    Without normalization, the one-hot penalty A may not dominate properly
-    when cost magnitudes differ by orders of magnitude (e.g., latency ~ms vs energy ~J).
-    """
+    """Normalize QUBO costs to [0, 1] for stable Ising mapping."""
     c_min = costs.min()
     c_max = costs.max()
     c_range = c_max - c_min
@@ -314,7 +361,7 @@ class BayesianOptimizer:
 
     @staticmethod
     def _norm_cdf(x):
-        return 0.5 * (1.0 + np.vectorize(lambda t: float(__import__('scipy').stats.norm.cdf(t)))(x))
+        return _scipy_norm.cdf(x)
 
     @staticmethod
     def _norm_pdf(x):
@@ -337,7 +384,6 @@ class BayesianOptimizer:
     def suggest(self) -> np.ndarray:
         """Suggest next query point based on EI."""
         if len(self.X_history) < self.n_initial:
-            # Random exploration
             return np.array([
                 np.random.uniform(b[0], b[1]) for b in self.param_bounds
             ])
@@ -400,9 +446,6 @@ class ReplayBuffer:
         return len(self.buffer)
 
 
-import random
-
-
 # =============================================================================
 # PARAMETER COUNT UTILITIES
 # =============================================================================
@@ -411,12 +454,6 @@ def classical_hrl_params(n: int, h: int, n_actions: list, n_layers: int = 2) -> 
     """Compute DQN parameter count (Eq. 46).
 
     W_DQN = n*h + (n_layers-2)*h^2 + h*sum(n_actions)
-
-    Note: n_layers includes input AND output layers.
-    A DQN with "single hidden layer" => n_layers=2 (input + 1 hidden + output).
-    A DQN with "four hidden layers" => n_layers=5 (input + 4 hidden + output).
-    The paper's 144K baseline uses n_layers=2 per DQN.
-    The paper's 823K figure uses n_layers=5 per DQN.
     """
     return n * h + (n_layers - 2) * h * h + h * sum(n_actions)
 

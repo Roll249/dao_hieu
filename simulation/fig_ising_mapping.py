@@ -20,6 +20,7 @@ def setup_style():
     plt.rcParams.update({
         'font.family': 'sans-serif',
         'font.sans-serif': ['DejaVu Sans', 'Arial'],
+        'mathtext.fontset': 'dejavusans',
         'font.size': 9,
         'axes.spines.top': False,
         'axes.spines.right': False,
@@ -67,7 +68,7 @@ def generate_ising_figure(output_path=None):
             fontsize=9.5)
     ax.text(2.05, 0.6, '$+ A\\left(\\sum_{n=1}^{M} z_n - 1\\right)^2$', ha='center', va='center',
             fontsize=9.5)
-    ax.text(2.05, 0.1, '$\\text{s.t. } z_n \\in \\{0,1\\}$', ha='center', va='center',
+    ax.text(2.05, 0.1, '$\\mathrm{s.t.}\\; z_n \\in \\{0,1\\}$', ha='center', va='center',
             fontsize=9, style='italic')
 
     # Node labels
@@ -132,7 +133,7 @@ def generate_ising_figure(output_path=None):
             ax.text(x, y, f'$J_{{{i+1},{j+1}}}$', ha='center', va='center',
                     fontsize=7.5, fontweight='bold', color='#1a5276')
 
-    ax.text(8.75, -0.9, '$\\Rightarrow \\text{Ground state} = \\text{optimal node}$',
+    ax.text(8.75, -0.9, '$\\Rightarrow \\mathrm{Ground\\ state} = \\mathrm{optimal\\ node}$',
             ha='center', va='center', fontsize=8.5, color='#27AE60', fontweight='bold')
 
     # =================================================================
@@ -149,8 +150,8 @@ def generate_ising_figure(output_path=None):
         ('1', '$z_n = \\frac{I - \\sigma_z^n}{2}$', '(Paper, Remark 3.2)'),
         ('2', '$\\Rightarrow \\sigma_z^n = I - 2z_n$', '(Algebra)'),
         ('3', '$H = \\sum_n c_n\\frac{I-\\sigma_z^n}{2} + A(\\sum_n z_n-1)^2$', '(Substitution)'),
-        ('4', '$h_n = -\\frac{c_n}{2} + A\\left(\\frac{M}{2}-\\frac{1}{4}\\right)$', '(Local field)'),
-        ('5', '$J_{ij} = -\\frac{A}{2}$  (CORRECTED: paper has $+A/4$)', '(Coupling)'),
+        ('4', '$h_n = -\\frac{c_n}{2} + A\\left(1 - \\frac{M}{2}\\right)$', '(Local field, verified analytically)'),
+        ('5', '$J_{ij} = +\\frac{A}{2}$  (Paper Eq.(28) has $+A/4$ — wrong sign & magnitude)', '(Coupling, verified for M=2,3,5)'),
     ]
 
     colors = ['#FDFEFE', '#FDFEFE', '#FDFEFE', '#E8F8F5', '#FDEDEC']
@@ -173,7 +174,7 @@ def generate_ising_figure(output_path=None):
     # Correction annotation
     ax2.annotate('', xy=(12.0, 0.65), xytext=(11.5, 0.65),
                 arrowprops=dict(arrowstyle='->', color='#C0392B', lw=1.5))
-    ax2.text(12.2, 0.65, 'Paper\nEq.28\nhas\nwrong\nsign!', ha='left', va='center',
+    ax2.text(12.2, 0.65, 'Paper\nEq.28:\nwrong sign\n& magnitude\n($+A/4$)', ha='left', va='center',
             fontsize=7, color='#C0392B', fontweight='bold')
 
     # Legend
@@ -190,8 +191,9 @@ def generate_ising_figure(output_path=None):
     fig.text(0.5, 0.01,
              'Fig QC-4: QUBO to Ising Hamiltonian mapping. Binary variables $z_n \\in \\{0,1\\}$ are mapped to '
              'Pauli-Z operators via $z_n = (I - \\sigma_z^n)/2$, converting the node-selection objective into '
-             'an Ising Hamiltonian. NOTE: The paper\'s Eq. (28) has a sign error in the coupling terms '
-             '(see derivation step 5). The coupling should be $J_{ij} = -A/2$, not $+A/4$.',
+             'an Ising Hamiltonian. NOTE: The paper\'s Eq. (28) gives $J_{ij} = +A/4$, which is incorrect in '
+             'both sign and magnitude. The analytically verified correct value is $J_{ij} = +A/2$ '
+             '(derivation step 5; verified for $M = 2, 3, 5$ by exhaustive QUBO evaluation).',
              ha='center', va='bottom', fontsize=8, style='italic', color='#444444')
 
     if output_path:

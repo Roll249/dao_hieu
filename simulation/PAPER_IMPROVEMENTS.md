@@ -25,37 +25,52 @@ This document details the critical mathematical errors, inconsistencies, and imp
 J_ij = +A/4   (positive coupling)
 ```
 
-**Corrected version (verified with SymPy):**
+**Corrected version (verified analytically for M = 2, 3, 5 by exhaustive QUBO evaluation):**
 
 Starting from the QUBO:
 ```
 H(z) = sum_n c_n z_n + A * (sum_n z_n - 1)^2
+     = sum_n (c_n - A) z_n + 2A * sum_{i<j} z_i z_j + A   [expanding, using z_n^2 = z_n]
 ```
 
 Substituting `z_n = (I - sigma_z^n)/2`:
 
 ```
-Linear term: c_n * (I - sigma_z^n)/2 = c_n/2*I - c_n/2*sigma_z^n
-             => h_n = -c_n/2
+Linear coefficient (c_n - A) on z_n:
+  (c_n - A) * (1 - sigma_z^n)/2
+  => contributes -(c_n - A)/2 to h_n
 
-Quadratic penalty:
-  A * (sum z_n - 1)^2 = A * (1 - sum z_n)
-  = A*I - A*sum z_n
-  = A*I - A*sum (I - sigma_z^n)/2
-  = A*I - A/2*sum I + A/2*sum sigma_z^n
-  = A/2*sum sigma_z^n - A*M/2*I
-             => J_ij = -A/2   (NEGATIVE coupling, not positive)
-             => h_n += A/2
+Quadratic coefficient 2A on z_i z_j:
+  2A * (1 - sigma_z^i)/2 * (1 - sigma_z^j)/2 = A/2 * (1 - sigma_z^i - sigma_z^j + sigma_z^i sigma_z^j)
+  => J_ij = +A/2   (POSITIVE coupling; penalises co-selection)
+  => each sigma_z^n appears in (M-1) pairs, contributing -(M-1)*A/2 to h_n
+
+Combined local field:
+  h_n = -(c_n - A)/2 - (M-1)*A/2
+       = -c_n/2 + A/2 - (M-1)*A/2
+       = -c_n/2 + A*(1 - M/2)
+
+Constant offset:
+  E0 = sum_n c_n/2 + A*(1 - M/2 + M*(M-1)/4)
 ```
 
-**Impact:** With positive coupling, QAOA may converge to states where multiple nodes are selected (violating one-hot constraint), degrading node selection quality.
+**NOTE: The previous correction in this file (`J_ij = -A/2`) was itself WRONG.**
+The correct value is **`J_ij = +A/2`** (positive). The positive coupling correctly
+penalises states where sigma_z^i = sigma_z^j = -1 (both nodes selected), enforcing
+one-hot. Verified by checking H_C(sigma_z) = H(z) + E0 for all 2^M bitstrings
+for M = 2, 3, 5 (see qaoa_solver.py `qubo_to_ising` function).
+
+**Impact:** The paper's Eq. (28) gives J_ij = +A/4, which is wrong in BOTH sign and
+magnitude. The previous "correction" in this document (-A/2) was wrong in sign.
+The correct value (+A/2) ensures the QAOA ground state corresponds to exactly
+one selected node.
 
 **Correction to paper text:**
 Replace Eq. (28) with:
 ```
-H_C = sum_n [c_n/2 - A/2*(M_l*/2 - 1/4)] * I_sigma_z^n
-      - A/2 * sum_{n<m} sigma_z^n sigma_z^m
-      + [sum_n c_n/2 + A/4*(1 - M_l*)]
+h_n = -c_n/2 + A*(1 - M/2)
+J_ij = +A/2              (positive; penalises multi-selection)
+E_0  = sum_n c_n/2 + A*(1 - M/2 + M*(M-1)/4)
 ```
 
 ---

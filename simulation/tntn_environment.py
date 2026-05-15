@@ -18,6 +18,8 @@ from utils import (
     normalize_state,
 )
 
+Z_SERVICES = 6   # Number of service types xi_k in {0, ..., Z-1}
+
 
 @dataclass
 class Task:
@@ -27,6 +29,7 @@ class Task:
     Tmax_k: float   # Hard deadline in seconds
     vehicle_id: int = 0
     arrive_time: float = 0.0
+    xi_k: int = 0   # Service type in {0, ..., Z_SERVICES-1}
 
 
 @dataclass
@@ -195,9 +198,9 @@ class TNTNEnvironment:
             best_g = 0.0
             for n in self.nodes:
                 if n.tier_idx == t:
-                    d = np.sqrt((n.x - vx_km) ** 2 + (n.y - vy_km) ** 2)
-                    theta = np.rad2deg(np.arctan2(n.z, max(d, 0.001)))
-                    g = compute_channel_gain(t, d, theta)
+                    # 3-D distance in km (includes altitude z)
+                    d = np.sqrt((n.x - vx_km) ** 2 + (n.y - vy_km) ** 2 + n.z ** 2)
+                    g = compute_channel_gain(t, d)
                     if g > best_g:
                         best_g = g
             # Log-scale normalization for channel gains
@@ -225,7 +228,8 @@ class TNTNEnvironment:
         d_k = self.rng.uniform(0.5, 5.0)  # Mbits
         c_k = self.rng.uniform(100, 1000) * 1e6  # CPU cycles
         Tmax_k = self.rng.uniform(0.5, 2.0)  # seconds
-        return Task(d_k=d_k * 1e6, c_k=c_k, Tmax_k=Tmax_k)
+        xi_k = int(self.rng.randint(0, Z_SERVICES))  # service type
+        return Task(d_k=d_k * 1e6, c_k=c_k, Tmax_k=Tmax_k, xi_k=xi_k)
 
     def step(
         self,
@@ -259,9 +263,9 @@ class TNTNEnvironment:
         # Compute sojourn time (time before vehicle exits coverage)
         # Simplified: Tsoj = coverage_radius / vehicle_speed
         tier_node = self._get_node(action_l, action_n)
-        coverage_radius = self._coverage_radius(action_l)
-        v_ms = self.vehicle.speed_kmh / 3.6
-        Tsoj = coverage_radius / max(v_ms, 1.0)
+        coverage_radius = self._coverage_radius(action_l)  # km
+        v_ms = self.vehicle.speed_kmh / 3.6               # m/s
+        Tsoj = coverage_radius * 1000.0 / max(v_ms, 1.0)  # convert km→m then divide by m/s
 
         # Build environment state dict for cost computation
         channel_gains = self._compute_all_channel_gains()
@@ -278,9 +282,10 @@ class TNTNEnvironment:
         )
 
         # Compute reward with penalty terms
+        # F3 is now compared to local-only energy baseline (c_k * eps_local)
         reward, flags = compute_reward(
             latency, energy, Tsoj, task.Tmax_k,
-            self.vehicle.energy_budget,
+            task.c_k,    # workload in cycles, used to compute E_local_full
             w1=50.0, w2=50.0, w3=50.0,
         )
 
@@ -370,10 +375,11 @@ class TNTNEnvironment:
         g = np.zeros((4, max(M_TIERS)))
         for node in self.nodes:
             tier_idx = node.tier_idx
+            # 3-D distance in km (includes altitude z)
             d = np.sqrt((node.x - self.vehicle.x) ** 2 +
-                         (node.y - self.vehicle.y) ** 2)
-            theta = np.rad2deg(np.arctan2(node.z, max(d, 0.001)))
-            g[tier_idx, node.node_idx] = compute_channel_gain(tier_idx, d, theta)
+                         (node.y - self.vehicle.y) ** 2 +
+                         node.z ** 2)
+            g[tier_idx, node.node_idx] = compute_channel_gain(tier_idx, d)
         return g
 
     def get_qubo_costs(

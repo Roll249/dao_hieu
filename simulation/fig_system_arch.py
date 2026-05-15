@@ -22,6 +22,7 @@ def setup_style():
     plt.rcParams.update({
         'font.family': 'sans-serif',
         'font.sans-serif': ['DejaVu Sans', 'Arial'],
+        'mathtext.fontset': 'dejavusans',
         'font.size': 9,
         'axes.spines.top': False,
         'axes.spines.right': False,
@@ -92,7 +93,7 @@ def generate_system_architecture_figure(output_path=None):
 
     # Vehicle
     draw_block(ax, 5.5, y_env, 1.5, 0.6,
-               'Vehicle', '$s_t \\in \\mathbb{R}^{20}$',
+               'Vehicle', '$s_t \\in \\mathbf{R}^{20}$',
                color='#5D6D7E')
 
     # Arrow: Environment -> State
@@ -214,7 +215,7 @@ def generate_system_architecture_figure(output_path=None):
                color=C_BO)
 
     draw_block(ax, x_bo, y_bo - 0.85, 1.5, 0.5,
-               'GP Surrogate', '$\\mathbb{E}[f]$',
+               'GP Surrogate', '$\\mathrm{E}[f]$',
                color='#6C3483', fontsize=7)
 
     draw_arrow(ax, x_bo, y_vqc + 0.5, x_bo, y_bo + 0.5,

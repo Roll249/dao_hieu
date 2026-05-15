@@ -176,9 +176,10 @@ class QuantumHRLAgent:
         return l_star, n_star, alpha
 
     def update_vqc(self) -> float:
-        """Update VQC parameters using BO on sampled batch.
+        """Update VQC parameters via PSR gradient + BO (Algorithm 1, Step 4).
 
-        Implements the Bellman TD update (Algorithm 1, Step 4).
+        Uses Bellman TD target r + gamma*V(s') then runs one BO step to
+        search for better parameter vectors beyond the local PSR gradient.
         """
         if len(self.replay) < self.batch_size:
             return 0.0
@@ -186,38 +187,104 @@ class QuantumHRLAgent:
         batch = self.replay.sample(self.batch_size)
         states, l_stars, n_stars, alphas, R1s, R2s, next_states = batch
 
+        # --- Step 1: Compute proper Bellman TD targets ---
+        targets = []
+        for i in range(len(states)):
+            s_next = next_states[i]
+            # Bootstrap from target network (frozen copy) for stability
+            old_params = self.vqc.get_params().copy()
+            self.vqc.set_params(
+                self.vqc_params_target.reshape(self.vqc.params.shape)
+            )
+            _, _, next_outputs = self.vqc.forward(s_next)
+            self.vqc.set_params(old_params)
+            next_value = float(np.max(next_outputs[:self.vqc.n_tiers]))
+            targets.append(float(R1s[i]) + self.gamma_mdp * next_value)
+
+        # --- Step 2: PSR gradient steps on the batch ---
         losses = []
         for i in range(len(states)):
-            s = states[i]
-            l_s = l_stars[i]
-            r1 = R1s[i]
-            s_next = next_states[i]
-
-            # TD target
-            l_next, alpha_next, _ = self.vqc.forward(s_next)
-            # Simplified: use immediate reward as target
-            target = r1
-
-            loss = self.vqc.train_step(s, target)
+            loss = self.vqc.train_step(states[i], targets[i])
             losses.append(loss)
+        mean_loss = float(np.mean(losses)) if losses else 0.0
 
-        return float(np.mean(losses)) if losses else 0.0
+        # --- Step 3: BO proposes a candidate parameter vector ---
+        # Seed BO with the current (PSR-updated) params on first call
+        if len(self.bo_vqc.X_history) == 0:
+            self.bo_vqc.report(self.vqc.get_params().flatten(), -mean_loss)
+
+        bo_candidate = self.bo_vqc.suggest()
+        old_params = self.vqc.get_params().copy()
+        self.vqc.set_params(bo_candidate.reshape(self.vqc.params.shape))
+
+        # Evaluate BO candidate loss on a small subset (keeps overhead low)
+        n_eval = min(len(states), 8)
+        bo_loss = 0.0
+        for i in range(n_eval):
+            _, _, outputs = self.vqc.forward(states[i])
+            tier_logits = outputs[:self.vqc.n_tiers]
+            tier_target_vec = np.zeros(self.vqc.n_tiers)
+            tier_target_vec[int(l_stars[i])] = targets[i]
+            bo_loss += float(np.mean((tier_logits / 2.0 + 0.5 - tier_target_vec) ** 2))
+        bo_loss /= n_eval
+
+        self.bo_vqc.report(bo_candidate, -bo_loss)  # maximise negative loss
+
+        # Keep whichever is better: BO candidate or PSR result
+        best_bo_params, best_bo_val = self.bo_vqc.get_best()
+        if best_bo_params is not None and (-best_bo_val) < mean_loss:
+            self.vqc.set_params(best_bo_params.reshape(self.vqc.params.shape))
+        else:
+            self.vqc.set_params(old_params)  # revert to PSR result
+
+        # Soft-update target network
+        self.vqc_params_target = self.vqc.get_params().copy()
+
+        return mean_loss
 
     def update_qaoa(self) -> Dict[int, float]:
-        """Update QAOA angles via BO on expected energy (Algorithm 1, Step 5)."""
+        """Update QAOA angles via BO on cached Ising energy (Algorithm 1, Step 5).
+
+        For each tier, the BO proposes new (gamma, beta) angle vectors and
+        evaluates them against the last Ising instance seen by that solver.
+        The solver's angles are updated whenever BO finds an improvement.
+        """
         if len(self.replay) < self.batch_size:
             return {}
 
-        batch = self.replay.sample(self.batch_size)
-        _, _, n_stars, _, _, R2s, _ = batch
-
         tier_energies = {}
         for tier_idx in range(N_TIERS):
-            tier_rewards = [R2s[i] for i in range(len(n_stars)) if i < len(R2s)]
-            if tier_rewards:
-                # Compute empirical node costs from R2 feedback
-                avg_reward = float(np.mean(tier_rewards))
-                tier_energies[tier_idx] = -avg_reward  # Maximize R2 = minimize energy
+            solver = self.qaoa_solvers[tier_idx]
+
+            # Skip tiers whose solver hasn't seen any real problem yet
+            if solver.last_h is None or solver.last_J is None:
+                continue
+
+            h, J = solver.last_h, solver.last_J
+
+            # BO suggests a new set of angles for this tier
+            bo_angles = self.bo_qaoa.suggest()
+
+            # Evaluate QAOA energy at the suggested angles
+            qnode = solver.build_qnode(h, J)
+            try:
+                energy = float(qnode(bo_angles))
+            except Exception:
+                energy = solver._classical_energy(
+                    bo_angles, h, J, m=solver.n_nodes
+                )
+
+            # Report to BO (maximise negative energy = minimise energy)
+            self.bo_qaoa.report(bo_angles, -energy)
+
+            # Update solver if BO found a lower-energy configuration
+            best_angles, best_val = self.bo_qaoa.get_best()
+            if best_angles is not None and (-best_val) < solver.best_energy:
+                solver.angles = best_angles.copy()
+                solver.best_angles = best_angles.copy()
+                solver.best_energy = -best_val
+
+            tier_energies[tier_idx] = energy
 
         return tier_energies
 

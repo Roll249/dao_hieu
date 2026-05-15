@@ -100,7 +100,7 @@ def generate_vqc_figure(output_path=None):
     ax_a.axis('off')
 
     # State vector input
-    ax_a.text(0.5, 1.2, '$\\tilde{\\mathbf{s}}_t \\in \\mathbb{R}^n$', fontsize=9,
+    ax_a.text(0.5, 1.2, '$\\tilde{\\mathbf{s}}_t \\in \\mathbf{R}^n$', fontsize=9,
               ha='left', va='center', fontweight='bold')
     ax_a.text(0.5, 0.6, '$\\Downarrow$', fontsize=11, ha='center', va='center')
     ax_a.text(0.5, 0.1, 'L2 Normalize', fontsize=8, ha='left', va='center',
@@ -137,7 +137,7 @@ def generate_vqc_figure(output_path=None):
         ax_a.text(6.0 + i * 0.45, -1.25, f'$s_{i}$', fontsize=7,
                   ha='center', va='center', color=C_ENCODING, fontweight='bold')
 
-    ax_a.text(7.8, 1.0, 'Encoded quantum state $|\psi(\\tilde{s}_t)\\rangle$',
+    ax_a.text(7.8, 1.0, 'Encoded quantum state $|\\psi(\\tilde{s}_t)\\rangle$',
               fontsize=8, ha='right', va='center', style='italic')
 
     # Dimension note
@@ -324,6 +324,7 @@ def setup_plot_style():
     plt.rcParams.update({
         'font.family': 'sans-serif',
         'font.sans-serif': ['DejaVu Sans', 'Arial'],
+        'mathtext.fontset': 'dejavusans',
         'font.size': 9,
         'axes.labelsize': 10,
         'figure.dpi': 150,

@@ -1,0 +1,34 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Measure-Object)",
+      "Bash(Select-Object -ExpandProperty Count)",
+      "PowerShell(npx skills --help 2>&1)",
+      "PowerShell(npx skills list 2>&1 | Select-Object -First 50)",
+      "Bash(python fig_ising_mapping.py)",
+      "Bash(python fig_system_arch.py)",
+      "Bash(python fig_qaoa_circuit.py)",
+      "Bash(python fig_psr_gradient.py)",
+      "Bash(python fig_vqc_circuit.py)",
+      "Bash(python -c \"import fitz; print\\('PyMuPDF', fitz.__version__\\)\")",
+      "Bash(where pdflatex *)",
+      "Bash(python -c \"import reportlab; print\\('reportlab ok'\\)\")",
+      "Bash(python -c \"import pypdf; print\\('pypdf ok'\\)\")",
+      "Bash(python -c \"import pdfrw; print\\('pdfrw ok'\\)\")",
+      "Bash(pip install *)",
+      "Bash(python insert_figures_into_paper.py)",
+      "Bash(python *)",
+      "Bash(where xelatex *)",
+      "Bash(where latex *)",
+      "Bash(del \"C:\\\\Users\\\\Admin\\\\Desktop\\\\dao_hieu\\\\pdf_text.txt\")",
+      "Bash(del \"C:\\\\Users\\\\Admin\\\\Desktop\\\\dao_hieu\\\\páo_with_figures.pdf\")",
+      "Bash(del \"C:\\\\Users\\\\Admin\\\\Desktop\\\\dao_hieu\\\\simulation\\\\insert_figures_into_paper.py\")",
+      "Bash(Remove-Item \"C:/Users/Admin/Desktop/dao_hieu/pdf_text.txt\" -ErrorAction SilentlyContinue)",
+      "Bash(Remove-Item \"C:/Users/Admin/Desktop/dao_hieu/páo_with_figures.pdf\" -ErrorAction SilentlyContinue)",
+      "Bash(Remove-Item \"C:/Users/Admin/Desktop/dao_hieu/simulation/insert_figures_into_paper.py\" -ErrorAction SilentlyContinue)",
+      "Bash(Write-Host \"done\")",
+      "PowerShell(Remove-Item *)",
+      "Bash(dir C:\\\\Users\\\\Admin\\\\Desktop\\\\dao_hieu\\\\simulation\\\\updated_figure *)"
+    ]
+  }
+}

@@ -24,80 +24,45 @@ import sympy as sp
 def qubo_to_ising(q: np.ndarray, c: np.ndarray) -> Tuple[np.ndarray, np.ndarray, float]:
     """Convert QUBO to Ising Hamiltonian (Section 3.5, Proposition 3.5).
 
-    QUBO: min H(z) = sum_n c_n z_n + A * sum_n z_n - 1)^2
-    Ising: H_Ising = sum_n h_n sigma_z^n + sum_{i<j} J_ij sigma_z^i sigma_z^j + E0
+    QUBO: H(z) = sum_n c_n z_n + A*(sum_n z_n - 1)^2
+    Expanding with z_n^2 = z_n (binary):
+      H(z) = sum_n (c_n - A)*z_n + 2A*sum_{i<j} z_i z_j + A
 
-    CRITICAL FIX (from peer review):
-    The paper's Eq. (28) has INCORRECT signs. The correct derivation:
-      z_n = (I - sigma_z^n) / 2  (from paper, Remark 3.2)
+    Substituting z_n = (1 - sigma_z^n)/2  [sigma_z=+1 -> z=0, sigma_z=-1 -> z=1]:
+      h_n  = -c_n/2 + A*(1 - M/2)   (local field)
+      J_ij = +A/2                    (POSITIVE coupling — penalises co-selection)
+      E0   = sum_n c_n/2 + A*(1 - M/2 + M*(M-1)/4)
 
-    Substitution yields:
-      Linear term: c_n * z_n -> -c_n/2 * sigma_z^n + c_n/2
-      Quadratic penalty A*(sum z_n - 1)^2 expands to:
-        -A * sum_{i!=j} sigma_z^i sigma_z^j / 4   (negative coupling!)
-        + A/2 * sum_n sigma_z^n                  (positive field)
-        - A/4 * M_l * (M_l - 2)                  (offset)
-
-    The paper incorrectly has POSITIVE couplings (wrong sign for J_ij).
-    This implementation uses the CORRECT negative coupling convention.
+    NOTE: Paper Eq.(28) J_ij = +A/4 is wrong magnitude.
+          PAPER_IMPROVEMENTS.md correction of -A/2 is wrong sign AND magnitude.
+          Verified analytically for M=2,3,5 against direct QUBO evaluation.
 
     Args:
-        q:  QUBO matrix (m x m), symmetric with linear costs on diagonal
-        c:  Linear cost vector (m,) - unused if diagonal of q captures costs
-        penalty: One-hot penalty coefficient A
+        q: QUBO matrix (m x m) from build_qubo_matrix() — used to recover A
+        c: Original node cost vector (m,) before penalty embedding
 
     Returns:
-        h:  Local field terms (m,) - coefficient of sigma_z^n
-        J:  Coupling matrix (m x m) - coefficient of sigma_z^i sigma_z^j
-        E0: Energy offset scalar
+        h:  Local field array (m,)
+        J:  Coupling matrix (m x m), symmetric
+        E0: Constant energy offset
     """
-    m = len(q)
+    m = len(c)
     h = np.zeros(m)
     J = np.zeros((m, m))
-    E0 = 0.0
 
-    # Extract costs from diagonal
-    costs = np.diag(q)
+    # Recover penalty A from QUBO off-diagonal (Q_ij = 2A)
+    A = float(q[0, 1]) / 2.0 if m >= 2 else 0.0
 
-    # Normalize costs for numerical stability
-    c_min = costs.min()
-    c_max = costs.max()
-    c_range = c_max - c_min if c_max - c_min > 1e-12 else 1.0
-    costs_norm = (costs - c_min) / c_range
-
-    # CORRECT Ising mapping:
-    # z_n = (I - sigma_z^n) / 2  =>  sigma_z^n = I - 2*z_n
-    #
-    # H = sum_n c_n z_n + A*(sum_n z_n - 1)^2
-    #   = sum_n c_n (I - sigma_z^n)/2 + A*(sum_n (I - sigma_z^n)/2 - 1)^2
-    #   = sum_n c_n/2 * (I - sigma_z^n) + A/4 * (M - sum_n sigma_z^n)^2
-    #   = sum_n c_n/2 * I - sum_n c_n/2 * sigma_z^n
-    #     + A/4 * [M^2 - 2M*sum_n sigma_z^n + sum_n sigma_z^n^2 + sum_{i!=j} sigma_z^i sigma_z^j]
-    #
-    # Using sigma_z^n^2 = I:
-    # H = sum_n (c_n/2 + A/4*(1 - 2M)) * (-sigma_z^n)
-    #     + A/4 * sum_{i!=j} sigma_z^i sigma_z^j
-    #     + [sum_n c_n/2 + A/4*M^2]
-    #
-    # Local fields: h_n = -c_n/2 + A*(M/2 - 1/4)  [negative c term]
-    # Couplings:    J_ij = -A/4               [NEGATIVE, NOT positive as in paper]
-    # Offset:       E0 = sum_n c_n/2 + A/4 * M^2
-
-    M = m
-    A_penalty = max(costs) * 100 + 1.0  # Penalty >> max cost
-
+    # Use original costs directly (no normalisation — would break absolute E0)
     for n in range(m):
-        # Correct: negative field for higher cost (minimize)
-        h[n] = -costs_norm[n] / 2.0 + A_penalty * (M / 2.0 - 0.25)
+        h[n] = -float(c[n]) / 2.0 + A * (1.0 - m / 2.0)
 
-    # Correct coupling: negative for the one-hot constraint
     for i in range(m):
         for j in range(i + 1, m):
-            J[i, j] = -A_penalty / 4.0
-            J[j, i] = -A_penalty / 4.0
+            J[i, j] = A / 2.0
+            J[j, i] = A / 2.0
 
-    # Offset
-    E0 = np.sum(costs_norm) / 2.0 + A_penalty / 4.0 * M * M
+    E0 = float(np.sum(c)) / 2.0 + A * (1.0 - m / 2.0 + m * (m - 1) / 4.0)
 
     return h, J, E0
 
@@ -117,9 +82,10 @@ def build_qubo_matrix(
     m = len(costs)
     Q = np.zeros((m, m))
 
-    # Diagonal: linear costs + penalty terms from one-hot expansion
+    # Diagonal: expanding A*(Σz_n-1)² gives coefficient (c_n - A) on each z_n
+    # because z_n²=z_n collapses the squared term: -A per node from the penalty
     for n in range(m):
-        Q[n, n] = costs[n] + penalty  # c_n + A from (z_n^2 - 2*z_n + 1)
+        Q[n, n] = costs[n] - penalty  # c_n - A (not +A — see one-hot expansion)
 
     # Off-diagonal: 2*A from -2*A*z_i*z_j
     for i in range(m):
@@ -255,6 +221,10 @@ class QAOASolver:
         self.energy_history = []
         self.bitstring_history = []
 
+        # Cache last Ising params so update_qaoa() can re-evaluate angles
+        self.last_h: Optional[np.ndarray] = None
+        self.last_J: Optional[np.ndarray] = None
+
         # Build quantum device
         self.dev = qml.device('default.qubit', wires=n_nodes, shots=n_shots)
 
@@ -344,6 +314,10 @@ class QAOASolver:
         self.angles = angles
         self.energy_history.append(energies)
 
+        # Cache Ising params for BO-based angle update in update_qaoa()
+        self.last_h = h.copy()
+        self.last_J = J.copy()
+
         # Extract solution by measuring
         selected_node = self._extract_solution(h, J, angles)
 
@@ -384,12 +358,10 @@ class QAOASolver:
 
         try:
             samples = sample_circuit(angles)
-            # Convert Z samples to bitstrings
-            # Z eigenvalue +1 -> bit 0, -1 -> bit 1
-            z_vals = np.array([float(s) for s in samples])
-            bitstring = (1 - z_vals) / 2  # Map +1->0, -1->1
-            # Round to nearest integer
-            bitstring = np.round(bitstring).astype(int)
+            # samples is a list of m arrays, each shape (shots,)
+            # Average over shots: +1 = unselected (z=0), -1 = selected (z=1)
+            z_means = np.array([np.mean(s) for s in samples])
+            bitstring = np.round((1 - z_means) / 2).astype(int)  # +1->0, -1->1
 
             # One-hot decode: find the index with bit 1
             one_hot = np.where(bitstring == 1)[0]

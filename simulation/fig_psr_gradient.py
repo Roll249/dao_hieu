@@ -20,6 +20,7 @@ def setup_style():
     plt.rcParams.update({
         'font.family': 'sans-serif',
         'font.sans-serif': ['DejaVu Sans', 'Arial'],
+        'mathtext.fontset': 'dejavusans',
         'font.size': 9,
         'axes.spines.top': False,
         'axes.spines.right': False,

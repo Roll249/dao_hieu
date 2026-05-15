@@ -21,7 +21,7 @@ from functools import lru_cache
 # AMPLITUDE ENCODING
 # ============================================================================
 
-def amplitude_encode(state_vec: np.ndarray, wires: List[int], circuit: qml.QuantumCircuit):
+def amplitude_encode(state_vec: np.ndarray, wires: List[int], circuit=None):
     """Apply amplitude encoding (Definition 3.3, Eq. 8).
 
     Maps a normalized vector s ~ R^n to |s> = sum_i s_i |i>
@@ -367,6 +367,7 @@ class ClassicalVQCApproximation:
         self.state_dim = state_dim
         self.n_layers = n_layers
         self.n_qubits = int(np.ceil(np.log2(state_dim)))
+        self.n_tiers = 4
         np.random.seed(seed)
         self.params = np.random.uniform(0, 2 * np.pi, size=(n_layers, self.n_qubits))
 
