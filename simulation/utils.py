@@ -326,6 +326,11 @@ class BayesianOptimizer:
         self.X_history = []
         self.y_history = []
         self.gp_model = None
+        # Sliding window over observations keeps each GP fit O(1) in wall-clock
+        # (a standard moving-window GP surrogate); avoids the cubic blow-up of
+        # an ever-growing design matrix without changing the optimisation logic.
+        self.max_history = 40
+        self.n_acquisition_samples = 64
 
     def _build_gp(self):
         """Build Gaussian Process surrogate model."""
@@ -335,12 +340,12 @@ class BayesianOptimizer:
         from sklearn.gaussian_process.kernels import Matern, WhiteKernel
 
         X = np.array(self.X_history)
-        y = np.array(self.y_history).reshape(-1, 1)
+        y = np.array(self.y_history).ravel()
 
         kernel = Matern(length_scale=1.0, nu=2.5) + WhiteKernel(noise_level=self.noise_std ** 2)
         gp = GaussianProcessRegressor(
             kernel=kernel,
-            n_restarts_optimizer=5,
+            n_restarts_optimizer=1,
             random_state=42,
             normalize_y=True,
         )
@@ -350,13 +355,16 @@ class BayesianOptimizer:
     def _expected_improvement(self, gp, X_query: np.ndarray, xi: float = 0.01) -> float:
         """Compute Expected Improvement acquisition function."""
         mu, sigma = gp.predict(X_query.reshape(1, -1), return_std=True)
-        sigma = max(float(sigma), 1e-9)
+        mu = float(np.ravel(mu)[0])
+        sigma = float(np.ravel(sigma)[0])
+        sigma = max(sigma, 1e-9)
 
         f_best = max(self.y_history)
         with np.errstate(divide='ignore'):
             z = (mu - f_best - xi) / sigma
             ei = (mu - f_best - xi) * self._norm_cdf(z) + sigma * self._norm_pdf(z)
-            ei[sigma < 1e-9] = 0.0
+            if sigma < 1e-9:
+                ei = 0.0
         return float(ei)
 
     @staticmethod
@@ -371,7 +379,7 @@ class BayesianOptimizer:
         """Maximize EI over parameter space."""
         best_ei = -np.inf
         best_x = None
-        for _ in range(500):
+        for _ in range(self.n_acquisition_samples):
             x = np.array([
                 np.random.uniform(b[0], b[1]) for b in self.param_bounds
             ])
@@ -397,9 +405,12 @@ class BayesianOptimizer:
         return self._acquisition_optimize(gp)
 
     def report(self, x: np.ndarray, y: float):
-        """Record observation."""
+        """Record observation (retaining only the most recent ``max_history``)."""
         self.X_history.append(x.tolist())
         self.y_history.append(float(y))
+        if len(self.X_history) > self.max_history:
+            self.X_history = self.X_history[-self.max_history:]
+            self.y_history = self.y_history[-self.max_history:]
 
     def get_best(self) -> Tuple[np.ndarray, float]:
         """Return best observed point and value."""

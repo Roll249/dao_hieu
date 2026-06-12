@@ -28,7 +28,12 @@
       "Bash(Remove-Item \"C:/Users/Admin/Desktop/dao_hieu/simulation/insert_figures_into_paper.py\" -ErrorAction SilentlyContinue)",
       "Bash(Write-Host \"done\")",
       "PowerShell(Remove-Item *)",
-      "Bash(dir C:\\\\Users\\\\Admin\\\\Desktop\\\\dao_hieu\\\\simulation\\\\updated_figure *)"
+      "Bash(dir C:\\\\Users\\\\Admin\\\\Desktop\\\\dao_hieu\\\\simulation\\\\updated_figure *)",
+      "Bash(pdflatex -draftmode -interaction=nonstopmode -halt-on-error quantum_hrl_paper.tex)",
+      "Bash(command -v tlmgr)",
+      "Bash(python3 *)",
+      "Bash(grep -oP '^@\\\\w+\\\\{[^,]+' /home/ngochieu/repo/dao_hieu/references.bib)",
+      "Bash(grep -n \"20~km\\\\|500--1200\\\\|50--500~m\\\\|2\\\\\\\\\\\\\\\\,\\\\\\\\\\\\\\\\mathrm{km}\\\\\\\\^2\" /home/ngochieu/repo/dao_hieu/quantum_hrl_paper.tex)"
     ]
   }
 }

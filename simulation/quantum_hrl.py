@@ -64,8 +64,21 @@ class QuantumHRLAgent:
         gamma_mdp: float = 0.99,
         seed: int = 42,
         use_quantum: bool = True,
+        node_random: bool = False,
+        vqc_random: bool = False,
         verbose: bool = False,
     ):
+        # Ablation switches: node_random -> bypass QAOA with a random node;
+        # vqc_random -> bypass the VQC high-level policy with random (tier, ratio).
+        self.node_random = node_random
+        self.vqc_random = vqc_random
+        # High-level policy-gradient hyperparameters. The ratio readout uses a
+        # larger step because its single-observable signal is otherwise swamped
+        # by the tier/constraint variance in the shared advantage.
+        self.pg_lr = 0.12
+        self.pg_lr_alpha = 0.6
+        self.alpha_sigma = 0.3
+        self.update_every = 20
         self.state_dim = state_dim
         self.n_episodes = n_episodes
         self.batch_size = batch_size
@@ -86,10 +99,13 @@ class QuantumHRLAgent:
         random.seed(seed)
 
         # VQC agent (high-level policy)
+        # Analytic statevector (shots=None) for tractable experiment turnaround;
+        # the paper's finite-shot (N_shots=1024) noise is modelled separately in
+        # the NISQ-noise scenario. Exact expectations also stabilise PSR gradients.
         self.vqc = VQCAgent(
             state_dim=state_dim,
             n_layers=vqc_layers,
-            n_shots=1000,
+            n_shots=None,
             seed=seed,
             lr=0.01,
         )
@@ -146,20 +162,28 @@ class QuantumHRLAgent:
             node_selected:  Selected node index within tier
             alpha:         Offloading ratio [0, 1]
         """
-        # Step 1: VQC high-level policy
-        if explore and np.random.rand() < self.epsilon:
-            # Exploration: random tier and alpha
+        # Step 1: VQC high-level policy (stochastic during training)
+        if self.vqc_random:
+            # Ablation: random tier and ratio
             l_star = np.random.randint(0, N_TIERS)
             alpha = np.random.rand()
         else:
-            # Exploitation: VQC forward pass
-            l_star, alpha, _ = self.vqc.forward(state)
+            probs, alpha_mean, _ = self.vqc.policy_forward(state)
+            if explore:
+                # On-policy sampling drives REINFORCE exploration: sample the
+                # tier from the categorical policy and the ratio from the
+                # Gaussian policy around its mean.
+                l_star = int(np.random.choice(N_TIERS, p=probs))
+                alpha = float(np.clip(alpha_mean + self.alpha_sigma * np.random.randn(), 0.01, 1.0))
+            else:
+                l_star = int(np.argmax(probs))
+                alpha = alpha_mean
 
         # Step 2: QAOA node selection within selected tier
         m_tier = M_TIERS[l_star]
 
-        if explore and np.random.rand() < self.epsilon:
-            # Random node selection during exploration
+        if self.node_random:
+            # Ablation: random node selection
             n_star = random_node_selection(m_tier)
         else:
             # QAOA node selection
@@ -167,7 +191,7 @@ class QuantumHRLAgent:
 
             if self.use_quantum:
                 n_star, _, qaoa_info = self.qaoa_solvers[l_star].solve(
-                    costs, penalty=50.0, n_iterations=50
+                    costs, penalty=50.0, n_iterations=6
                 )
             else:
                 # Classical fallback
@@ -176,71 +200,38 @@ class QuantumHRLAgent:
         return l_star, n_star, alpha
 
     def update_vqc(self) -> float:
-        """Update VQC parameters via PSR gradient + BO (Algorithm 1, Step 4).
+        """Update the VQC high-level policy via advantage-weighted REINFORCE.
 
-        Uses Bellman TD target r + gamma*V(s') then runs one BO step to
-        search for better parameter vectors beyond the local PSR gradient.
+        The VQC parameterises a categorical tier policy and a Gaussian ratio
+        policy; gradients of the log-policy w.r.t. the circuit angles are
+        obtained from the exact Parameter-Shift Rule (Algorithm 1, Step 4).
+        Using the (bounded) policy outputs with a normalised advantage signal
+        is the correctly-scaled replacement for the previous TD target, whose
+        unbounded magnitude could not be represented by Pauli-Z expectations.
         """
-        if len(self.replay) < self.batch_size:
+        if self.vqc_random or len(self.replay) < self.batch_size:
             return 0.0
 
-        batch = self.replay.sample(self.batch_size)
-        states, l_stars, n_stars, alphas, R1s, R2s, next_states = batch
+        states, l_stars, n_stars, alphas, R1s, R2s, next_states = \
+            self.replay.sample(self.batch_size)
+        R1 = np.array(R1s, dtype=float)
+        # Normalised advantage (variance-reduction baseline = batch mean)
+        adv = R1 - R1.mean()
+        std = adv.std()
+        adv = adv / (std + 1e-6)
 
-        # --- Step 1: Compute proper Bellman TD targets ---
-        targets = []
-        for i in range(len(states)):
-            s_next = next_states[i]
-            # Bootstrap from target network (frozen copy) for stability
-            old_params = self.vqc.get_params().copy()
-            self.vqc.set_params(
-                self.vqc_params_target.reshape(self.vqc.params.shape)
-            )
-            _, _, next_outputs = self.vqc.forward(s_next)
-            self.vqc.set_params(old_params)
-            next_value = float(np.max(next_outputs[:self.vqc.n_tiers]))
-            targets.append(float(R1s[i]) + self.gamma_mdp * next_value)
-
-        # --- Step 2: PSR gradient steps on the batch ---
-        losses = []
-        for i in range(len(states)):
-            loss = self.vqc.train_step(states[i], targets[i])
-            losses.append(loss)
-        mean_loss = float(np.mean(losses)) if losses else 0.0
-
-        # --- Step 3: BO proposes a candidate parameter vector ---
-        # Seed BO with the current (PSR-updated) params on first call
-        if len(self.bo_vqc.X_history) == 0:
-            self.bo_vqc.report(self.vqc.get_params().flatten(), -mean_loss)
-
-        bo_candidate = self.bo_vqc.suggest()
-        old_params = self.vqc.get_params().copy()
-        self.vqc.set_params(bo_candidate.reshape(self.vqc.params.shape))
-
-        # Evaluate BO candidate loss on a small subset (keeps overhead low)
-        n_eval = min(len(states), 8)
-        bo_loss = 0.0
-        for i in range(n_eval):
-            _, _, outputs = self.vqc.forward(states[i])
-            tier_logits = outputs[:self.vqc.n_tiers]
-            tier_target_vec = np.zeros(self.vqc.n_tiers)
-            tier_target_vec[int(l_stars[i])] = targets[i]
-            bo_loss += float(np.mean((tier_logits / 2.0 + 0.5 - tier_target_vec) ** 2))
-        bo_loss /= n_eval
-
-        self.bo_vqc.report(bo_candidate, -bo_loss)  # maximise negative loss
-
-        # Keep whichever is better: BO candidate or PSR result
-        best_bo_params, best_bo_val = self.bo_vqc.get_best()
-        if best_bo_params is not None and (-best_bo_val) < mean_loss:
-            self.vqc.set_params(best_bo_params.reshape(self.vqc.params.shape))
-        else:
-            self.vqc.set_params(old_params)  # revert to PSR result
-
-        # Soft-update target network
+        # Subsample to bound the per-update circuit-evaluation budget
+        n_pg = min(len(states), 8)
+        idx = np.random.choice(len(states), size=n_pg, replace=False)
+        loss = self.vqc.reinforce_update(
+            [states[i] for i in idx],
+            [int(l_stars[i]) for i in idx],
+            [float(alphas[i]) for i in idx],
+            [float(adv[i]) for i in idx],
+            lr=self.pg_lr, lr_alpha=self.pg_lr_alpha, alpha_sigma=self.alpha_sigma,
+        )
         self.vqc_params_target = self.vqc.get_params().copy()
-
-        return mean_loss
+        return loss
 
     def update_qaoa(self) -> Dict[int, float]:
         """Update QAOA angles via BO on cached Ising energy (Algorithm 1, Step 5).
@@ -249,7 +240,7 @@ class QuantumHRLAgent:
         evaluates them against the last Ising instance seen by that solver.
         The solver's angles are updated whenever BO finds an improvement.
         """
-        if len(self.replay) < self.batch_size:
+        if self.node_random or len(self.replay) < self.batch_size:
             return {}
 
         tier_energies = {}
@@ -328,7 +319,7 @@ class QuantumHRLAgent:
                 self.replay.push(state, l_star, n_star, alpha, R1, R2, s_next)
 
                 # Periodic updates
-                if len(self.replay) >= self.batch_size and step % self.bo_budget == 0:
+                if len(self.replay) >= self.batch_size and step % self.update_every == 0:
                     vqc_loss = self.update_vqc()
                     self.metrics.vqc_losses.append(vqc_loss)
                     _ = self.update_qaoa()
@@ -418,6 +409,53 @@ class ClassicalHRLAgent:
         h = self._relu(state @ W1 + b1)
         return h @ W2 + b2
 
+    def _td_update(self, weights, target_weights, states, actions, targets, lr=1e-3):
+        """One mini-batch semi-gradient TD update on a single Q-head (numpy backprop).
+
+        Loss = mean_i (Q(s_i)[a_i] - y_i)^2 with y_i = R + gamma*max_a Q_target(s'_i).
+        Standard DQN update; makes the classical baseline a genuine learner.
+        """
+        W1, b1, W2, b2 = weights
+        B = len(states)
+        gW1 = np.zeros_like(W1); gb1 = np.zeros_like(b1)
+        gW2 = np.zeros_like(W2); gb2 = np.zeros_like(b2)
+        for i in range(B):
+            s = states[i]
+            z1 = s @ W1 + b1
+            h = self._relu(z1)
+            q = h @ W2 + b2
+            a = int(actions[i])
+            dq = np.zeros_like(q)
+            dq[a] = 2.0 * (q[a] - targets[i]) / B
+            gW2 += np.outer(h, dq); gb2 += dq
+            dh = W2 @ dq
+            dh[z1 <= 0] = 0.0
+            gW1 += np.outer(s, dh); gb1 += dh
+        # gradient clipping for stability under the noisy reward scale
+        for g in (gW1, gb1, gW2, gb2):
+            np.clip(g, -1.0, 1.0, out=g)
+        W1 -= lr * gW1; b1 -= lr * gb1
+        W2 -= lr * gW2; b2 -= lr * gb2
+
+    def _learn(self, batch_size: int = 64):
+        """Sample a mini-batch and update all three Q-heads (tier, node, ratio)."""
+        if len(self.replay) < batch_size:
+            return
+        s, l_star, n_star, alpha, R1, R2, s_next = self.replay.sample(batch_size)
+        s = np.array(s); s_next = np.array(s_next)
+        R = np.array(R1, dtype=float)
+        gamma = 0.95
+        # Bellman targets bootstrapped from the frozen target networks
+        y_tier = R + gamma * np.array([self._forward(sn, self.target_tier).max() for sn in s_next])
+        y_node = R + gamma * np.array([self._forward(sn, self.target_node).max() for sn in s_next])
+        y_ratio = R + gamma * np.array([self._forward(sn, self.target_ratio).max() for sn in s_next])
+        a_tier = [int(x) for x in l_star]
+        a_node = [min(int(x), max(M_TIERS) - 1) for x in n_star]
+        a_ratio = [int(np.clip(round(a * 10) - 1, 0, 9)) for a in alpha]
+        self._td_update(self.dqn_tier, self.target_tier, s, a_tier, y_tier)
+        self._td_update(self.dqn_node, self.target_node, s, a_node, y_node)
+        self._td_update(self.dqn_ratio, self.target_ratio, s, a_ratio, y_ratio)
+
     def select_action(
         self,
         state: np.ndarray,
@@ -467,8 +505,18 @@ class ClassicalHRLAgent:
                 episode_reward += reward
                 episode_latencies.append(info['latency'])
 
+                # Off-policy TD learning every few steps
+                if step % 4 == 0:
+                    self._learn(batch_size=64)
+
                 state = s_next
                 step += 1
+
+            # Periodically sync target networks (DQN-style frozen targets)
+            if episode % 5 == 0:
+                self.target_tier = [w.copy() for w in self.dqn_tier]
+                self.target_node = [w.copy() for w in self.dqn_node]
+                self.target_ratio = [w.copy() for w in self.dqn_ratio]
 
             self.epsilon = max(0.05, self.epsilon * 0.99)
             self.metrics.episode_rewards.append(episode_reward)
@@ -478,6 +526,103 @@ class ClassicalHRLAgent:
                 print(f"  Episode {episode:4d}: reward={episode_reward:.2f}, "
                       f"lat={np.mean(episode_latencies):.4f}s")
 
+        return self.metrics
+
+
+class SingleDQNAgent:
+    """Flat single-DQN baseline with a joint (tier, node, ratio) action space.
+
+    One network maps the state to Q-values over all valid composite actions,
+    illustrating the parameter blow-up of a non-hierarchical agent.
+    """
+
+    def __init__(self, state_dim: int = STATE_DIM, hidden_dim: int = 128,
+                 n_episodes: int = 500, n_ratio_bins: int = 10, seed: int = 42):
+        self.state_dim = state_dim
+        self.hidden_dim = hidden_dim
+        self.n_episodes = n_episodes
+        self.n_ratio_bins = n_ratio_bins
+        np.random.seed(seed); random.seed(seed)
+        # Enumerate composite actions: (tier, node-within-tier) x ratio bin
+        self.actions = []
+        for l in range(N_TIERS):
+            for nd in range(int(M_TIERS[l])):
+                for rb in range(n_ratio_bins):
+                    self.actions.append((l, nd, (rb + 1) / n_ratio_bins))
+        self.n_actions = len(self.actions)
+        self.epsilon = 1.0
+        np.random.seed(seed)
+        self.W1 = np.random.randn(state_dim, hidden_dim) * np.sqrt(2.0 / state_dim)
+        self.b1 = np.zeros(hidden_dim)
+        self.W2 = np.random.randn(hidden_dim, self.n_actions) * np.sqrt(2.0 / hidden_dim)
+        self.b2 = np.zeros(self.n_actions)
+        self.tW1, self.tb1 = self.W1.copy(), self.b1.copy()
+        self.tW2, self.tb2 = self.W2.copy(), self.b2.copy()
+        self.replay = ReplayBuffer(capacity=10000)
+        self.metrics = TrainingMetrics()
+
+    def _fwd(self, s, target=False):
+        W1, b1, W2, b2 = ((self.tW1, self.tb1, self.tW2, self.tb2) if target
+                          else (self.W1, self.b1, self.W2, self.b2))
+        h = np.maximum(0, s @ W1 + b1)
+        return h @ W2 + b2
+
+    def select_action(self, state, task, env, explore=False):
+        if explore and np.random.rand() < self.epsilon:
+            idx = np.random.randint(self.n_actions)
+        else:
+            idx = int(np.argmax(self._fwd(state)))
+        return self.actions[idx]
+
+    def _learn(self, batch_size=64):
+        if len(self.replay) < batch_size:
+            return
+        s, l_star, n_star, alpha, R1, R2, s_next = self.replay.sample(batch_size)
+        s = np.array(s); s_next = np.array(s_next); R = np.array(R1, dtype=float)
+        gamma = 0.95
+        y = R + gamma * np.array([self._fwd(sn, target=True).max() for sn in s_next])
+        # map (l,n,alpha) back to composite action index
+        gW1 = np.zeros_like(self.W1); gb1 = np.zeros_like(self.b1)
+        gW2 = np.zeros_like(self.W2); gb2 = np.zeros_like(self.b2)
+        for i in range(batch_size):
+            rb = int(np.clip(round(alpha[i] * self.n_ratio_bins) - 1, 0, self.n_ratio_bins - 1))
+            try:
+                a = self.actions.index((int(l_star[i]), int(n_star[i]), (rb + 1) / self.n_ratio_bins))
+            except ValueError:
+                continue
+            z1 = s[i] @ self.W1 + self.b1
+            h = np.maximum(0, z1)
+            q = h @ self.W2 + self.b2
+            dq = np.zeros_like(q)
+            dq[a] = 2.0 * (q[a] - y[i]) / batch_size
+            gW2 += np.outer(h, dq); gb2 += dq
+            dh = self.W2 @ dq; dh[z1 <= 0] = 0.0
+            gW1 += np.outer(s[i], dh); gb1 += dh
+        for g in (gW1, gb1, gW2, gb2):
+            np.clip(g, -1.0, 1.0, out=g)
+        self.W1 -= 1e-3 * gW1; self.b1 -= 1e-3 * gb1
+        self.W2 -= 1e-3 * gW2; self.b2 -= 1e-3 * gb2
+
+    def train(self, env: TNTNEnvironment) -> TrainingMetrics:
+        print("Starting Single-DQN training...")
+        for episode in range(self.n_episodes):
+            state = env.reset(); done = False; step = 0
+            ep_reward = 0.0; lats = []
+            while not done:
+                task = env._generate_task()
+                l, n, a = self.select_action(state, task, env, explore=True)
+                s_next, r, done, info = env.step(l, n, a, task)
+                self.replay.push(state, l, n, a, r, r, s_next)
+                ep_reward += r; lats.append(info['latency'])
+                if step % 4 == 0:
+                    self._learn()
+                state = s_next; step += 1
+            if episode % 5 == 0:
+                self.tW1, self.tb1 = self.W1.copy(), self.b1.copy()
+                self.tW2, self.tb2 = self.W2.copy(), self.b2.copy()
+            self.epsilon = max(0.05, self.epsilon * 0.99)
+            self.metrics.episode_rewards.append(ep_reward)
+            self.metrics.episode_latencies.append(np.mean(lats))
         return self.metrics
 
 

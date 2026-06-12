@@ -164,6 +164,8 @@ class VQCAgent:
         self.state_dim = state_dim
         self.n_layers = n_layers
         self.n_shots = n_shots
+        # Fixed offloading prior added to the ratio readout (see policy_forward)
+        self.alpha_bias = 1.5
 
         # Number of qubits: q = ceil(log2 n)
         self.n_qubits = int(np.ceil(np.log2(state_dim)))
@@ -342,6 +344,81 @@ class VQCAgent:
 
         self.loss_history.append(float(loss))
         return float(loss)
+
+    def policy_forward(self, state_vec: np.ndarray):
+        """Return the high-level policy distribution for a state.
+
+        Returns:
+            tier_probs:  softmax over the first n_tiers Pauli-Z expectations
+            alpha_mean:  sigmoid of the ratio-readout expectation (mean of the
+                         Gaussian ratio policy)
+            raw_outputs: all Pauli-Z expectation values
+        """
+        s_norm = state_vec / (np.linalg.norm(state_vec) + 1e-12)
+        raw = np.array(self.qnode(s_norm, self.params), dtype=float)
+        logits = raw[:self.n_tiers]
+        logits = logits - logits.max()
+        probs = np.exp(logits) / np.exp(logits).sum()
+        # Ratio readout uses the full collective magnetisation sum_w <Z_w>, which
+        # has a stronger, more reliable parameter-shift gradient than any single
+        # qubit observable (better ratio-policy trainability). A fixed positive
+        # bias encodes the domain prior that edge compute (eps_edge) is cheaper
+        # than local compute (eps_local), discouraging the spurious
+        # "compute-locally" basin; it is a constant, not a trainable parameter.
+        alpha_readout = float(np.sum(raw)) + self.alpha_bias
+        alpha_mean = 1.0 / (1.0 + np.exp(-np.clip(alpha_readout, -10, 10)))
+        return probs, float(alpha_mean), raw
+
+    def observable_gradients(self, state_vec: np.ndarray) -> np.ndarray:
+        """Per-observable parameter-shift gradients d<O_k>/dtheta.
+
+        Returns an array of shape (n_outputs, L, q): one full gradient field
+        for every measured Pauli-Z observable, computed with the exact
+        Parameter-Shift Rule (2*L*q circuit evaluations total).
+        """
+        s_norm = state_vec / (np.linalg.norm(state_vec) + 1e-12)
+        n_out = len(self.wires)
+        grads = np.zeros((n_out, self.n_layers, self.n_qubits))
+        for layer in range(self.n_layers):
+            for j in range(self.n_qubits):
+                pp = np.array(self.params).copy(); pp[layer, j] += np.pi / 2
+                pm = np.array(self.params).copy(); pm[layer, j] -= np.pi / 2
+                op = np.array(self.qnode(s_norm, pnp.array(pp)), dtype=float)
+                om = np.array(self.qnode(s_norm, pnp.array(pm)), dtype=float)
+                grads[:, layer, j] = 0.5 * (op - om)
+        return grads
+
+    def reinforce_update(self, states, tiers, alphas, advantages,
+                         lr: float = 0.05, lr_alpha: float = None,
+                         alpha_sigma: float = 0.15) -> float:
+        """Advantage-weighted policy-gradient update (REINFORCE).
+
+        The VQC is the stochastic high-level policy: a categorical tier policy
+        (softmax over Pauli-Z expectations) and a Gaussian offloading-ratio
+        policy (mean = sigmoid readout). Gradients of the log-policy w.r.t. the
+        circuit angles use the exact Parameter-Shift Rule, so the update is the
+        bounded-output, correctly-scaled analogue of TD-DQN training.
+        """
+        if lr_alpha is None:
+            lr_alpha = lr
+        g_tier_acc = np.zeros((self.n_layers, self.n_qubits))
+        g_alpha_acc = np.zeros((self.n_layers, self.n_qubits))
+        for s, l, a, A in zip(states, tiers, alphas, advantages):
+            probs, mu, _ = self.policy_forward(s)
+            og = self.observable_gradients(s)        # (n_out, L, q)
+            # categorical tier log-prob gradient
+            g_tier = og[int(l)] - np.tensordot(probs, og[:self.n_tiers], axes=([0], [0]))
+            # Gaussian ratio log-prob gradient (chain through sigmoid); the ratio
+            # readout is the collective sum, so its gradient sums over observables
+            dmu = mu * (1.0 - mu) * og.sum(axis=0)
+            g_alpha = ((a - mu) / (alpha_sigma ** 2)) * dmu
+            g_tier_acc += float(A) * g_tier
+            g_alpha_acc += float(A) * g_alpha
+        n = max(len(states), 1)
+        grad_acc = (lr * g_tier_acc + lr_alpha * g_alpha_acc) / n
+        self.params = pnp.clip(self.params + grad_acc, 0.0, 2 * np.pi)
+        self.params = pnp.array(self.params, requires_grad=True)
+        return float(np.linalg.norm(grad_acc))
 
     def get_params(self) -> np.ndarray:
         """Return current parameters."""

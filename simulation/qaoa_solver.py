@@ -225,8 +225,11 @@ class QAOASolver:
         self.last_h: Optional[np.ndarray] = None
         self.last_J: Optional[np.ndarray] = None
 
-        # Build quantum device
-        self.dev = qml.device('default.qubit', wires=n_nodes, shots=n_shots)
+        # Build quantum device. The inner variational loop uses analytic
+        # (statevector) expectation values for tractable simulation; finite-shot
+        # and hardware-noise effects are studied separately in the noise
+        # scenario. ``n_shots`` is retained for reference/reporting.
+        self.dev = qml.device('default.qubit', wires=n_nodes, shots=None)
 
     def build_qnode(self, h: np.ndarray, J: np.ndarray) -> qml.QNode:
         """Build the QAOA QNode for specific Ising parameters."""
