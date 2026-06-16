@@ -114,14 +114,13 @@ Quantum-HRL tiêu tốn **nhiều năng lượng hơn** baseline (0.97 vs 0.35 J
 | 2. Notation | Bảng ký hiệu đầy đủ (đã đồng bộ với phương pháp mới) |
 | 3. Related Work | 2 nhóm: HRL-for-VEC, Quantum-for-RL/optimization + research gap |
 | 4. Quantum Preliminaries | Qubit, gates, Amplitude Encoding, VQC + PSR, QUBO→Ising, QAOA, BO |
-| 5. System Model | Kênh truyền, mô hình latency/energy, bài toán (P1), QUBO, MDP |
-| 6. Framework + Experiments | Kiến trúc, thuật toán, training (policy gradient), setup, scenarios, **kết quả + thống kê + ablation + discussion** |
-| 7. Complexity Analysis | Đếm tham số chi tiết: 20,224 vs 24 → **ρ = 843×** |
-| 8. Conclusion | Tổng kết với số liệu cụ thể + hướng tương lai |
+| 5. System Model + Framework + Experiments (đã gộp) | Kênh truyền, mô hình latency/energy, bài toán (P1), QUBO, MDP → kiến trúc, thuật toán, training (policy gradient), setup, scenarios, **kết quả + thống kê + ablation + discussion** |
+| 6. Complexity Analysis | Đếm tham số chi tiết: 20,224 vs 24 → **ρ = 843×** |
+| 7. Conclusion | Tổng kết với số liệu cụ thể + hướng tương lai |
 
 ---
 
-## 5. Những gì đã sửa trong lần hoàn thiện này
+## 5. Quá trình hoàn thiện: đã sửa gì & còn lại gì
 
 ### 5.1 Sửa 3 bug thật trong simulation (`simulation/`)
 1. **`ClassicalHRLAgent` không hề học** — không có bước cập nhật trọng số nào → baseline tệ hơn cả Random. Đã thêm TD/DQN update đúng chuẩn (backprop numpy, target network, gradient clipping). Baseline giờ mạnh và **hợp lệ để so sánh**.
@@ -140,9 +139,7 @@ Ngoài ra: thêm baseline `SingleDQNAgent` (flat joint action space), ablation f
 - **Conclusion:** điền số liệu cụ thể
 - Đã xác minh: mọi `\ref` có `\label`, mọi `\cite` có trong bib (**36 references** — đạt target 30–50), 3 figures được tham chiếu đều tồn tại
 
----
-
-## 6. Hạn chế & việc còn lại
+### 5.3 Hạn chế & việc còn lại
 
 | Việc | Trạng thái |
 |---|---|
@@ -152,7 +149,7 @@ Ngoài ra: thêm baseline `SingleDQNAgent` (flat joint action space), ablation f
 | Figure depth-sweep (L, p) | Figure tồn tại từ run cũ; nên regenerate với agent đã sửa nếu có thời gian |
 | Quantum Preliminaries hơi dài (TODO #5) | Chưa cắt xuống appendix — mức độ ưu tiên thấp, có thể làm khi format theo template hội nghị cụ thể |
 
-### Chạy lại thực nghiệm
+**Chạy lại thực nghiệm:**
 ```bash
 cd simulation
 python paper_results.py --seeds 5 --train 35 --eval 12   # ~55 phút, không cần GPU
@@ -161,6 +158,6 @@ python paper_results.py --seeds 5 --train 35 --eval 12   # ~55 phút, không c�
 
 ---
 
-## 7. Thông điệp chính của paper (elevator pitch)
+## 6. Thông điệp chính của paper (elevator pitch)
 
 > **Quantum-HRL chứng minh rằng một policy lượng tử 24 tham số có thể thay thế pipeline DQN 20.000+ tham số cho bài toán offloading T-NTN — vừa giảm 20% latency với ý nghĩa thống kê mạnh (p < 0.001), vừa đổi bậc scaling của mô hình từ O(n·h) xuống O(log n), trong khi báo cáo minh bạch trade-off năng lượng và không claim quá đà về quantum advantage.**
