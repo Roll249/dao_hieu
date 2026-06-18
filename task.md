@@ -1,282 +1,89 @@
-# Q1 PAPER RESTRUCTURING MASTER PROMPT
+# Quantum-HRL Paper Revision Tasks
 
-You are a senior researcher, Q1 journal reviewer, and editor with expertise in:
+You are acting as a senior Q1 journal reviewer, editor, and co-author.
 
-* Vehicular Edge Computing (VEC)
-* Non-Terrestrial Networks (NTN)
-* Reinforcement Learning
-* Quantum Machine Learning
-* IEEE Transactions papers
+Domain:
+- Vehicular Edge Computing (VEC)
+- Non-Terrestrial Networks (NTN)
+- Hierarchical Reinforcement Learning (HRL)
+- Quantum Machine Learning
+- Quantum Optimization (QAOA)
 
-I will provide a complete draft paper.
+IMPORTANT:
 
-Your objective is NOT to create new research.
-
-Your objective is to transform this draft into a publication-ready Q1-style manuscript following reviewer expectations.
-
----
-
-# IMPORTANT RULES
-
-1. Preserve all technical contributions.
-
-2. Do not invent experiments.
-
-3. Do not invent results.
-
-4. Do not invent citations.
-
-5. Keep mathematical correctness.
-
-6. Reduce unnecessary textbook explanations.
-
-7. Focus on narrative quality, structure, clarity, and scientific presentation.
-
-8. Assume the audience consists of networking, edge computing, and machine learning researchers rather than quantum physicists.
+- Do not invent experiments.
+- Do not invent citations.
+- Do not invent numerical results.
+- Preserve technical correctness.
+- Use IEEE Transactions writing style.
+- Focus on scientific presentation, methodology clarity, reviewer expectations, and publication readiness.
 
 ---
 
-# TASK 1 — RESTRUCTURE THE PAPER
+# TASK 1 — Rewrite Dataset Construction Section
 
-Reorganize the manuscript into the following structure:
+Create a publication-ready subsection:
 
-1. Introduction
+## 6.1 Dataset Construction
 
-2. Related Work
+Context:
 
-3. Background
+Mobility Dataset:
+- LuST (Luxembourg SUMO Traffic Dataset)
 
-4. Problem Formulation
+Task Workload:
+- Adopted from the classical HRL baseline paper
 
-5. Proposed Framework
-
-6. Experimental Design
-
-7. Results and Discussion
-
-8. Conclusion
-
-Appendix A. Notation and Symbols
-
-Explain all structural changes before rewriting.
-
----
-
-# TASK 2 — REWRITE INTRODUCTION
-
-Rewrite the Introduction using the following flow:
-
-* Research context
-* Problem statement
-* Importance of the problem
-* Limitations of existing methods
-* Motivation for quantum-enhanced approaches
-* Research objective
-* Contributions
-
-End with a clear bullet-point Contributions section.
-
-Avoid exaggerated claims such as:
-
-* breakthrough
-* revolutionary
-* quantum advantage
-
-unless formally proven.
-
-Use a tone suitable for IEEE TMC, TVT, TWC, FGCS, or Computer Networks.
-
----
-
-# TASK 3 — REWRITE RELATED WORK
-
-Organize Related Work into exactly three groups:
-
-## 2.1 Classical Task Offloading and Hierarchical Reinforcement Learning
-
-## 2.2 Quantum Reinforcement Learning
-
-## 2.3 Quantum Combinatorial Optimization with QAOA
+Network Parameters:
+- Adopted from the classical HRL baseline paper
 
 Requirements:
 
-* Remove unnecessary historical descriptions.
-* Focus on relevance.
-* Explain what each group solves.
-* Explain limitations of each group.
+1. Explain how the three components are combined.
+2. Justify why LuST is suitable for realistic vehicular mobility.
+3. Explain why baseline task and network settings are preserved.
+4. Emphasize fairness and reproducibility.
+5. Write in Q1 journal style.
 
-Do NOT create a standalone Research Gap section.
-
-End with a concise concluding paragraph naturally motivating the proposed framework.
-
----
-
-# TASK 4 — COMPRESS BACKGROUND
-
-Rewrite the quantum foundations section as a concise Background section.
-
-Keep only:
-
-## Amplitude Encoding
-
-## Variational Quantum Circuits
-
-## QAOA
-
-## Bayesian Optimization
-
-Remove:
-
-* textbook quantum mechanics
-* lengthy derivations
-* unnecessary proofs
-* excessive mathematical preliminaries
-
-Replace standard derivations with citations whenever possible.
-
-Target length:
-
-2–4 pages maximum.
+Output:
+Publication-ready text.
 
 ---
 
-# TASK 5 — REBUILD THE METHODOLOGY NARRATIVE
+# TASK 2 — Rewrite Hardware & Software Configuration
 
-Rewrite the methodology using the following structure:
-
-## 4. Problem Formulation
-
-Present:
-
-* T-NTN architecture
-* Optimization objective
-* Constraints
-* Task offloading problem
-
----
-
-## 5. Proposed Framework
-
-### 5.1 Classical HRL Baseline
-
-Explain:
-
-* Layer Selection
-* Ratio Selection
-* Node Selection
-
-Clearly explain how the classical baseline solves the problem.
-
----
-
-### 5.2 Proposed Quantum-HRL Framework
-
-Explain:
-
-* Amplitude Encoding
-* VQC
-* Layer Selection
-* Ratio Selection
-* QAOA
-* Node Selection
-
-Show the logical flow.
-
----
-
-### 5.3 MDP Formulation
-
-Present:
-
-* State
-* Action
-* Reward
-
-Explain why the problem is modeled as an MDP.
-
----
-
-### 5.4 QUBO Mapping
-
-This is a key contribution.
-
-Provide a detailed explanation of:
-
-Optimization Problem
-→ Binary Formulation
-→ QUBO
-→ Ising Hamiltonian
-→ QAOA
-
-Emphasize why QAOA is suitable.
-
----
-
-### 5.5 Training Strategy
-
-Separate:
-
-Classical Training
-
-and
-
-Quantum Training
-
-Clearly explain:
-
-* REINFORCE
-* Parameter Shift Rule
-* Bayesian Optimization
-
-Focus on logical consistency.
-
----
-
-# TASK 6 — FIGURE DESIGN
-
-Create publication-quality figure specifications.
-
-Figure 1:
-Overall Quantum-HRL Architecture
-
-Figure 2:
-Classical HRL vs Quantum-HRL
-
-Figure 3:
-Optimization Problem → MDP → QUBO → QAOA Mapping
-
-Figure 4:
-VQC Architecture
-
-For each figure provide:
-
-* Layout description
-* Caption
-* Components
-* Suggested drawing structure
-
-The figures should be suitable for draw.io, TikZ, or Illustrator.
-
----
-
-# TASK 7 — EXPERIMENTAL DESIGN
-
-Create a dedicated Experimental Design section.
-
-Structure:
-
-## 6.1 Dataset and Simulation Environment
+Create subsection:
 
 ## 6.2 Hardware and Software Configuration
 
+Include placeholders where information is missing.
+
+Cover:
+
+- CPU
+- RAM
+- Operating System
+- Python Version
+- PennyLane
+- Qiskit
+- NumPy
+- Simulator
+
+Output:
+Publication-ready text.
+
+---
+
+# TASK 3 — Rewrite Experimental Scenarios
+
+Create subsection:
+
 ## 6.3 Experimental Scenarios
 
-## 6.4 Evaluation Metrics
-
-Experimental scenarios should progressively demonstrate the contribution of each component:
+Design the narrative for:
 
 Scenario 1:
-Classical HRL
+Classical HRL Baseline
 
 Scenario 2:
 HRL + VQC
@@ -287,77 +94,199 @@ VQC + QAOA
 Scenario 4:
 Full Quantum-HRL
 
-For each scenario:
+For each scenario explain:
 
-* explain motivation
-* explain purpose
-* explain expected outcome
+- Motivation
+- Objective
+- What component is being evaluated
+- Expected observation
 
-Do not invent numerical results.
+Do not invent results.
+
+Output:
+Publication-ready text.
 
 ---
 
-# TASK 8 — RESULTS PRESENTATION
+# TASK 4 — Rewrite Evaluation Metrics
 
-Improve the Results section.
+Create subsection:
+
+## 6.4 Evaluation Metrics
+
+Metrics:
+
+- Latency
+- Energy Consumption
+- Reward
+- Deadline Violation Rate
+- Parameter Count
+
+For each metric:
+
+- Define it
+- Explain why it matters
+- Explain what aspect of the framework it evaluates
+
+Output:
+Publication-ready text.
+
+---
+
+# TASK 5 — Improve Classical-to-Quantum Transition
+
+Review the current methodology section.
+
+Rewrite the transition between:
+
+Classical HRL
+and
+Quantum-HRL
 
 Requirements:
 
-* Present results in a reviewer-friendly way.
-* Separate observations from interpretation.
-* Use tables before discussion.
-* Highlight statistical significance where available.
-* Emphasize practical implications.hay list ra nhung task m da lam
+Explain:
 
-Suggest additional result tables if appropriate.
+1. Limitations of Classical HRL
+2. Why VQC replaces DQN modules
+3. Why node selection becomes a combinatorial optimization problem
+4. Why QAOA is introduced
+5. Why the resulting architecture is more scalable
+
+Focus on logical flow.
+
+Output:
+Publication-ready text.
 
 ---
 
-# TASK 9 — REWRITE DISCUSSION
+# TASK 6 — Rewrite QUBO Motivation
+
+Review the QUBO section.
+
+Add a motivation subsection before the mathematical formulation.
+
+Answer:
+
+- Why direct optimization is difficult
+- Why binary representation is needed
+- Why QUBO is suitable
+- Why QAOA requires a QUBO formulation
+
+Use reviewer-oriented reasoning.
+
+Output:
+Publication-ready text.
+
+---
+
+# TASK 7 — Design Results Tables
+
+Without inventing results, design all result tables required by a Q1 paper.
+
+Include:
+
+### Main Performance Table
+
+Columns:
+- Method
+- Latency
+- Energy
+- Reward
+- Deadline Violation
+
+---
+
+### Parameter Efficiency Table
+
+Columns:
+- Method
+- Number of Parameters
+- Compression Ratio
+
+---
+
+### Scalability Table
+
+Columns:
+- Number of Nodes
+- Classical HRL
+- Quantum-HRL
+
+---
+
+### Ablation Study Table
+
+Columns:
+- Configuration
+- Latency
+- Energy
+- Reward
+
+Provide:
+
+- Table structure
+- Captions
+- Placement recommendations
+
+Do not generate fake values.
+
+---
+
+# TASK 8 — Rewrite Discussion
+
+Create a strong Q1-level Discussion section.
 
 Do not repeat results.
 
 Discuss:
 
-1. Why latency improves.
-2. Why energy consumption increases.
-3. Trade-offs.
-4. Scalability implications.
-5. Practical deployment considerations.
-6. Scientific implications.
-7. Limitations.
+1. Why latency improves
+2. Why energy consumption increases
+3. Trade-offs
+4. Scalability implications
+5. Practical deployment considerations
+6. Scientific significance
+7. Limitations
 
-Use a critical scientific tone.
+Use critical analysis.
 
 Avoid marketing language.
 
+Output:
+Publication-ready text.
+
 ---
 
-# TASK 10 — THREATS TO VALIDITY
+# TASK 9 — Threats to Validity
 
-Create a new subsection:
+Create subsection:
 
 Threats to Validity
 
 Discuss:
 
-* Internal Validity
-* External Validity
-* Construct Validity
-* Reproducibility
+- Internal Validity
+- External Validity
+- Construct Validity
+- Reproducibility
 
 Focus on:
 
-* simulation assumptions
-* synthetic workloads
-* network scale
-* NISQ assumptions
+- Simulation assumptions
+- LuST mobility dataset limitations
+- Synthetic task workloads
+- NISQ assumptions
+- Limited network scale
 
-Use a reviewer-oriented tone.
+Output:
+Publication-ready text.
 
 ---
 
-# TASK 11 — REWRITE CONCLUSION
+# TASK 10 — Rewrite Conclusion
+
+Rewrite the Conclusion section.
 
 Structure:
 
@@ -369,29 +298,41 @@ Structure:
 
 ## Future Work
 
-Limitations should be explicit.
+Requirements:
 
-Examples:
+- Explicitly state limitations.
+- Do not oversell quantum advantages.
+- Keep the tone realistic.
+- Match IEEE Q1 journal style.
 
-* simulation-only evaluation
-* no real quantum hardware
-* simplified mobility assumptions
-
-Future work should be realistic and technically grounded.
-
-Target length:
+Target:
 1–1.5 pages.
+
+Output:
+Publication-ready text.
 
 ---
 
-# OUTPUT FORMAT
+# TASK 11 — Reviewer Audit
 
-For each task:
+Act as Reviewer #2.
 
-1. Explain reviewer rationale.
-2. Show the proposed revision.
-3. Highlight weaknesses in the current draft.
-4. Suggest improvements.
-5. Produce publication-ready text where applicable.
+Review the entire manuscript.
 
-Act as a strict Q1 reviewer and editor, not as a general AI assistant.
+Identify:
+
+1. Structural weaknesses
+2. Missing experiments
+3. Weak claims
+4. Citation issues
+5. Potential reviewer criticisms
+6. Sections likely to trigger major revision requests
+
+Provide:
+
+- Severity (High / Medium / Low)
+- Explanation
+- Suggested fix
+
+Output:
+A reviewer-style audit report.

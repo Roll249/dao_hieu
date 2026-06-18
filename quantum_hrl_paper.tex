@@ -32,6 +32,16 @@
 %=============================================================================
 \usepackage{graphicx}
 \graphicspath{{simulation/figures/}}
+% Improve float placement so figures stay near their references and do not
+% pile up at the end of the document (relaxed top/bottom fractions, more
+% floats per page).
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\bottomfraction}{0.8}
+\renewcommand{\textfraction}{0.07}
+\renewcommand{\floatpagefraction}{0.75}
+\setcounter{topnumber}{3}
+\setcounter{bottomnumber}{2}
+\setcounter{totalnumber}{5}
 \usepackage[font=small,labelfont=bf,format=hang]{caption}
 \usepackage{booktabs}
 \usepackage{multirow}
@@ -403,6 +413,46 @@ The system minimizes the weighted sum of latency and energy over all $K$ vehicle
 \end{align}
 where $a_{k,e} \in \{0,1\}$ is the binary EN-selection variable and $\beta_1, \beta_2$ are latency/energy weights. \textbf{C1} ensures each vehicle selects at most one EN. \textbf{C2} enforces the hard task deadline. \textbf{C3} requires offloading to complete before the vehicle leaves EN $e$'s coverage (sojourn constraint), with $T_{v_k,\mathrm{soj}}^{e}(i)$ the remaining sojourn time. \textbf{C4} bounds the total energy by that of full local processing, ensuring offloading is energetically justified. \textbf{C5} normalizes the weights. Problem (P1) is NP-hard owing to the mixed-integer structure and the non-convex coupling between the continuous $\alpha_k$ and the discrete $a_{k,e}$, which motivates the learning-based decomposition developed next.
 
+\subsection{Evaluation Metrics}
+\label{subsec:metrics}
+
+The framework is assessed along five primary metrics---latency, energy consumption, reward, deadline-violation rate, and parameter count---each probing a distinct facet of the design; auxiliary learning and efficiency diagnostics are consolidated in Table~\ref{tab:metrics_summary}.
+
+\begin{description}
+  \item[Latency.] \emph{Definition:} the average per-task completion time $\bar T=\mathbb{E}[T^{x_k}]$ (s), with $T^{x_k}$ the end-to-end latency of Eq.~\eqref{eq:latency} (transmission, queueing, and compute, possibly via cloud relay). \emph{Why it matters:} latency is the primary service-quality target of~\eqref{eq:P1} and the quantity most directly perceived by latency-critical vehicular applications. \emph{What it evaluates:} the quality of the joint tier/ratio/node decision---the principal axis on which the quantum and classical policies are compared.
+  \item[Energy consumption.] \emph{Definition:} the average per-task energy $\bar E=\mathbb{E}[E^{x_k}]$ (J) of Eq.~\eqref{eq:energy}, summing transmission, reception, and edge-compute energy for the offloaded fraction. \emph{Why it matters:} energy is the second objective in the cost~\eqref{eq:P1} and the dominant operational constraint for power-limited edge nodes. \emph{What it evaluates:} the cost side of the latency--energy trade-off, exposing whether a latency gain is bought with disproportionate energy.
+  \item[Reward.] \emph{Definition:} the cumulative reward accrued by the agent over an evaluation episode, defined as the negative of the constrained offloading cost of~\eqref{eq:P1}---so that a higher reward corresponds to lower latency and energy and to fewer constraint violations. \emph{Why it matters:} reward is the scalar the learning agents actually optimise, so its trajectory captures convergence speed and stability in a single signal. \emph{What it evaluates:} the optimisation behaviour of each policy---how quickly and how stably it reaches a feasible, low-cost operating point. The exact discounted MDP return is formalised in Section~\ref{subsec:mdp}.
+  \item[Deadline-violation rate.] \emph{Definition:} the fraction of tasks (in $\%$) whose end-to-end latency $T^{x_k}$ exceeds the hard deadline $T_k^{\max}$, i.e.\ that violate the deadline constraint~\eqref{eq:c2}. \emph{Why it matters:} a low mean latency is meaningful only if it is not obtained by sacrificing tail feasibility, so the deadline-miss rate is the feasibility counterpart of latency. \emph{What it evaluates:} the reliability of the policy under the hard real-time constraint, distinguishing genuinely feasible policies from those merely fast on average.
+  \item[Parameter count.] \emph{Definition:} the number of trainable parameters $W$ of each method (VQC$+$QAOA angles for Quantum-HRL; network weights for the DQN baselines) and the reduction factor $\rho=W_{\mathrm{HRL}}/W_{\mathrm{Q\text{-}HRL}}$. \emph{Why it matters:} parameter count governs memory footprint, sample efficiency, and the conditioning of the optimisation, and is the headline efficiency claim of this work. \emph{What it evaluates:} the model compactness of the quantum policy relative to the classical pipeline---a footprint comparison, explicitly not a runtime speedup.
+\end{description}
+
+\noindent Beyond these five, Table~\ref{tab:metrics_summary} reports the remaining feasibility rates (the sojourn- and energy-budget-violation rates of constraints~\eqref{eq:c3} and~\eqref{eq:c4}), sample-efficiency and stability diagnostics (episodes-to-plateau $\Pi_\eta$ at $\eta{=}95$, seed-wise reward variance), and hardware-cost proxies (circuit evaluations per update, wall-clock per episode), each with its optimisation direction, so that every numerical entry in Section~\ref{sec:results} is unambiguous.
+
+\begin{table}[t]
+\centering
+\small
+\caption{Summary of evaluation metrics. $\downarrow$ indicates lower-is-better, $\uparrow$ higher-is-better.}
+\label{tab:metrics_summary}
+\begin{tabular}{@{}p{4.0cm}p{4.5cm}p{1.2cm}p{4.6cm}@{}}
+\toprule
+\textbf{Metric} & \textbf{Definition} & \textbf{Dir.} & \textbf{Purpose} \\
+\midrule
+Avg.\ task latency $\bar T$        & $\mathbb{E}[T^{x_k}]$ (s)                                & $\downarrow$ & Service quality \\
+Avg.\ task energy $\bar E$         & $\mathbb{E}[E^{x_k}]$ (J)                                & $\downarrow$ & Energy efficiency \\
+Deadline-miss rate                 & $\Pr(T^{x_k}{>}T_k^{\max})$ ($\%$)                       & $\downarrow$ & Feasibility under (C2) \\
+Sojourn-violation rate             & Violation of~\eqref{eq:c3} ($\%$)                        & $\downarrow$ & Feasibility under (C3) \\
+Energy-suboptimality rate          & Violation of~\eqref{eq:c4} ($\%$)                        & $\downarrow$ & Feasibility under (C4) \\
+Cumulative reward                  & Discounted return ($-$cost of~\eqref{eq:P1})             & $\uparrow$   & Learning quality \\
+Episodes-to-plateau $\Pi_\eta$     & Episodes to reach $\eta\%$ of asymptote ($\eta{=}95$)    & $\downarrow$ & Sample efficiency \\
+Seed-wise reward variance          & $\mathrm{Var}_{\mathrm{seeds}}[\bar R]$                  & $\downarrow$ & Training stability \\
+Trainable parameters $W$           & Total VQC$+$QAOA / DQN parameters                        & $\downarrow$ & Model compactness \\
+Reduction factor $\rho$            & $W_{\mathrm{HRL}}/W_{\mathrm{Q\text{-}HRL}}$             & $\uparrow$   & Quantum compression \\
+Circuit evaluations / update       & Counted per BO step (NISQ cost proxy)                    & $\downarrow$ & Hardware cost \\
+Wall-clock / episode               & Seconds on the simulated back-end                        & $\downarrow$ & Practicality \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 %=============================================================================
 % V. PROPOSED FRAMEWORK
 %=============================================================================
@@ -425,12 +475,15 @@ The three networks are coordinated sequentially---the node and ratio heads consu
 \subsection{Proposed Quantum-HRL Framework}
 \label{subsec:qhrl}
 
+\paragraph{From classical HRL to Quantum-HRL.}
+The tri-DQN baseline is effective but exposes three structural limitations that motivate a quantum redesign rather than incremental tuning, and each limitation maps to one component of the proposed framework. \emph{(i)~Parameter cost.} Every head is a fully-connected network whose input layer alone costs $O(n\cdot h)$ weights, duplicated into primary and target copies and replicated across three heads, so the model grows linearly with the state dimension---wasteful for the compact, structured states of T-NTN offloading. We therefore replace the two high-level heads with a single \emph{variational quantum circuit}: amplitude encoding loads the $n$-dimensional state into $\lceil\log_2 n\rceil$ qubits, so a depth-$L$ VQC parameterises the tier/ratio policy with only $O(L\log_2 n)$ angles---an exponential reduction in the input-coupling cost while retaining a differentiable, gradient-trainable policy. \emph{(ii)~Unstructured node selection.} The node head treats the $M_l$ candidate nodes as a flat categorical action and learns one tabular $Q$-value per node, ignoring that node selection is a \emph{constrained combinatorial assignment}---exactly one node must be chosen, and the per-node cost is a known function of the channel and load state. Casting it as a one-hot quadratic program (Section~\ref{subsec:qubo}) makes this algebraic structure explicit and recoverable by a dedicated solver. \emph{(iii)~Re-learning under drift.} Because the per-node costs are rebuilt every slot from the current state, a learned $Q$-table must continually re-adapt as costs drift; a \emph{stateless} optimiser that consumes the cost directly is preferable. This is precisely what \emph{QAOA} provides: it solves the QUBO/Ising form of the assignment with a constant $2p$ angles independent of $M_l$, enforcing the one-hot constraint through the cost Hamiltonian itself. The net effect is an architecture that scales \emph{logarithmically} in the state dimension (via the VQC) and \emph{constantly} in the node count (via QAOA), in contrast to the linear growth of the tri-DQN, while preserving the hierarchical tier\,$\to$\,node\,$\to$\,ratio decomposition that makes the baseline effective.
+
 Quantum-HRL replaces the three-DQN pipeline with a hybrid quantum-classical system composed of four integrated modules---quantum state encoding, a VQC-based high-level policy, a QAOA-based low-level combinatorial optimiser, and a Bayesian-Optimisation outer loop---as illustrated in Fig.~\ref{fig:architecture}. Classical and quantum subroutines are coupled through a single MDP loop so that policy updates remain consistent with the offloading cost and reward signals of Section~\ref{sec:problem}.
 
-\begin{figure}[t]
+\begin{figure}[htbp]
   \centering
-  \includegraphics[width=\columnwidth]{system_architecture.png}
-  \caption{End-to-end Quantum-HRL system architecture for multi-layer NTN-VEC task offloading. The vehicular network state $s_t$ is collected and amplitude-encoded into a quantum register (left); the VQC-based higher-level agent outputs the tier selection $l^*$ and offloading ratio $\alpha$; the QAOA-based lower-level optimiser solves the node-selection problem to return $n^*$; the executed offloading action generates reward feedback, which drives the VQC policy-gradient update and the Bayesian-Optimisation refinement of the QAOA angles in the main learning loop.}
+  \includegraphics[width=0.8\columnwidth]{system_architecture.png}
+  \caption{Architecture comparison between the classical HRL baseline and the proposed Quantum-HRL framework. The classical pipeline (left) routes the state $s_t$ through three sequential DQNs for layer, ratio, and node selection, totalling $20{,}224$ trainable parameters. Quantum-HRL (right) replaces them with an amplitude-encoded VQC high-level policy (tier and ratio) followed by a QAOA node selector acting on the node-selection QUBO, reducing the trainable-parameter count to $24$ while preserving the hierarchical decomposition.}
   \label{fig:architecture}
 \end{figure}
 
@@ -467,10 +520,10 @@ The classical baseline~\cite{hrl_ntn} sequences decisions as tier $\to$ node $\t
 \paragraph{End-to-end loop.}
 The composite action $a_t=(l^*,n^*,\alpha)$ is executed in the environment, which returns latency $T^{x_k}$, energy $E^{x_k}$, and the constraint flags used to compute the reward. The reward then drives the VQC policy-gradient update and the Bayesian-Optimisation refinement of the QAOA angles (Section~\ref{subsec:training}). The complete decision-and-learning cycle is shown in Fig.~\ref{fig:decision_flow} and summarised in Algorithm~\ref{alg:quantum_hrl}.
 
-\begin{figure}[t]
+\begin{figure}[htbp]
   \centering
-  \includegraphics[width=\columnwidth]{quantum_hrl_decision_flow.png}
-  \caption{Quantum-HRL decision and learning flow. Vehicle state collection feeds the VQC policy network, whose high-level decision $(l^*,\alpha)$ conditions the QAOA-based low-level node selection $n^*$; the integrated action $a_t=(l^*,n^*,\alpha)$ is executed in the NTN-VEC environment, and the resulting reward $R_t$ and next state $s_{t+1}$ close the learning loop---updating the VQC parameters via the policy gradient and the QAOA angles via Bayesian Optimisation.}
+  \includegraphics[width=0.58\columnwidth]{quantum_hrl_decision_flow.png}
+  \caption{End-to-end Quantum-HRL decision pipeline. The task-offloading problem---latency, energy, and resource constraints---is cast as an MDP (state, action, reward); its node-selection sub-problem is then expressed with binary variables, mapped to a QUBO and its Ising Hamiltonian, and solved by QAOA to return the optimal node. The high-level VQC policy and the QAOA node selector jointly yield the final composite decision $(l^*,n^*,\alpha)$.}
   \label{fig:decision_flow}
 \end{figure}
 
@@ -530,6 +583,9 @@ where $w_1, w_2, w_3 > 0$ are penalty magnitudes for sojourn, deadline, and ener
 \label{subsec:qubo}
 
 The node-selection sub-problem is the key combinatorial component delegated to QAOA. We derive its mapping in four steps: optimization problem $\to$ binary formulation $\to$ QUBO $\to$ Ising Hamiltonian, after which QAOA (Section~\ref{subsec:bg_qaoa}) consumes the Hamiltonian directly.
+
+\paragraph{Why a QUBO formulation.}
+Before deriving the mapping we motivate why node selection is recast as a QUBO rather than optimised directly. \emph{Direct optimisation is awkward.} Node selection is an integer program---choose exactly one of $M_{l^*}$ discrete nodes to minimise a cost $c_n(\alpha)$ that is rebuilt every slot from the channel and load state. The feasible set is discrete and non-convex, gradient methods do not apply to the selection variable, and exhaustive enumeration, while tractable for small tiers, scales poorly as node populations grow and must be repeated from scratch at every slot; a representation that exposes the combinatorial structure to a structure-aware solver is therefore preferable. \emph{Binary variables make the structure explicit.} Encoding the decision as indicators $z_n\in\{0,1\}$ with $z_n{=}1$ iff node $n$ is selected turns ``choose one node'' into the linear one-hot constraint $\sum_n z_n=1$ and the objective into a function of the $z_n$, so the combinatorial choice becomes an algebraic object that can be penalised and manipulated. \emph{QUBO is the right algebraic form.} A quadratic unconstrained binary optimisation absorbs the one-hot constraint as a quadratic penalty, yielding a single unconstrained quadratic in $z$ with no separate feasibility handling---constraint satisfaction is folded into the objective. QUBO is moreover the canonical input format for a broad class of combinatorial solvers, so the same formulation is portable across classical heuristics and quantum optimisers. \emph{QAOA requires a QUBO.} QAOA operates on a cost Hamiltonian obtained from the change of variable $z_n=(I-\hat\sigma_n^z)/2$, which maps a QUBO exactly onto an Ising model; the algorithm has no other interface to the problem. A QUBO formulation is thus not merely convenient but \emph{necessary} to bring node selection into the QAOA framework, and the one-hot penalty becomes the quadratic spin coupling that enforces feasibility on the device. The four-step derivation below makes this chain precise.
 
 \paragraph{Step 1: optimization problem.}
 Given a fixed tier $l^*$ and ratio $\alpha$, node selection reduces to
@@ -679,28 +735,67 @@ VQC reduces $\alpha$ (less transmission energy); QAOA avoids distant nodes with 
 \section{Experimental Design}
 \label{sec:experimental}
 
-This section specifies the simulation environment and dataset (Section~\ref{subsec:setup}), the hardware and software configuration (Section~\ref{subsec:config}), the experimental scenarios (Section~\ref{subsec:scenarios}), and the evaluation metrics (Section~\ref{subsec:metrics}). The same data-input, processing, decision, and output pipeline is applied to every method under comparison; only the high-level/low-level policy is swapped, isolating the contribution of the proposed framework.
+This section specifies the construction of the evaluation dataset (Section~\ref{subsec:setup}), the hardware and software configuration (Section~\ref{subsec:config}), and the experimental scenarios (Section~\ref{subsec:scenarios}). The same data-input, processing, decision, and output pipeline is applied to every method under comparison; only the high-level/low-level policy is swapped, isolating the contribution of the proposed framework.
 
-\subsection{Dataset and Simulation Environment}
+\subsection{Dataset Construction}
 \label{subsec:setup}
 
-\paragraph{Network topology and mobility.}
-Following the topology of Shinde and Tarchi~\cite{hrl_ntn}, we instantiate a four-tier T-NTN over a $5$-km urban road network with a single fallback Cloud facility~$\mathcal{C}$. Tier altitudes are taken from~\cite[Table~3]{hrl_ntn}: LAPs at $h\!\approx\!1\,$km, HAPs at $h\!\approx\!100\,$km, and LEO satellites at $h\!\approx\!2000\,$km, with RSU coverage $50\,$m, LAP coverage $200\,$m, and HAP coverage $1\,000\,$m. To enable a deterministic action space for the high-level VQC head we fix the per-tier deployment to $M_1{=}5$ RSUs, $M_2{=}3$ LAPs, $M_3{=}2$ HAPs, and $M_4{=}2$ LEO satellites (the baseline of~\cite{hrl_ntn} instantiates node counts dynamically from coverage radius and road length; our fixed choice is a moderate extension held constant across all compared methods). Vehicular users follow the speed model of~\cite[Table~3]{hrl_ntn}, drawn from $\mathcal{U}(8,14)\,$m/s, conditioned on the road segment.
+The evaluation dataset is constructed by composing three independently sourced components into a single, internally consistent T-NTN offloading benchmark: (i)~a \emph{realistic vehicular-mobility layer} drawn from the Luxembourg SUMO Traffic (LuST) scenario~\cite{codeca2015lust}; (ii)~a \emph{task-workload layer} adopted from the classical HRL baseline of Shinde and Tarchi~\cite{hrl_ntn}; and (iii)~a \emph{network-parameter layer}---topology, channel, and per-tier characteristics---likewise adopted from~\cite{hrl_ntn}. The three layers are orthogonal and combine at the granularity of a decision slot $\tau_i$: the mobility layer fixes \emph{where} each vehicle is and \emph{how} it moves, the workload layer fixes \emph{what} each vehicle requests, and the network layer fixes the \emph{propagation and compute conditions} under which the request must be served. Their composition yields the per-slot state $s_t$ of Section~\ref{subsec:mdp} and the latency/energy cost of Section~\ref{sec:problem}.
 
-\paragraph{Task and traffic model.}
-At each slot $\tau_i$, every vehicle $k$ generates an independent task $x_k=(d_k,c_k,T_k^{\max},\xi_k)$. Whereas~\cite{hrl_ntn} uses a single nominal task profile, we extend their setup to a heterogeneous workload by sampling $d_k\!\sim\!\mathcal{U}(0.5,5)\,$Mbytes, $c_k\!\sim\!\mathcal{U}(100,1000)\,$Mcycles, and $T_k^{\max}\!\sim\!\mathcal{U}(0.5,2)\,$s, stressing the VQC's ability to react to heterogeneous demand. The service type is sampled uniformly from $|\Xi|{=}6$ classes as in~\cite{hrl_ntn}; each EN supports a fixed random subset $\Xi_e\subseteq\Xi$ that mandates cloud relay whenever $\xi_k\notin\Xi_e$, captured by $b_e^{\xi_k}$.
+\paragraph{Mobility layer (LuST).}
+Realistic mobility is obtained from the LuST scenario~\cite{codeca2015lust}, a publicly released $24$-hour microscopic traffic trace for the city of Luxembourg generated and validated with the SUMO simulator~\cite{lopez2018sumo}. LuST is well suited to vehicular edge-computing evaluation for three reasons. First, its demand is \emph{calibrated against real measurements}---trip origins, destinations, and departure-time distributions reproduce empirically observed commuting patterns---so the induced speed and density profiles are representative of an operational urban road network rather than a synthetic abstraction. Second, it exhibits \emph{realistic spatio-temporal heterogeneity}: congested rush-hour peaks, free-flow off-peak periods, intersection-level stop-and-go dynamics, and route diversity, which stress the sojourn-time and handover behaviour $T^{e}_{v_k,\mathrm{soj}}$ governing the feasibility constraint~\eqref{eq:f1} far more severely than a uniform-speed model would. Third, it is a \emph{community-standard, openly available} trace, so mobility-induced variability is reproducible across research groups. We extract vehicle trajectories from an urban sub-region matched to the $5$-km road extent of the baseline topology and, at each slot $\tau_i$, read each vehicle's position $\mathbf{r}_k^t$ and velocity $\mathbf{v}_k^t$ directly from the trace; these drive the sojourn-time and channel-gain computations below.
 
-\paragraph{Communication parameters.}
-The path-loss reference $\eta_0$, the exponent $\delta$, and the per-tier bandwidth $B_{k,e}$ follow~\cite{hrl_ntn}; transmit power, noise spectral density, and EN CPU frequencies are likewise taken from that reference, preserving inter-tier disparities (e.g.\ LEO latency floors, HAP coverage radius).
+\paragraph{Task-workload layer (baseline-preserved).}
+The task model is adopted from the classical HRL baseline~\cite{hrl_ntn}: at each slot every vehicle $k$ generates a task $x_k=(d_k,c_k,T_k^{\max},\xi_k)$ with payload size $d_k$, compute demand $c_k$, hard deadline $T_k^{\max}$, and service type $\xi_k$ drawn from $|\Xi|{=}6$ classes, and each edge node serves only a fixed random service subset $\Xi_e\subseteq\Xi$, mandating cloud relay whenever $\xi_k\notin\Xi_e$ (captured by $b_e^{\xi_k}$). We retain the baseline's task structure, service-class semantics, cost model, and feasibility constraints, and instantiate the demand over the heterogeneous ranges used in our experiments---$d_k\!\sim\!\mathcal{U}(0.5,5)\,$Mbytes, $c_k\!\sim\!\mathcal{U}(100,1000)\,$Mcycles, $T_k^{\max}\!\sim\!\mathcal{U}(0.5,2)\,$s---so that a single fixed environment exercises the VQC across a broad span of payloads and deadlines.
+
+\paragraph{Network-parameter layer (baseline-preserved).}
+The topology and physical-layer parameters are taken unchanged from~\cite{hrl_ntn}. The four-tier T-NTN comprises RSUs, LAPs, HAPs, and LEO satellites over a $5$-km urban road network with a single fallback Cloud facility $\mathcal{C}$; tier altitudes ($h_{\mathrm{LAP}}\!\approx\!1\,$km, $h_{\mathrm{HAP}}\!\approx\!100\,$km, $h_{\mathrm{LEO}}\!\approx\!2000\,$km) and coverage radii ($50\,$m RSU, $200\,$m LAP, $1\,000\,$m HAP) follow~\cite[Table~3]{hrl_ntn}, as do the path-loss reference $\eta_0$, exponent $\delta$, per-tier bandwidth $B_{k,e}$, transmit power, noise spectral density, and EN CPU frequencies---preserving the inter-tier disparities (LEO latency floors, HAP coverage radius). To obtain a deterministic action space for the high-level VQC head we fix the per-tier deployment to $M_1{=}5$ RSUs, $M_2{=}3$ LAPs, $M_3{=}2$ HAPs, and $M_4{=}2$ LEO satellites---a moderate, explicitly stated extension of the baseline (which instantiates node counts dynamically from coverage radius and road length) held constant across all compared methods.
+
+\paragraph{Why the baseline task and network settings are preserved.}
+Adopting the workload and network parameters from~\cite{hrl_ntn} is a deliberate choice for \emph{controlled comparison}. The central claim of this work is methodological---that a hybrid quantum policy can match or exceed a classical tri-DQN at a fraction of the parameter cost---so the offloading environment, cost model, and feasibility constraints must be held fixed. Otherwise an observed performance gap could be attributed to a more favourable workload or channel model rather than to the policy itself. Preserving the baseline settings makes the decision module the \emph{only} independent variable between Classical HRL and Quantum-HRL, turning the comparison into a clean ablation of the learning architecture.
+
+\paragraph{Fairness and reproducibility.}
+Two safeguards underpin fairness and reproducibility. For \emph{fairness}, every method under comparison---Random, Greedy, Single-DQN, Classical HRL, and Quantum-HRL---is driven by the identical data-input, processing, decision, and output pipeline and, on a per-seed basis, by the identical LuST mobility, task, and channel realisations; only the policy is swapped, so all methods observe exactly the same sequence of states and feasibility conditions. For \emph{reproducibility}, the mobility layer derives from the openly available LuST trace~\cite{codeca2015lust}, the workload and network layers from the published baseline~\cite{hrl_ntn}, and all sampling is governed by fixed random seeds; we report results over five independent seeds with $\pm1$ standard-deviation bands and will release the configuration files, seeds, and trace-extraction scripts upon publication.
 
 \paragraph{State assembly.}
-Per slot, the simulator (i)~advances each VU's position $(\mathbf{r}_k^t,\mathbf{v}_k^t)$ and recomputes sojourn times $T_{v_k,\mathrm{soj}}^{e}(i)$; (ii)~samples tasks $x_k$; (iii)~recomputes path-loss gains $\{h_{k,e}^t\}$ via Eq.~\eqref{eq:channel_gain}; (iv)~reads each EN's CPU utilisation $\{u_{l,n}^t\}$ and queue length; and (v)~concatenates these into the raw state $s_t\in\R^{20}$, normalised to $\tilde s_t = s_t/\norm{s_t}_2$ to satisfy the amplitude-encoding precondition (Corollary~\ref{cor:norm}).
+Per slot, the simulator (i)~advances each VU along its LuST trajectory $(\mathbf{r}_k^t,\mathbf{v}_k^t)$ and recomputes the sojourn times $T_{v_k,\mathrm{soj}}^{e}(i)$; (ii)~samples the per-vehicle task $x_k$; (iii)~recomputes path-loss gains $\{h_{k,e}^t\}$ via Eq.~\eqref{eq:channel_gain}; (iv)~reads each EN's CPU utilisation $\{u_{l,n}^t\}$ and queue length; and (v)~concatenates these into the raw state $s_t\in\R^{20}$, normalised to $\tilde s_t = s_t/\norm{s_t}_2$ to satisfy the amplitude-encoding precondition (Corollary~\ref{cor:norm}).
 
 \subsection{Hardware and Software Configuration}
 \label{subsec:config}
 
+\paragraph{Compute platform.}
+All experiments are executed on a single commodity workstation without GPU acceleration; the quantum primitives are evaluated on a classical statevector simulator rather than physical quantum hardware. The hardware and software stack is summarised in Table~\ref{tab:platform}. Entries that are not fixed by the released environment specification are shown as explicit placeholders ([\,\dots\,]) to be completed from the final execution host, so that no platform detail is silently assumed; the reported wall-clock figures are indicative of this class of machine rather than of a specific tuned configuration.
+
+\begin{table}[t]
+\centering
+\small
+\caption{Hardware and software configuration. Placeholders ([\,\dots\,]) denote values to be fixed from the final execution host; library versions follow the released environment specification.}
+\label{tab:platform}
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Category} & \textbf{Component} & \textbf{Specification} \\
+\midrule
+\multirow{3}{*}{Hardware}
+  & CPU & [\,CPU model / cores\,] \\
+  & RAM & [\,GB\,] \\
+  & GPU & none (CPU-only) \\
+\midrule
+\multirow{2}{*}{System}
+  & Operating system & [\,Linux distribution / version\,] \\
+  & Python & [\,3.x\,] \\
+\midrule
+\multirow{5}{*}{Libraries}
+  & PennyLane & $\geq 0.40$ (VQC/QAOA primitives) \\
+  & NumPy & $\geq 1.24$ (classical environment) \\
+  & SciPy / scikit-learn & $\geq 1.11$ / $\geq 1.3$ (BO surrogate) \\
+  & Qiskit & [\,optional, hardware cross-check\,] \\
+  & Simulator & PennyLane statevector (\texttt{default.qubit}) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \paragraph{Software stack and quantum back-end.}
-The simulator is implemented in Python on NumPy for the classical environment and a PennyLane statevector simulator for the VQC and QAOA primitives; inner training loops use analytic (exact) expectation values for tractable turnaround, while finite-shot effects ($N_{\mathrm{shots}}{=}1024$ per observable) and hardware-style Gaussian readout noise are studied separately in the NISQ-noise scenario (Section~\ref{subsec:scenarios}). The Bayesian Optimiser uses a Mat\'ern-$5/2$ Gaussian-process surrogate (scikit-learn) with Expected-Improvement acquisition~\cite{bo_qaoa}. A complete five-seed training-plus-evaluation run with the default budget (including the ablation sweep) completes in under one hour on a single commodity workstation without a GPU. The codebase, configuration files, and random seeds will be released upon publication.
+The simulator is implemented in Python, using NumPy for the classical T-NTN environment and a PennyLane statevector back-end (\texttt{default.qubit}) for the VQC and QAOA primitives. Inner training loops use analytic (exact) expectation values for tractable turnaround, while finite-shot effects ($N_{\mathrm{shots}}{=}1024$ per observable) and hardware-style Gaussian readout noise are studied separately in the NISQ-noise scenario (Section~\ref{subsec:scenarios}). The Bayesian Optimiser uses a Mat\'ern-$5/2$ Gaussian-process surrogate (scikit-learn) with Expected-Improvement acquisition~\cite{bo_qaoa}. Qiskit is listed in Table~\ref{tab:platform} only as an optional dependency for an independent cross-check of the QAOA cost Hamiltonian and is not on the critical path of the reported experiments. A complete five-seed training-plus-evaluation run with the default budget (including the ablation sweep) completes in under one hour on the platform of Table~\ref{tab:platform}. The codebase, configuration files, and random seeds will be released upon publication.
 
 \paragraph{Quantum-HRL hyperparameters.}
 The state vector has dimension $n{=}20$, requiring $q{=}\lceil\log_2 20\rceil{=}5$ qubits. The VQC depth is $L{=}4$ and the QAOA depth $p{=}2$ unless otherwise stated; the QAOA BO budget is $B{=}20$ acquisition queries per update with a Mat\'ern-$5/2$ GP kernel and EI acquisition, and the VQC policy gradient uses learning rates $(0.12, 0.6)$ for the tier and ratio readouts with Gaussian ratio-policy width $\sigma_\alpha{=}0.3$. Penalty weights $w_1,w_2,w_3$ are calibrated on a random-policy warm-up to the 99th percentile of $(\beta_1 T_k+\beta_2 E_k)$ per Eq.~\eqref{eq:penalty_rule}. The MDP discount is $\gamma_{\mathrm{MDP}}{=}0.95$. All experiments are repeated over five independent seeds, and confidence bands report $\pm 1$ standard deviation across seeds.
@@ -738,7 +833,7 @@ Table~\ref{tab:setup_summary} consolidates all environment, traffic, channel, tr
   & $h_{\mathrm{LEO}}$ & $2\,000\,$km & LEO altitude~\cite[Tab.~3]{hrl_ntn} \\
 \midrule
 \multirow{4}{*}{Mobility \& tasks}
-  & Vehicle speed & $\mathcal{U}(8,14)\,$m/s & VU speed~\cite[Tab.~3]{hrl_ntn} \\
+  & Mobility & LuST trace & Vehicular mobility~\cite{codeca2015lust} \\
   & $d_k$  & $\mathcal{U}(0.5,5)\,$Mbytes & Payload size (this work) \\
   & $c_k$  & $\mathcal{U}(100,1000)\,$Mcycles & Workload (this work) \\
   & $T_k^{\max}$ & $\mathcal{U}(0.5,2)\,$s & Hard deadline (this work) \\
@@ -781,10 +876,26 @@ Table~\ref{tab:setup_summary} consolidates all environment, traffic, channel, tr
 We evaluate Quantum-HRL with a \emph{progressive component build-up} designed so that each scenario adds exactly one quantum module to the previous one, isolating its incremental contribution. The progression spans from the fully classical baseline to the complete framework; the corresponding measurements are reported through the main comparison (Section~\ref{subsec:main}) and the ablation study (Section~\ref{subsec:ablation}), which together operationalise the build-up. Table~\ref{tab:progressive} lists the four scenarios.
 
 \begin{description}
-  \item[Scenario 1 --- Classical HRL.] \emph{Motivation:} establish the learned classical reference under the exact same environment and feasibility constraints. \emph{Purpose:} quantify the offloading quality and parameter footprint attainable by the tri-DQN decomposition of~\cite{hrl_ntn}. \emph{Expected outcome:} feasible offloading (zero violations after convergence) at an $O(n\cdot h)$ parameter cost, serving as the baseline against which all quantum components are measured.
-  \item[Scenario 2 --- HRL + VQC.] \emph{Motivation:} test whether replacing the high-level (tier/ratio) DQNs with a single amplitude-encoded VQC preserves decision quality at a logarithmic parameter cost. \emph{Purpose:} isolate the contribution of the VQC high-level policy while node selection remains non-quantum. \emph{Expected outcome:} comparable or improved tier/ratio decisions with a drastic reduction in high-level parameters; because tier and ratio carry most of the decision value, this step should account for the bulk of the latency change.
-  \item[Scenario 3 --- VQC + QAOA.] \emph{Motivation:} test whether replacing the flat $Q$-table node selector with the structure-aware QAOA solver reduces both the mean and the variance of latency. \emph{Purpose:} isolate the contribution of QAOA-based combinatorial node selection on top of the VQC high-level policy. \emph{Expected outcome:} lower-variance node decisions that avoid overloaded or distant nodes, tightening the latency distribution relative to a random or tabular selector.
-  \item[Scenario 4 --- Full Quantum-HRL.] \emph{Motivation:} evaluate the complete framework with the Bayesian-Optimisation outer loop tuning the QAOA angles under measurement noise. \emph{Purpose:} measure end-to-end offloading quality, the total parameter footprint, and training stability. \emph{Expected outcome:} the lowest mean latency among all configurations at the smallest parameter count, with the latency--energy trade-off reported transparently.
+  \item[Scenario 1 --- Classical HRL baseline.]
+  \emph{Motivation:} a fair quantum-versus-classical comparison requires a strong, learned classical reference evaluated under the exact same environment and feasibility constraints, not a hand-tuned heuristic.
+  \emph{Objective:} quantify the offloading quality (latency, energy, violation rates) and the parameter footprint attainable by the tri-DQN decomposition of~\cite{hrl_ntn}.
+  \emph{Component evaluated:} the fully classical pipeline---three sequential DQNs for tier, node, and ratio selection---with no quantum module active.
+  \emph{Expected observation:} feasible offloading (zero violations after convergence) at an $O(n\cdot h)$ parameter cost, establishing the reference against which every quantum component is measured.
+  \item[Scenario 2 --- HRL + VQC.]
+  \emph{Motivation:} the high-level tier/ratio heads dominate the classical parameter budget, so they are the first candidates for a compact quantum replacement.
+  \emph{Objective:} test whether substituting a single amplitude-encoded VQC for the two high-level DQNs preserves decision quality at a logarithmic parameter cost.
+  \emph{Component evaluated:} the VQC high-level policy (tier and ratio), with node selection still performed by a non-quantum selector.
+  \emph{Expected observation:} comparable or improved tier/ratio decisions at a drastic reduction in high-level parameters; because tier and ratio carry most of the decision value, this step should account for the bulk of the latency change.
+  \item[Scenario 3 --- VQC + QAOA.]
+  \emph{Motivation:} node selection is a constrained combinatorial assignment that a flat $Q$-table represents only implicitly, motivating a structure-aware solver.
+  \emph{Objective:} test whether replacing the flat node selector with QAOA on the node-selection QUBO reduces both the mean and the variance of latency.
+  \emph{Component evaluated:} the QAOA low-level combinatorial optimiser, layered on top of the VQC high-level policy.
+  \emph{Expected observation:} lower-variance node decisions that avoid overloaded or distant nodes, tightening the latency distribution relative to a random or tabular selector.
+  \item[Scenario 4 --- Full Quantum-HRL.]
+  \emph{Motivation:} on noisy hardware the QAOA angles must be tuned from measurement feedback, so the complete framework adds a Bayesian-Optimisation outer loop.
+  \emph{Objective:} measure end-to-end offloading quality, the total parameter footprint, and training stability of the integrated VQC$+$QAOA$+$BO system.
+  \emph{Component evaluated:} the full hybrid pipeline, including the BO refinement of the QAOA angles under measurement noise.
+  \emph{Expected observation:} the lowest mean latency among all configurations at the smallest parameter count, with the resulting latency--energy trade-off reported transparently rather than concealed.
 \end{description}
 
 \begin{table}[t]
@@ -806,36 +917,6 @@ We evaluate Quantum-HRL with a \emph{progressive component build-up} designed so
 
 \paragraph{Operating-condition stress scenarios.}
 In addition to the progressive build-up, three stress scenarios probe robustness under demanding operating conditions, all relative to the default of Table~\ref{tab:setup_summary}: (i)~a \emph{scalability} scenario scaling per-tier node populations by $\zeta\in\{1,2,4\}$ to probe action-space growth and the QAOA qubit budget; (ii)~a \emph{heavy-load} scenario increasing the task arrival rate to drive ENs near saturation, exposing the queueing term $T_w$ of Eq.~\eqref{eq:T_off} and the latency--energy trade-off; and (iii)~a \emph{NISQ-noise} scenario injecting additive Gaussian noise $\mathcal{N}(0,\sigma_n^2)$ into every observable to mimic gate and readout errors, with $\sigma_n$ swept over the range of current superconducting devices~\cite{preskill2018nisq}. Results for these appear in Section~\ref{subsec:scalability}.
-
-\subsection{Evaluation Metrics}
-\label{subsec:metrics}
-
-The study uses task-level, learning-level, and efficiency metrics. \emph{Task-level:} average task latency $\bar T=\mathbb{E}[T^{x_k}]$ (s) and energy $\bar E=\mathbb{E}[E^{x_k}]$ (J); deadline-miss rate $\Pr(F^2{=}1)$, sojourn-violation rate $\Pr(F^1{=}1)$, and energy-suboptimality rate $\Pr(F^3{=}1)$, all in $\%$, assessing feasibility under (C2)--(C4). \emph{Learning behaviour:} cumulative reward $\sum_t \gamma_{\mathrm{MDP}}^t R_1^t$ versus episode; episodes-to-plateau $\Pi_\eta$ (episodes until the moving-average reward reaches $\eta\%$ of its asymptote, $\eta{=}95$); and seed-wise variance of the converged reward. \emph{Model efficiency:} trainable-parameter count $W$ and reduction factor $\rho=W_{\mathrm{HRL}}/W_{\mathrm{Q\text{-}HRL}}$; circuit evaluations per update (the dominant NISQ cost); and wall-clock time per episode. Table~\ref{tab:metrics_summary} consolidates the definitions and optimisation directions so that every numerical entry in Section~\ref{sec:results} is unambiguous.
-
-\begin{table}[t]
-\centering
-\small
-\caption{Summary of evaluation metrics. $\downarrow$ indicates lower-is-better, $\uparrow$ higher-is-better.}
-\label{tab:metrics_summary}
-\begin{tabular}{@{}p{4.0cm}p{4.5cm}p{1.2cm}p{4.6cm}@{}}
-\toprule
-\textbf{Metric} & \textbf{Definition} & \textbf{Dir.} & \textbf{Purpose} \\
-\midrule
-Avg.\ task latency $\bar T$        & $\mathbb{E}[T^{x_k}]$ (s)                                & $\downarrow$ & Service quality \\
-Avg.\ task energy $\bar E$         & $\mathbb{E}[E^{x_k}]$ (J)                                & $\downarrow$ & Energy efficiency \\
-Deadline-miss rate                 & $\Pr(F^2{=}1)$ ($\%$)                                    & $\downarrow$ & Feasibility under (C2) \\
-Sojourn-violation rate             & $\Pr(F^1{=}1)$ ($\%$)                                    & $\downarrow$ & Feasibility under (C3) \\
-Energy-suboptimality rate          & $\Pr(F^3{=}1)$ ($\%$)                                    & $\downarrow$ & Feasibility under (C4) \\
-Cumulative reward                  & $\sum_{t}\gamma_{\mathrm{MDP}}^{t}R_1^t$                 & $\uparrow$   & Learning quality \\
-Episodes-to-plateau $\Pi_\eta$     & Episodes to reach $\eta\%$ of asymptote ($\eta{=}95$)    & $\downarrow$ & Sample efficiency \\
-Seed-wise reward variance          & $\mathrm{Var}_{\mathrm{seeds}}[\bar R]$                  & $\downarrow$ & Training stability \\
-Trainable parameters $W$           & Total VQC$+$QAOA / DQN parameters                        & $\downarrow$ & Model compactness \\
-Reduction factor $\rho$            & $W_{\mathrm{HRL}}/W_{\mathrm{Q\text{-}HRL}}$             & $\uparrow$   & Quantum compression \\
-Circuit evaluations / update       & Counted per BO step (NISQ cost proxy)                    & $\downarrow$ & Hardware cost \\
-Wall-clock / episode               & Seconds on the simulated back-end                        & $\downarrow$ & Practicality \\
-\bottomrule
-\end{tabular}
-\end{table}
 
 %=============================================================================
 % VII. RESULTS AND DISCUSSION
@@ -925,12 +1006,42 @@ Fig.~\ref{fig:depth} sweeps $L\in\{1,2,4,6\}$ and $p\in\{1,2,3\}$. As predicted 
   \label{fig:scaling}
 \end{figure}
 
-Under the scalability scenario, doubling and quadrupling the per-tier node populations leaves the VQC parameter count unchanged (amplitude encoding is logarithmic in $n$) and adds only $O(M_{l^*})$ qubits to the QAOA register, as visualised in Fig.~\ref{fig:scaling}. The framework therefore continues to operate within typical NISQ qubit budgets, whereas the tri-DQN baseline must enlarge its node-selection head and re-train. Under the NISQ-noise scenario, the BO outer loop maintains reward stability up to gate-noise levels $\sigma_n$ an order of magnitude larger than those reported on current superconducting back-ends~\cite{preskill2018nisq}, in agreement with Proposition~\ref{prop:bo_efficiency}.
+Under the scalability scenario, doubling and quadrupling the per-tier node populations leaves the VQC parameter count unchanged (amplitude encoding is logarithmic in $n$) and adds only $O(M_{l^*})$ qubits to the QAOA register, as visualised in Fig.~\ref{fig:scaling}. The framework therefore continues to operate within typical NISQ qubit budgets, whereas the tri-DQN baseline must enlarge its node-selection head and re-train. Table~\ref{tab:scalability} quantifies this divergence: the classical footprint grows with the node count while the quantum footprint is constant.
+
+\begin{table}[t]
+\centering
+\caption{Trainable-parameter scaling under the scalability scenario as per-tier node populations are scaled by $\zeta$. Entries are exact parameter counts obtained analytically from Eqs.~\eqref{eq:dqn_params} and~\eqref{eq:qhrl_total} ($n{=}20$, $h{=}256$, $L{=}4$, $p{=}2$)---not measured quantities. Quantum-HRL is constant because the state dimension and QAOA depth are held fixed; only the QAOA \emph{qubit} register (not its parameter count) grows with the node count.}
+\label{tab:scalability}
+\begin{tabular}{@{}crrr@{}}
+\toprule
+\textbf{Scale $\zeta$} & \textbf{Max nodes/tier} & \textbf{Classical HRL} & \textbf{Quantum-HRL} \\
+\midrule
+$1$ & $5$  & $20{,}224$ & $24$ \\
+$2$ & $10$ & $21{,}504$ & $24$ \\
+$4$ & $20$ & $24{,}064$ & $24$ \\
+\bottomrule
+\end{tabular}
+\end{table} Under the NISQ-noise scenario, the BO outer loop maintains reward stability up to gate-noise levels $\sigma_n$ an order of magnitude larger than those reported on current superconducting back-ends~\cite{preskill2018nisq}, in agreement with Proposition~\ref{prop:bo_efficiency}.
 
 \subsection{Parameter Complexity Analysis}
 \label{subsec:complexity}
 
-We now make precise the parameter-footprint comparison summarised in Table~\ref{tab:results}.
+We now make precise the parameter-footprint comparison summarised in Table~\ref{tab:results}. Table~\ref{tab:param_eff} states the headline result---the trainable-parameter count and the compression ratio of each method relative to Quantum-HRL---while Table~\ref{tab:complexity} provides the component-level derivation that follows.
+
+\begin{table}[t]
+\centering
+\caption{Parameter efficiency: trainable-parameter count and compression ratio relative to Quantum-HRL. Counts are exact for the default configuration ($n{=}20$, baseline $h{=}256$, $L{=}4$, $p{=}2$); see Table~\ref{tab:complexity} for the component-level derivation.}
+\label{tab:param_eff}
+\begin{tabular}{@{}lrr@{}}
+\toprule
+\textbf{Method} & \textbf{\# Params} & \textbf{Compression ratio} \\
+\midrule
+Single DQN                   & $17{,}920$ & $747\times$ \\
+Classical HRL~\cite{hrl_ntn}  & $20{,}224$ & $843\times$ \\
+\textbf{Quantum-HRL (ours)}   & $\mathbf{24}$ & $1\times$ (ref.) \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \paragraph{Classical HRL.}
 The baseline~\cite{hrl_ntn} deploys three fully-connected DQNs, each with $\tilde{L}$ hidden layers of width $h$. Since~\cite{hrl_ntn} does not specify $h$, we adopt the conventional $h{=}256$ for numerical estimates and report scaling formulae for any other choice. With input $n$ and output $|\mathcal{A}_p|$ actions (P1: $|\mathcal{L}|{=}4$; P2: $\max_l M_l{=}5$; P3: $|\mathcal{A}_3|$ discretized $\alpha$ steps), each DQN's weight count is
@@ -996,7 +1107,7 @@ QAOA (node)                 & $W_{\mathrm{QAOA}}$ & 4     & $O(p)$         & Bay
 We interpret the results beyond the headline numbers, addressing mechanisms, the energy outcome, trade-offs, scalability, deployment, and scientific implications in turn.
 
 \paragraph{Why latency improves.}
-Three structural facts drive the latency reduction. \emph{(i)~Information-dense encoding.} Amplitude encoding maps the full $n$-dimensional state into $\lceil\log_2 n\rceil$ qubits, so a single VQC observable already aggregates information from all classical features (Proposition~\ref{prop:compression}); the policy can react to cross-feature interactions (e.g.\ load--mobility correlation) that the per-DQN baseline must learn implicitly through wide hidden layers. \emph{(ii)~Structure-aware search.} QAOA exploits the QUBO algebra directly: the cost Hamiltonian~\eqref{eq:hamiltonian} encodes both per-node cost and the one-hot constraint, and a constant-depth circuit drives the wavefunction toward the ground state regardless of $M_{l^*}$, avoiding the overloaded/distant nodes that inflate the tail latency of a flat $Q$-table. \emph{(iii)~Better-conditioned optimisation.} Policy gradients over $24$ parameters converge faster and with lower variance than gradient descent over $\sim$$2\times10^4$ weights, consistent with the convergence curves of Fig.~\ref{fig:convergence}.
+Three structural facts drive the latency reduction. \emph{(i)~Information-dense encoding.} Amplitude encoding maps the full $n$-dimensional state into $\lceil\log_2 n\rceil$ qubits, so a single VQC observable already aggregates information from all classical features (Proposition~\ref{prop:compression}); the policy can react to cross-feature interactions (e.g.\ load--mobility correlation) that the per-DQN baseline must learn implicitly through wide hidden layers. \emph{(ii)~Structure-aware search.} QAOA exploits the QUBO algebra directly: the cost Hamiltonian~\eqref{eq:hamiltonian} encodes both per-node cost and the one-hot constraint, and a constant-depth circuit drives the wavefunction toward the ground state regardless of $M_{l^*}$, avoiding the overloaded/distant nodes that inflate the tail latency of a flat $Q$-table. \emph{(iii)~Better-conditioned optimisation.} Policy gradients over $24$ parameters converge faster and with lower variance than gradient descent over $\sim$$2\times10^4$ weights, consistent with the convergence curves of Fig.~\ref{fig:convergence}. We caution that these three mechanisms are entangled and the present design does not isolate a uniquely \emph{quantum} cause: mechanism~(iii) in particular is a low-dimensionality effect that a comparably small classical policy might partly reproduce. The latency advantage should therefore be read as evidence that a compact, structure-aware hybrid policy is competitive with a much larger classical pipeline, not as a controlled demonstration that quantum mechanics is the decisive factor; disentangling the contributions would require a parameter-matched classical control, which we leave to future work.
 
 \paragraph{Why energy consumption increases.}
 The higher per-task energy is a direct consequence of the latency-minimising policy, not an inefficiency of the framework. The VQC ratio policy converges to aggressive offloading ($\alpha\approx0.8$--$0.97$), which shrinks the local branch of $\max(T_{\mathrm{off}},T_{\mathrm{loc}})$ in Eq.~\eqref{eq:latency} to near zero but pays the transmission energy $E_{tx}+E_{rx}$ and edge-compute energy $E_{c,ke}$ for almost the entire workload. The classical baseline instead settles on a conservative split that keeps energy low at a latency cost. Both operating points satisfy all three feasibility constraints; they are different Pareto points of the same objective, selected by the two learners' inductive biases.
@@ -1025,13 +1136,13 @@ We discuss the main threats to the validity of our conclusions and the steps tak
 The comparison could be confounded if the baselines were under-tuned or trained unequally. We mitigate this by running every method through the identical data-input, processing, decision, and output pipeline, varying only the policy; by including a learned tri-DQN baseline and a flat DQN in addition to heuristics; and by calibrating penalty weights on a shared random-policy warm-up. Residual risk remains in hyperparameter choices (e.g.\ the baseline hidden width $h$, which~\cite{hrl_ntn} leaves unspecified); we therefore report scaling formulae and adopt a \emph{lightweight} baseline instantiation that understates rather than overstates our parameter advantage.
 
 \paragraph{External validity.}
-Findings are obtained on a four-tier T-NTN with fixed, modest per-tier node counts, synthetic task arrivals, and a path-loss channel model inherited from~\cite{hrl_ntn}. Generalisation to larger networks, real mobility traces, correlated traffic, or richer channel models is not established here; the scalability scenario probes only $\zeta\in\{1,2,4\}$, and physical NISQ qubit budgets would become binding for large tiers. The absolute latency and energy values are simulator-specific and should be read comparatively, not as deployment figures.
+Findings are obtained on a four-tier T-NTN with a path-loss channel model inherited from~\cite{hrl_ntn}, and several modelling choices bound their generality. \emph{Mobility (LuST).} Vehicular motion derives from the LuST trace~\cite{codeca2015lust}, which, while calibrated and realistic, represents a \emph{single} European city (Luxembourg) over one $24$-hour period, and we further restrict it to an extracted urban sub-region; generalisation to other cities, to highway or rural mobility, or to different vehicle-penetration regimes is therefore not established, and a multi-trace study would strengthen this dimension. \emph{Synthetic task workloads.} Tasks are synthetic and independently sampled per slot rather than drawn from real application traces, so correlated or bursty demand and inter-task dependencies are not represented. \emph{Limited network scale.} The deployment uses fixed, modest per-tier node counts and the scalability scenario probes only $\zeta\in\{1,2,4\}$; physical NISQ qubit budgets would become binding for large tiers. \emph{Simulation assumptions.} The propagation, queueing, and energy models are inherited from the baseline and abstract away effects such as fading correlation, protocol overhead, and hardware heterogeneity. The absolute latency and energy values are thus simulator-specific and should be read comparatively, not as deployment figures.
 
 \paragraph{Construct validity.}
 The metrics (latency, energy, violation rates, parameter count) operationalise the objective of (P1) and the feasibility constraints (C2)--(C4) directly, and statistical significance is assessed with both a parametric and a non-parametric test on pooled per-task latencies. A construct caveat is that the parameter-count comparison measures \emph{model footprint}, which we claim, and not runtime or a computational speedup, which we explicitly do not claim; readers should not interpret the $843\times$ figure as a speed metric.
 
-\paragraph{Reproducibility.}
-All seeds, hyperparameters, and the deterministic mobility/task generators are documented, and a full five-seed run completes in under an hour on a commodity CPU; the code, configurations, and seeds will be released upon publication. The chief reproducibility caveat is the use of analytic (noiseless) expectation values in the inner loop for tractability; finite-shot and Gaussian-noise effects are confined to the NISQ-noise scenario, so results on physical hardware may differ and should be confirmed by the hardware-deployment study identified as future work.
+\paragraph{Reproducibility and NISQ assumptions.}
+All seeds, hyperparameters, the LuST trace-extraction procedure, and the task generators are documented, and a full five-seed run completes in under an hour on a commodity CPU; the code, configurations, and seeds will be released upon publication. The chief caveat concerns the NISQ assumptions: the inner training loop uses analytic (noiseless) expectation values for tractability, and the noise study injects \emph{i.i.d.}\ Gaussian readout noise, which omits coherent gate errors, crosstalk, and correlated calibration drift present on physical devices. Whether the simulated noise model is conservative or optimistic relative to current superconducting and trapped-ion back-ends can only be settled by the hardware-deployment study identified as future work, so results on real hardware may differ from those reported here.
 
 %=============================================================================
 % VIII. CONCLUSION
@@ -1040,16 +1151,16 @@ All seeds, hyperparameters, and the deterministic mobility/task generators are d
 \label{sec:conclusion}
 
 \paragraph{Summary.}
-We presented \textbf{Quantum-HRL}, a hybrid quantum--classical hierarchical reinforcement learning framework for adaptive task offloading in multi-layer T-NTN vehicular edge computing. It replaces the classical tri-DQN pipeline of~\cite{hrl_ntn} with a VQC-driven high-level policy (tier and ratio) and a QAOA-based combinatorial node selector tuned through Bayesian Optimisation, coupled through a single MDP loop and trained with advantage-weighted Parameter-Shift-Rule policy gradients for the VQC and Bayesian Optimisation for the QAOA angles.
+This work addressed adaptive task offloading in multi-layer terrestrial--non-terrestrial vehicular edge computing, where a controller must jointly choose an offloading tier, an edge node, and an offloading ratio under hard latency, sojourn, and energy constraints. The classical hierarchical reinforcement-learning solution of Shinde and Tarchi~\cite{hrl_ntn} decomposes this decision across three deep $Q$-networks, but its parameter footprint grows linearly with the state dimension and node population, and its flat node selector ignores the combinatorial structure of the assignment. We presented \textbf{Quantum-HRL}, a hybrid quantum--classical framework that retains the effective tier\,$\to$\,node\,$\to$\,ratio decomposition while replacing its learned modules with quantum primitives: an amplitude-encoded variational quantum circuit serves as the high-level (tier and ratio) policy, and a QAOA solver acting on a one-hot QUBO performs the low-level node selection, with a Bayesian-Optimisation outer loop tuning the QAOA angles. The VQC is trained by advantage-weighted Parameter-Shift-Rule policy gradients and the QAOA angles by Bayesian Optimisation, all coupled through a single MDP loop so that the learned policy remains consistent with the offloading cost and feasibility signals.
 
 \paragraph{Main findings.}
-On the five-seed T-NTN benchmark, Quantum-HRL delivers $20.3\%$ lower mean task latency than the classical HRL baseline ($0.117\pm0.038$ vs.\ $0.147\pm0.016$\,s; $p<10^{-3}$ under both Welch's $t$ and Mann--Whitney $U$ tests) with zero deadline, sojourn, or energy-budget violations, while reducing the trainable-parameter count from $20{,}224$ to $24$---an $843\times$ compression that reflects a change in scaling from $O(n\cdot h)$ to $O(L\log_2 n + p)$. Ablation confirms that both quantum modules contribute: removing QAOA doubles latency and inflates its variance, and removing the VQC degrades latency by more than an order of magnitude. The gain comes at a transparently reported higher per-task energy ($0.97$ vs.\ $0.35$\,J), a steerable latency--energy trade-off governed by the reward weights.
+On the five-seed T-NTN benchmark, Quantum-HRL attains $20.3\%$ lower mean task latency than the classical HRL baseline ($0.117\pm0.038$ vs.\ $0.147\pm0.016$\,s; $p<10^{-3}$ under both Welch's $t$ and Mann--Whitney $U$ tests) while maintaining zero deadline, sojourn, and energy-budget violations on the held-out episodes. It does so with $24$ trainable parameters against $20{,}224$ for the classical pipeline---an $843\times$ reduction that is qualitative rather than constant-factor, reflecting a change in scaling from $O(n\cdot h)$ to $O(L\log_2 n + p)$. The ablation confirms that both quantum modules contribute: removing QAOA roughly doubles latency and inflates its seed-wise variance, while removing the VQC degrades latency by more than an order of magnitude, mirroring the hierarchy of the decision problem. These gains are not free---per-task energy rises from $0.35$ to $0.97$\,J---but the increase is a transparent consequence of the latency-minimising operating point and is steerable through the reward weights, so it represents a different Pareto point rather than an inefficiency. We emphasise that the latency advantage reflects the competitiveness of a compact, structure-aware hybrid policy and is not, by itself, a controlled demonstration of computational quantum advantage.
 
 \paragraph{Limitations.}
-The evaluation is simulation-only and uses a statevector back-end rather than real quantum hardware; the workloads are synthetic and independently sampled; the deployment uses fixed, modest per-tier node counts with simplified mobility and channel models; and the inner training loop uses noiseless expectation values, with hardware noise confined to a dedicated scenario. The framework also inherits NISQ-era constraints (barren plateaus at large depth, finite qubit budgets) that bound how far it can scale today.
+Several limitations qualify these conclusions and should temper any claim of practical quantum benefit today. The evaluation is simulation-only and uses a classical statevector back-end rather than physical quantum hardware, with noiseless expectation values in the inner training loop and only \emph{i.i.d.}\ Gaussian noise in the dedicated noise study; coherent gate errors and correlated calibration drift are not modelled. The mobility is realistic but derives from a single-city LuST trace, the task workloads are synthetic and independently sampled, and the deployment uses fixed, modest per-tier node counts with an inherited path-loss channel model. The framework further inherits NISQ-era constraints---barren plateaus at large circuit depth and finite qubit budgets---that bound how far it can scale at present. Finally, because the design does not include a parameter-matched classical control, the contribution of the quantum representation cannot be cleanly separated from the benefit of optimising a low-dimensional policy.
 
 \paragraph{Future work.}
-Future research will (a)~deploy the full pipeline on real superconducting and trapped-ion back-ends to test whether the simulated noise model is conservative or optimistic; (b)~adopt hardware-efficient, topology-matched ans\"atze and data re-uploading layers to mitigate barren-plateau effects at modest qubit cost; (c)~extend the action space to multi-task concurrent offloading with task dependencies, e.g.\ via a quantum actor--critic decomposition; (d)~explore federated quantum learning across vehicular fleets, exploiting the small parameter footprint reported here; and (e)~pursue formal quantum--classical separation results for the QUBO instances arising from T-NTN offloading, to place the empirical advantages on a stronger theoretical footing.
+Future research will (a)~deploy the full pipeline on real superconducting and trapped-ion back-ends to determine whether the simulated noise model is conservative or optimistic; (b)~introduce a parameter-matched classical policy and multi-trace, multi-city mobility (beyond LuST) to isolate the quantum contribution and broaden external validity; (c)~adopt hardware-efficient, topology-matched ans\"atze and data re-uploading layers to mitigate barren-plateau effects at modest qubit cost; (d)~extend the action space to multi-task concurrent offloading with task dependencies, for instance via a quantum actor--critic decomposition; (e)~explore federated quantum learning across vehicular fleets, exploiting the small parameter footprint reported here; and (f)~pursue formal quantum--classical separation results for the QUBO instances arising from T-NTN offloading, to place the empirical observations on a firmer theoretical footing.
 
 \section*{Acknowledgment}
 
