@@ -143,11 +143,11 @@ Getting this decision right is the difference between meeting and missing safety
 
 \paragraph{Limitations of existing methods.}
 Classical Hierarchical Reinforcement Learning (HRL) \cite{hrl_ntn} decomposes the problem into three sequential Deep Q-Networks (DQNs)---one per sub-problem---but this pipeline carries three compounding limitations:
-\begin{enumerate}
+\begin{itemize}
   \item \textbf{Parameter explosion.} Each DQN input layer has width $n$ (the state dimension), requiring $O(n \cdot h)$ weights per hidden layer of width $h$. Across three DQNs the total parameter count scales as $O(3\,n \cdot h)$, easily exceeding $10^5$ for realistic $n$ and $h$.
   \item \textbf{Combinatorial intractability.} Node selection within a tier is a combinatorial assignment problem. Treating it as a flat $Q$-value lookup over $M_l$ discrete actions ignores the problem's algebraic structure and degrades as $M_l$ grows, with no guarantee of near-optimality.
   \item \textbf{Sequential training friction.} Because each DQN's input depends on the upstream network's output, inter-layer coordination requires careful orchestration, leading to instability and slow convergence.
-\end{enumerate}
+\end{itemize}
 
 \paragraph{Motivation for quantum-enhanced approaches.}
 Quantum computing offers structurally different responses to each limitation. We note that fault-tolerant, error-corrected quantum computers remain a longer-term prospect; the near-term \emph{Noisy Intermediate-Scale Quantum} (NISQ) era~\cite{preskill2018nisq}---characterized by 50--1000 qubits with non-negligible gate errors and no full error correction---demands algorithms that are both parameter-efficient and noise-resilient. Variational Quantum Circuits (VQCs) encode an $n$-dimensional state into $\lceil\log_2 n\rceil$ qubits via Amplitude Encoding, a logarithmic qubit requirement that yields a compact, parameter-efficient policy representation \cite{vqc_drl}. We emphasise at the outset that this work claims a \emph{representational and parameter-efficiency} benefit rather than a quantum computational speedup; the latter would require a formal complexity separation that is beyond the present scope. The Quantum Approximate Optimization Algorithm (QAOA) \cite{farhi2014quantum} is purpose-designed for combinatorial optimization: it encodes the node-selection problem as an Ising Hamiltonian and finds a near-optimal node in $O(p \cdot M_l)$ circuit depth, independent of the DQN parameter count. Bayesian Optimization (BO) \cite{bo_qaoa} replaces noisy gradient descent with a sample-efficient Gaussian-process surrogate, enabling robust circuit-parameter tuning on NISQ hardware~\cite{preskill2018nisq}.
@@ -170,7 +170,7 @@ The specific contributions of this paper are:
 \end{itemize}
 
 \paragraph{Paper organisation.}
-Section~\ref{sec:related} reviews related work. Section~\ref{sec:background} provides the minimal quantum background. Section~\ref{sec:problem} formalises the T-NTN system model and the joint offloading problem. Section~\ref{sec:framework} presents the classical baseline and the proposed Quantum-HRL framework, including the MDP and QUBO formulations and the training strategy. Section~\ref{sec:experimental} describes the experimental design, and Section~\ref{sec:results} reports and discusses the results, including a threats-to-validity analysis. Section~\ref{sec:conclusion} concludes. Appendix~\ref{app:notation} consolidates the notation.
+Section~\ref{sec:related} reviews related work. Section~\ref{sec:background} provides the minimal quantum background. Section~\ref{sec:problem} formalises the T-NTN system model and the joint offloading problem, then presents the classical baseline and the proposed Quantum-HRL framework, including the MDP and QUBO formulations and the training strategy. Section~\ref{sec:experimental} describes the experimental design, and Section~\ref{sec:results} reports and discusses the results, including a threats-to-validity analysis. Section~\ref{sec:conclusion} concludes. Appendix~\ref{app:notation} consolidates the notation.
 
 %=============================================================================
 % II. RELATED WORK
@@ -309,10 +309,11 @@ Under additive i.i.d.\ Gaussian measurement noise $\varepsilon\sim\mathcal N(0,\
 %=============================================================================
 % IV. PROBLEM FORMULATION
 %=============================================================================
-\section{Problem Formulation}
+\section{Problem Formulation and Proposed Framework}
 \label{sec:problem}
+\label{sec:framework}
 
-This section formalises the T-NTN system model and the joint offloading problem. We first describe the four-tier architecture (Section~\ref{subsec:netarch}), then the communication and cost models (Sections~\ref{subsec:comm}--\ref{subsec:cost}), and finally the optimization objective and constraints (Section~\ref{subsec:objective}).
+This section formalises the T-NTN system model and the joint offloading problem, and then develops the proposed solution. We first describe the four-tier architecture (Section~\ref{subsec:netarch}), then the communication and cost models (Sections~\ref{subsec:comm}--\ref{subsec:cost}), and the optimization objective and constraints (Section~\ref{subsec:objective}); we then present the classical baseline and the proposed Quantum-HRL framework, including the MDP and QUBO formulations and the training strategy.
 
 \subsection{T-NTN Network Architecture}
 \label{subsec:netarch}
@@ -454,12 +455,9 @@ Wall-clock / episode               & Seconds on the simulated back-end          
 \end{table}
 
 %=============================================================================
-% V. PROPOSED FRAMEWORK
+% PROPOSED FRAMEWORK (merged into the Problem Formulation section)
 %=============================================================================
-\section{Proposed Framework}
-\label{sec:framework}
-
-We first describe the classical HRL baseline that defines the problem decomposition (Section~\ref{subsec:classical}), then the proposed Quantum-HRL framework that replaces it (Section~\ref{subsec:qhrl}), the MDP formulation underlying both (Section~\ref{subsec:mdp}), the QUBO mapping that enables QAOA-based node selection (Section~\ref{subsec:qubo}), and finally the training strategy (Section~\ref{subsec:training}).
+Having formalised problem (P1) and the metrics by which solutions are judged, we now develop the proposed solution. We first describe the classical HRL baseline that defines the problem decomposition (Section~\ref{subsec:classical}), then the proposed Quantum-HRL framework that replaces it (Section~\ref{subsec:qhrl}), the MDP formulation underlying both (Section~\ref{subsec:mdp}), the QUBO mapping that enables QAOA-based node selection (Section~\ref{subsec:qubo}), and finally the training strategy (Section~\ref{subsec:training}).
 
 \subsection{Classical HRL Baseline}
 \label{subsec:classical}

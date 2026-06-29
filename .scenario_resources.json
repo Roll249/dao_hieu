@@ -1,0 +1,67 @@
+{
+  "timestamp": "2026-06-29T01:04:53.262450",
+  "os": {
+    "system": "Linux",
+    "release": "7.0.3-arch1-2",
+    "version": "#1 SMP PREEMPT_DYNAMIC Fri, 01 May 2026 15:49:22 +0000",
+    "machine": "x86_64",
+    "python_version": "3.14.5"
+  },
+  "cpu": {
+    "physical_cores": 4,
+    "logical_cores": 8,
+    "max_frequency_mhz": 4200.0,
+    "architecture": "x86_64",
+    "processor": "",
+    "current_frequency_mhz": 3451.4423750000005
+  },
+  "memory": {
+    "total_gb": 15.34,
+    "available_gb": 8.89,
+    "used_gb": 6.45,
+    "percent_used": 42.1,
+    "swap_total_gb": 19.34,
+    "swap_available_gb": 18.62
+  },
+  "disk": {
+    "path": "/home/ngochieu/repo/dao_hieu",
+    "total_gb": 237.47,
+    "available_gb": 169.25,
+    "used_gb": 66.04,
+    "percent_used": 28.1
+  },
+  "gpu": {
+    "nvidia_gpus": [],
+    "amd_gpus": [],
+    "apple_silicon": null,
+    "total_gpus": 0,
+    "available_backends": []
+  },
+  "recommendations": {
+    "parallel_processing": {
+      "strategy": "high_parallelism",
+      "suggested_workers": 6,
+      "libraries": [
+        "joblib",
+        "multiprocessing",
+        "dask"
+      ]
+    },
+    "memory_strategy": {
+      "strategy": "moderate_memory",
+      "libraries": [
+        "dask",
+        "zarr"
+      ],
+      "note": "Consider chunking for datasets > 2GB"
+    },
+    "gpu_acceleration": {
+      "available": false,
+      "note": "No GPU detected, use CPU-based libraries"
+    },
+    "large_data_handling": {
+      "strategy": "disk_abundant",
+      "note": "Sufficient space for large intermediate files"
+    }
+  }
+}

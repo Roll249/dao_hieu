@@ -1,0 +1,18 @@
+{
+  "n_windows": 24,
+  "window_seconds": 3600,
+  "sim_span_s": [
+    0,
+    86400
+  ],
+  "total_vehicles": 288250,
+  "concurrent_mean_over_day": 2484.6993055555554,
+  "concurrent_max_over_day": 10506,
+  "speed_pool_size": 442557,
+  "speed_mean_mps": 16.651397966815573,
+  "speed_median_mps": 13.68,
+  "speed_p90_mps": 33.21,
+  "speed_max_mps": 48.66,
+  "fcd_sampling": "--device.fcd.period 60 (mỗi 60s); FCD xóa ngay sau khi trích",
+  "route_set": "DUA local.0/1/2 + transit + buslines; net actuated TLs"
+}

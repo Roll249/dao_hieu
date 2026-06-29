@@ -1,0 +1,40 @@
+=== B1: phân loại route theo 24 cửa sổ (một lượt/nguồn, streaming) ===
+  nguồn buslines:    2240 xe phân vào cửa sổ
+  nguồn dua0    :   72000 xe phân vào cửa sổ
+  nguồn dua1    :   72000 xe phân vào cửa sổ
+  nguồn dua2    :   71526 xe phân vào cửa sổ
+  nguồn transit :   70484 xe phân vào cửa sổ
+  (bỏ qua 0 xe có depart ngoài [0,86400))
+  xong B1 trong 4.8s
+
+=== B2: chạy SUMO từng cửa sổ + trích FCD (xóa FCD sau khi trích) ===
+  cửa sổ 00 (00:00-01:00):    878 xe | đồng thời mean=   121 max=   147 | spd mean=20.91 | 2.8s
+  cửa sổ 01 (01:00-02:00):   1351 xe | đồng thời mean=   175 max=   222 | spd mean=24.45 | 3.6s
+  cửa sổ 02 (02:00-03:00):   1845 xe | đồng thời mean=   225 max=   290 | spd mean=25.32 | 4.6s
+  cửa sổ 03 (03:00-04:00):   2343 xe | đồng thời mean=   284 max=   344 | spd mean=25.85 | 5.6s
+  cửa sổ 04 (04:00-05:00):   3679 xe | đồng thời mean=   517 max=   756 | spd mean=22.28 | 12.9s
+  cửa sổ 05 (05:00-06:00):   7051 xe | đồng thời mean=  1148 max=  1802 | spd mean=17.77 | 33.2s
+  cửa sổ 06 (06:00-07:00):  16559 xe | đồng thời mean=  3095 max=  5190 | spd mean=16.37 | 87.0s
+  cửa sổ 07 (07:00-08:00):  24156 xe | đồng thời mean=  5390 max=  9165 | spd mean=14.91 | 142.9s
+  cửa sổ 08 (08:00-09:00):  25510 xe | đồng thời mean=  5972 max=  9525 | spd mean=14.66 | 160.1s
+  cửa sổ 09 (09:00-10:00):  16886 xe | đồng thời mean=  3701 max=  4601 | spd mean=14.19 | 99.6s
+  cửa sổ 10 (10:00-11:00):  10020 xe | đồng thời mean=  1920 max=  2411 | spd mean=13.67 | 53.9s
+  cửa sổ 11 (11:00-12:00):   9501 xe | đồng thời mean=  1613 max=  1891 | spd mean=15.99 | 45.7s
+  cửa sổ 12 (12:00-13:00):  17125 xe | đồng thời mean=  3398 max=  5044 | spd mean=15.96 | 92.2s
+  cửa sổ 13 (13:00-14:00):  17942 xe | đồng thời mean=  3715 max=  5037 | spd mean=15.83 | 102.4s
+  cửa sổ 14 (14:00-15:00):  12627 xe | đồng thời mean=  2364 max=  2861 | spd mean=16.34 | 61.8s
+  cửa sổ 15 (15:00-16:00):   9610 xe | đồng thời mean=  1517 max=  2187 | spd mean=16.82 | 40.0s
+  cửa sổ 16 (16:00-17:00):  13971 xe | đồng thời mean=  2884 max=  4995 | spd mean=13.47 | 85.1s
+  cửa sổ 17 (17:00-18:00):  20551 xe | đồng thời mean=  5016 max=  8997 | spd mean=13.01 | 140.2s
+  cửa sổ 18 (18:00-19:00):  23570 xe | đồng thời mean=  6216 max= 10506 | spd mean=13.26 | 181.6s
+  cửa sổ 19 (19:00-20:00):  20103 xe | đồng thời mean=  4905 max=  7118 | spd mean=14.46 | 138.4s
+  cửa sổ 20 (20:00-21:00):  12486 xe | đồng thời mean=  2230 max=  2622 | spd mean=16.99 | 67.9s
+  cửa sổ 21 (21:00-22:00):   8311 xe | đồng thời mean=  1288 max=  1553 | spd mean=17.91 | 39.1s
+  cửa sổ 22 (22:00-23:00):   6911 xe | đồng thời mean=  1078 max=  1251 | spd mean=17.25 | 33.5s
+  cửa sổ 23 (23:00-00:00):   5264 xe | đồng thời mean=   861 max=  1077 | spd mean=14.73 | 25.4s
+
+=== TÓM TẮT MOBILITY 24h ===
+  Tổng xe: 288250 | đồng thời mean(ngày)=2485 max=10506
+  Pool tốc độ: 442557 mẫu, mean=16.65 m/s
+  Lưu: results/per_window_mobility.json, mobility_full_summary.json, lust_speed_pool_full.npy
+MOB_EXIT=0

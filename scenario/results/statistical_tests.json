@@ -1,0 +1,68 @@
+{
+  "comparison": "Classical vs Full-QHRL",
+  "test": "two-sided Welch t-test",
+  "alpha": 0.05,
+  "n_per_group": 5,
+  "tests": {
+    "reward": {
+      "classical_mean": -8.15108103156245,
+      "full_qhrl_mean": -2.599649682428756,
+      "t_stat": -7.160772447688419,
+      "df": 4.105674455420412,
+      "p_value": 0.0018219099111920687,
+      "hedges_g": -4.09059239189988,
+      "significant_0p05": true,
+      "shapiro_classical_p": 0.9662926604442976,
+      "shapiro_full_qhrl_p": 0.32890269084000606,
+      "levene_p": 0.049128822221135286
+    },
+    "latency": {
+      "classical_mean": 10.645937907497302,
+      "full_qhrl_mean": 2.9642400704955896,
+      "t_stat": 7.209232958613074,
+      "df": 4.286934489800603,
+      "p_value": 0.0014992988501455582,
+      "hedges_g": 4.118275466420696,
+      "significant_0p05": true,
+      "shapiro_classical_p": 0.9431726189236196,
+      "shapiro_full_qhrl_p": 0.28308513907859556,
+      "levene_p": 0.08220864941556207
+    },
+    "energy": {
+      "classical_mean": 5.656224155627595,
+      "full_qhrl_mean": 2.235059294361923,
+      "t_stat": 6.908837459791979,
+      "df": 4.0185398496987075,
+      "p_value": 0.002263537828930566,
+      "hedges_g": 3.946674490266901,
+      "significant_0p05": true,
+      "shapiro_classical_p": 0.9874183617288907,
+      "shapiro_full_qhrl_p": 0.6812814215689883,
+      "levene_p": 0.02574155777102631
+    },
+    "cost": {
+      "classical_mean": 8.15108103156245,
+      "full_qhrl_mean": 2.599649682428756,
+      "t_stat": 7.160772447688419,
+      "df": 4.105674455420412,
+      "p_value": 0.0018219099111920687,
+      "hedges_g": 4.09059239189988,
+      "significant_0p05": true,
+      "shapiro_classical_p": 0.9662926604442972,
+      "shapiro_full_qhrl_p": 0.32890269084000606,
+      "levene_p": 0.049128822221135286
+    },
+    "deadline_miss": {
+      "classical_mean": 0.959937566137566,
+      "full_qhrl_mean": 0.19920092592592592,
+      "t_stat": 10.734649996983592,
+      "df": 4.064452303150968,
+      "p_value": 0.000392150911243242,
+      "hedges_g": 6.132170506485534,
+      "significant_0p05": true,
+      "shapiro_classical_p": 0.4028270913143188,
+      "shapiro_full_qhrl_p": 0.23439712311482613,
+      "levene_p": 0.03717962768346969
+    }
+  }
+}

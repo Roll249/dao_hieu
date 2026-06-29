@@ -1,0 +1,1674 @@
+[LuST] speed pool: 138896 mẫu, mean=13.09 m/s, median=12.56 m/s
+[LuST-24h] speed pool: 442557 mẫu, mean=16.65 m/s, median=13.68 m/s
+[LuST] speed pool: 138896 mẫu, mean=13.09 m/s, median=12.56 m/s
+[LuST-24h] speed pool: 442557 mẫu, mean=16.65 m/s, median=13.68 m/s
+
+[Classical] seed=2024
+  [full] ep  1/50 | reward=-6.331 loss=0 lat=8.135s E=4.526J cost=6.331 avgQ=0.00 t=5.137s
+  [full] ep  2/50 | reward=-5.393 loss=0 lat=7.039s E=3.748J cost=5.393 avgQ=0.00 t=4.408s
+  [full] ep  3/50 | reward=-5.983 loss=0 lat=7.647s E=4.318J cost=5.983 avgQ=0.00 t=4.456s
+  [full] ep  4/50 | reward=-4.861 loss=0 lat=6.408s E=3.315J cost=4.861 avgQ=0.00 t=4.616s
+  [full] ep  5/50 | reward=-5.010 loss=0 lat=6.556s E=3.463J cost=5.010 avgQ=0.00 t=4.53s
+  [full] ep  6/50 | reward=-5.818 loss=0 lat=7.465s E=4.171J cost=5.818 avgQ=0.00 t=4.511s
+  [full] ep  7/50 | reward=-5.821 loss=0 lat=7.484s E=4.158J cost=5.821 avgQ=0.00 t=4.488s
+  [full] ep  8/50 | reward=-5.846 loss=0 lat=7.567s E=4.125J cost=5.846 avgQ=0.00 t=4.471s
+  [full] ep  9/50 | reward=-4.686 loss=0 lat=6.178s E=3.193J cost=4.686 avgQ=0.00 t=4.445s
+  [full] ep 10/50 | reward=-5.498 loss=0 lat=7.089s E=3.907J cost=5.498 avgQ=0.00 t=4.513s
+  [full] ep 11/50 | reward=-5.555 loss=0 lat=7.206s E=3.903J cost=5.555 avgQ=0.00 t=4.452s
+  [full] ep 12/50 | reward=-6.385 loss=0 lat=8.101s E=4.670J cost=6.385 avgQ=0.00 t=4.375s
+  [full] ep 13/50 | reward=-5.547 loss=0 lat=7.242s E=3.851J cost=5.547 avgQ=0.00 t=4.509s
+  [full] ep 14/50 | reward=-6.223 loss=0 lat=8.028s E=4.419J cost=6.223 avgQ=0.00 t=4.459s
+  [full] ep 15/50 | reward=-5.504 loss=0 lat=7.140s E=3.869J cost=5.504 avgQ=0.00 t=4.427s
+  [full] ep 16/50 | reward=-5.163 loss=0 lat=6.719s E=3.607J cost=5.163 avgQ=0.00 t=4.562s
+  [full] ep 17/50 | reward=-4.764 loss=0 lat=6.272s E=3.255J cost=4.764 avgQ=0.00 t=4.613s
+  [full] ep 18/50 | reward=-5.852 loss=0 lat=7.577s E=4.128J cost=5.852 avgQ=0.00 t=4.527s
+  [full] ep 19/50 | reward=-5.175 loss=0 lat=6.817s E=3.533J cost=5.175 avgQ=0.00 t=4.572s
+  [full] ep 20/50 | reward=-5.586 loss=0 lat=7.275s E=3.898J cost=5.586 avgQ=0.00 t=4.63s
+  [full] ep 21/50 | reward=-6.140 loss=0 lat=7.908s E=4.372J cost=6.140 avgQ=0.00 t=4.726s
+  [full] ep 22/50 | reward=-5.736 loss=0 lat=7.382s E=4.090J cost=5.736 avgQ=0.00 t=4.443s
+  [full] ep 23/50 | reward=-5.567 loss=0 lat=7.198s E=3.936J cost=5.567 avgQ=0.00 t=4.209s
+  [full] ep 24/50 | reward=-6.109 loss=0 lat=7.831s E=4.386J cost=6.109 avgQ=0.00 t=4.034s
+  [full] ep 25/50 | reward=-4.722 loss=0 lat=6.281s E=3.164J cost=4.722 avgQ=0.00 t=4.109s
+  [full] ep 26/50 | reward=-5.505 loss=0 lat=7.155s E=3.855J cost=5.505 avgQ=0.00 t=4.098s
+  [full] ep 27/50 | reward=-4.815 loss=0 lat=6.304s E=3.326J cost=4.815 avgQ=0.00 t=4.117s
+  [full] ep 28/50 | reward=-5.737 loss=0 lat=7.442s E=4.033J cost=5.737 avgQ=0.00 t=4.081s
+  [full] ep 29/50 | reward=-6.474 loss=0 lat=8.273s E=4.674J cost=6.474 avgQ=0.00 t=4.218s
+  [full] ep 30/50 | reward=-6.658 loss=0 lat=8.526s E=4.790J cost=6.658 avgQ=0.00 t=4.135s
+  [full] ep 31/50 | reward=-5.696 loss=0 lat=7.367s E=4.025J cost=5.696 avgQ=0.00 t=4.228s
+  [full] ep 32/50 | reward=-4.840 loss=0 lat=6.377s E=3.304J cost=4.840 avgQ=0.00 t=4.206s
+  [full] ep 33/50 | reward=-5.524 loss=0 lat=7.188s E=3.860J cost=5.524 avgQ=0.00 t=4.169s
+  [full] ep 34/50 | reward=-6.996 loss=0 lat=8.887s E=5.104J cost=6.996 avgQ=0.00 t=4.05s
+  [full] ep 35/50 | reward=-5.881 loss=0 lat=7.612s E=4.151J cost=5.881 avgQ=0.00 t=4.188s
+  [full] ep 36/50 | reward=-6.794 loss=0 lat=8.705s E=4.883J cost=6.794 avgQ=0.00 t=4.199s
+  [full] ep 37/50 | reward=-5.427 loss=0 lat=7.103s E=3.751J cost=5.427 avgQ=0.00 t=4.18s
+  [full] ep 38/50 | reward=-4.954 loss=0 lat=6.512s E=3.396J cost=4.954 avgQ=0.00 t=4.184s
+  [full] ep 39/50 | reward=-5.343 loss=0 lat=6.981s E=3.705J cost=5.343 avgQ=0.00 t=4.114s
+  [full] ep 40/50 | reward=-5.476 loss=0 lat=7.133s E=3.818J cost=5.476 avgQ=0.00 t=4.15s
+  [full] ep 41/50 | reward=-4.890 loss=0 lat=6.428s E=3.351J cost=4.890 avgQ=0.00 t=4.063s
+  [full] ep 42/50 | reward=-5.858 loss=0 lat=7.504s E=4.212J cost=5.858 avgQ=0.00 t=4.064s
+  [full] ep 43/50 | reward=-5.003 loss=0 lat=6.596s E=3.410J cost=5.003 avgQ=0.00 t=4.027s
+  [full] ep 44/50 | reward=-6.112 loss=0 lat=7.831s E=4.393J cost=6.112 avgQ=0.00 t=4.087s
+  [full] ep 45/50 | reward=-5.471 loss=0 lat=7.118s E=3.823J cost=5.471 avgQ=0.00 t=4.11s
+  [full] ep 46/50 | reward=-5.701 loss=0 lat=7.373s E=4.028J cost=5.701 avgQ=0.00 t=4.149s
+  [full] ep 47/50 | reward=-5.856 loss=0 lat=7.572s E=4.140J cost=5.856 avgQ=0.00 t=4.213s
+  [full] ep 48/50 | reward=-6.490 loss=0 lat=8.362s E=4.617J cost=6.490 avgQ=0.00 t=4.141s
+  [full] ep 49/50 | reward=-5.794 loss=0 lat=7.578s E=4.010J cost=5.794 avgQ=0.00 t=4.05s
+  [full] ep 50/50 | reward=-4.938 loss=0 lat=6.487s E=3.389J cost=4.938 avgQ=0.00 t=4.079s
+[Classical] seed=2024 DONE | reward=-6.0260 lat=7.7624s E=4.2895J miss=0.9374 train=215.6s
+
+[Classical] seed=2025
+  [full] ep  1/50 | reward=-7.328 loss=0 lat=9.546s E=5.111J cost=7.328 avgQ=0.00 t=3.965s
+  [full] ep  2/50 | reward=-6.802 loss=0 lat=8.892s E=4.712J cost=6.802 avgQ=0.00 t=3.565s
+  [full] ep  3/50 | reward=-8.048 loss=0 lat=10.464s E=5.633J cost=8.048 avgQ=0.00 t=3.51s
+  [full] ep  4/50 | reward=-6.929 loss=0 lat=9.101s E=4.757J cost=6.929 avgQ=0.00 t=3.546s
+  [full] ep  5/50 | reward=-7.208 loss=0 lat=9.403s E=5.013J cost=7.208 avgQ=0.00 t=3.615s
+  [full] ep  6/50 | reward=-7.729 loss=0 lat=10.014s E=5.445J cost=7.729 avgQ=0.00 t=3.516s
+  [full] ep  7/50 | reward=-6.255 loss=0 lat=8.240s E=4.269J cost=6.255 avgQ=0.00 t=3.47s
+  [full] ep  8/50 | reward=-6.463 loss=0 lat=8.547s E=4.379J cost=6.463 avgQ=0.00 t=3.663s
+  [full] ep  9/50 | reward=-8.177 loss=0 lat=10.658s E=5.696J cost=8.177 avgQ=0.00 t=3.569s
+  [full] ep 10/50 | reward=-7.881 loss=0 lat=10.291s E=5.470J cost=7.881 avgQ=0.00 t=3.575s
+  [full] ep 11/50 | reward=-6.489 loss=0 lat=8.537s E=4.441J cost=6.489 avgQ=0.00 t=3.654s
+  [full] ep 12/50 | reward=-7.027 loss=0 lat=9.172s E=4.882J cost=7.027 avgQ=0.00 t=3.528s
+  [full] ep 13/50 | reward=-5.936 loss=0 lat=7.846s E=4.026J cost=5.936 avgQ=0.00 t=3.62s
+  [full] ep 14/50 | reward=-6.840 loss=0 lat=9.012s E=4.668J cost=6.840 avgQ=0.00 t=3.571s
+  [full] ep 15/50 | reward=-7.004 loss=0 lat=9.152s E=4.856J cost=7.004 avgQ=0.00 t=3.501s
+  [full] ep 16/50 | reward=-7.003 loss=0 lat=9.189s E=4.817J cost=7.003 avgQ=0.00 t=3.554s
+  [full] ep 17/50 | reward=-7.244 loss=0 lat=9.495s E=4.993J cost=7.244 avgQ=0.00 t=3.516s
+  [full] ep 18/50 | reward=-8.447 loss=0 lat=11.028s E=5.865J cost=8.447 avgQ=0.00 t=3.457s
+  [full] ep 19/50 | reward=-6.721 loss=0 lat=8.851s E=4.590J cost=6.721 avgQ=0.00 t=3.582s
+  [full] ep 20/50 | reward=-6.301 loss=0 lat=8.338s E=4.263J cost=6.301 avgQ=0.00 t=3.523s
+  [full] ep 21/50 | reward=-6.588 loss=0 lat=8.608s E=4.569J cost=6.588 avgQ=0.00 t=3.432s
+  [full] ep 22/50 | reward=-6.441 loss=0 lat=8.475s E=4.407J cost=6.441 avgQ=0.00 t=3.633s
+  [full] ep 23/50 | reward=-7.455 loss=0 lat=9.737s E=5.173J cost=7.455 avgQ=0.00 t=3.394s
+  [full] ep 24/50 | reward=-6.153 loss=0 lat=8.160s E=4.147J cost=6.153 avgQ=0.00 t=3.56s
+  [full] ep 25/50 | reward=-6.532 loss=0 lat=8.624s E=4.439J cost=6.532 avgQ=0.00 t=3.581s
+  [full] ep 26/50 | reward=-7.196 loss=0 lat=9.481s E=4.911J cost=7.196 avgQ=0.00 t=3.628s
+  [full] ep 27/50 | reward=-7.589 loss=0 lat=9.937s E=5.242J cost=7.589 avgQ=0.00 t=3.508s
+  [full] ep 28/50 | reward=-6.709 loss=0 lat=8.793s E=4.625J cost=6.709 avgQ=0.00 t=3.61s
+  [full] ep 29/50 | reward=-8.281 loss=0 lat=10.819s E=5.742J cost=8.281 avgQ=0.00 t=3.53s
+  [full] ep 30/50 | reward=-6.628 loss=0 lat=8.714s E=4.542J cost=6.628 avgQ=0.00 t=3.507s
+  [full] ep 31/50 | reward=-8.159 loss=0 lat=10.573s E=5.744J cost=8.159 avgQ=0.00 t=3.511s
+  [full] ep 32/50 | reward=-5.775 loss=0 lat=7.628s E=3.922J cost=5.775 avgQ=0.00 t=3.489s
+  [full] ep 33/50 | reward=-7.136 loss=0 lat=9.413s E=4.859J cost=7.136 avgQ=0.00 t=3.627s
+  [full] ep 34/50 | reward=-7.686 loss=0 lat=9.972s E=5.400J cost=7.686 avgQ=0.00 t=3.557s
+  [full] ep 35/50 | reward=-8.125 loss=0 lat=10.552s E=5.699J cost=8.125 avgQ=0.00 t=3.572s
+  [full] ep 36/50 | reward=-6.914 loss=0 lat=9.086s E=4.741J cost=6.914 avgQ=0.00 t=3.505s
+  [full] ep 37/50 | reward=-6.433 loss=0 lat=8.497s E=4.369J cost=6.433 avgQ=0.00 t=3.566s
+  [full] ep 38/50 | reward=-8.293 loss=0 lat=10.811s E=5.776J cost=8.293 avgQ=0.00 t=3.581s
+  [full] ep 39/50 | reward=-6.616 loss=0 lat=8.639s E=4.593J cost=6.616 avgQ=0.00 t=3.687s
+  [full] ep 40/50 | reward=-7.921 loss=0 lat=10.388s E=5.453J cost=7.921 avgQ=0.00 t=3.633s
+  [full] ep 41/50 | reward=-7.482 loss=0 lat=9.813s E=5.151J cost=7.482 avgQ=0.00 t=3.599s
+  [full] ep 42/50 | reward=-6.239 loss=0 lat=8.243s E=4.235J cost=6.239 avgQ=0.00 t=3.53s
+  [full] ep 43/50 | reward=-6.982 loss=0 lat=9.131s E=4.834J cost=6.982 avgQ=0.00 t=3.621s
+  [full] ep 44/50 | reward=-7.240 loss=0 lat=9.497s E=4.983J cost=7.240 avgQ=0.00 t=3.622s
+  [full] ep 45/50 | reward=-8.468 loss=0 lat=10.961s E=5.976J cost=8.468 avgQ=0.00 t=3.448s
+  [full] ep 46/50 | reward=-6.671 loss=0 lat=8.799s E=4.543J cost=6.671 avgQ=0.00 t=3.44s
+  [full] ep 47/50 | reward=-6.703 loss=0 lat=8.769s E=4.637J cost=6.703 avgQ=0.00 t=3.585s
+  [full] ep 48/50 | reward=-10.880 loss=0 lat=13.945s E=7.816J cost=10.880 avgQ=0.00 t=3.493s
+  [full] ep 49/50 | reward=-6.178 loss=0 lat=8.139s E=4.217J cost=6.178 avgQ=0.00 t=3.672s
+  [full] ep 50/50 | reward=-7.335 loss=0 lat=9.607s E=5.063J cost=7.335 avgQ=0.00 t=3.622s
+[Classical] seed=2025 DONE | reward=-7.2971 lat=9.5588s E=5.0355J miss=0.9661 train=178.3s
+
+[Classical] seed=2026
+  [full] ep  1/50 | reward=-7.666 loss=0 lat=10.133s E=5.198J cost=7.666 avgQ=0.00 t=4.028s
+  [full] ep  2/50 | reward=-9.393 loss=0 lat=12.297s E=6.488J cost=9.393 avgQ=0.00 t=3.563s
+  [full] ep  3/50 | reward=-8.342 loss=0 lat=10.988s E=5.696J cost=8.342 avgQ=0.00 t=3.598s
+  [full] ep  4/50 | reward=-8.070 loss=0 lat=10.637s E=5.502J cost=8.070 avgQ=0.00 t=3.652s
+  [full] ep  5/50 | reward=-9.287 loss=0 lat=12.172s E=6.403J cost=9.287 avgQ=0.00 t=3.483s
+  [full] ep  6/50 | reward=-8.820 loss=0 lat=11.538s E=6.103J cost=8.820 avgQ=0.00 t=3.518s
+  [full] ep  7/50 | reward=-7.412 loss=0 lat=9.832s E=4.992J cost=7.412 avgQ=0.00 t=3.65s
+  [full] ep  8/50 | reward=-7.348 loss=0 lat=9.759s E=4.936J cost=7.348 avgQ=0.00 t=3.614s
+  [full] ep  9/50 | reward=-11.078 loss=0 lat=14.424s E=7.731J cost=11.078 avgQ=0.00 t=3.45s
+  [full] ep 10/50 | reward=-9.111 loss=0 lat=11.927s E=6.295J cost=9.111 avgQ=0.00 t=3.59s
+  [full] ep 11/50 | reward=-7.667 loss=0 lat=10.134s E=5.201J cost=7.667 avgQ=0.00 t=3.597s
+  [full] ep 12/50 | reward=-7.339 loss=0 lat=9.729s E=4.949J cost=7.339 avgQ=0.00 t=3.63s
+  [full] ep 13/50 | reward=-7.845 loss=0 lat=10.358s E=5.332J cost=7.845 avgQ=0.00 t=3.691s
+  [full] ep 14/50 | reward=-6.920 loss=0 lat=9.198s E=4.641J cost=6.920 avgQ=0.00 t=3.53s
+  [full] ep 15/50 | reward=-10.601 loss=0 lat=13.897s E=7.305J cost=10.601 avgQ=0.00 t=3.481s
+  [full] ep 16/50 | reward=-10.758 loss=0 lat=14.034s E=7.482J cost=10.758 avgQ=0.00 t=3.572s
+  [full] ep 17/50 | reward=-8.320 loss=0 lat=10.969s E=5.671J cost=8.320 avgQ=0.00 t=3.593s
+  [full] ep 18/50 | reward=-8.626 loss=0 lat=11.381s E=5.871J cost=8.626 avgQ=0.00 t=3.613s
+  [full] ep 19/50 | reward=-9.761 loss=0 lat=12.740s E=6.782J cost=9.761 avgQ=0.00 t=3.575s
+  [full] ep 20/50 | reward=-9.266 loss=0 lat=12.153s E=6.380J cost=9.266 avgQ=0.00 t=3.525s
+  [full] ep 21/50 | reward=-10.230 loss=0 lat=13.412s E=7.049J cost=10.230 avgQ=0.00 t=3.56s
+  [full] ep 22/50 | reward=-10.143 loss=0 lat=13.297s E=6.989J cost=10.143 avgQ=0.00 t=3.55s
+  [full] ep 23/50 | reward=-7.803 loss=0 lat=10.347s E=5.259J cost=7.803 avgQ=0.00 t=3.593s
+  [full] ep 24/50 | reward=-10.057 loss=0 lat=13.149s E=6.966J cost=10.057 avgQ=0.00 t=3.603s
+  [full] ep 25/50 | reward=-8.271 loss=0 lat=10.881s E=5.661J cost=8.271 avgQ=0.00 t=3.542s
+  [full] ep 26/50 | reward=-8.573 loss=0 lat=11.202s E=5.944J cost=8.573 avgQ=0.00 t=3.675s
+  [full] ep 27/50 | reward=-7.465 loss=0 lat=9.874s E=5.056J cost=7.465 avgQ=0.00 t=3.65s
+  [full] ep 28/50 | reward=-7.177 loss=0 lat=9.523s E=4.832J cost=7.177 avgQ=0.00 t=3.603s
+  [full] ep 29/50 | reward=-6.762 loss=0 lat=9.015s E=4.509J cost=6.762 avgQ=0.00 t=3.618s
+  [full] ep 30/50 | reward=-6.135 loss=0 lat=8.221s E=4.048J cost=6.135 avgQ=0.00 t=3.625s
+  [full] ep 31/50 | reward=-8.889 loss=0 lat=11.676s E=6.103J cost=8.889 avgQ=0.00 t=3.634s
+  [full] ep 32/50 | reward=-6.115 loss=0 lat=8.186s E=4.043J cost=6.115 avgQ=0.00 t=3.578s
+  [full] ep 33/50 | reward=-8.315 loss=0 lat=10.950s E=5.680J cost=8.315 avgQ=0.00 t=3.615s
+  [full] ep 34/50 | reward=-9.045 loss=0 lat=11.901s E=6.189J cost=9.045 avgQ=0.00 t=3.52s
+  [full] ep 35/50 | reward=-7.744 loss=0 lat=10.229s E=5.260J cost=7.744 avgQ=0.00 t=3.597s
+  [full] ep 36/50 | reward=-8.249 loss=0 lat=10.866s E=5.632J cost=8.249 avgQ=0.00 t=3.633s
+  [full] ep 37/50 | reward=-8.535 loss=0 lat=11.240s E=5.830J cost=8.535 avgQ=0.00 t=3.516s
+  [full] ep 38/50 | reward=-9.318 loss=0 lat=12.194s E=6.441J cost=9.318 avgQ=0.00 t=3.523s
+  [full] ep 39/50 | reward=-8.580 loss=0 lat=11.279s E=5.881J cost=8.580 avgQ=0.00 t=3.576s
+  [full] ep 40/50 | reward=-6.611 loss=0 lat=8.828s E=4.394J cost=6.611 avgQ=0.00 t=3.646s
+  [full] ep 41/50 | reward=-7.729 loss=0 lat=10.217s E=5.241J cost=7.729 avgQ=0.00 t=3.524s
+  [full] ep 42/50 | reward=-8.760 loss=0 lat=11.477s E=6.043J cost=8.760 avgQ=0.00 t=3.578s
+  [full] ep 43/50 | reward=-7.472 loss=0 lat=9.904s E=5.039J cost=7.472 avgQ=0.00 t=3.667s
+  [full] ep 44/50 | reward=-7.575 loss=0 lat=10.034s E=5.115J cost=7.575 avgQ=0.00 t=3.616s
+  [full] ep 45/50 | reward=-7.790 loss=0 lat=10.251s E=5.328J cost=7.790 avgQ=0.00 t=3.623s
+  [full] ep 46/50 | reward=-10.000 loss=0 lat=13.114s E=6.886J cost=10.000 avgQ=0.00 t=3.569s
+  [full] ep 47/50 | reward=-8.294 loss=0 lat=10.942s E=5.645J cost=8.294 avgQ=0.00 t=3.525s
+  [full] ep 48/50 | reward=-10.836 loss=0 lat=14.148s E=7.523J cost=10.836 avgQ=0.00 t=3.581s
+  [full] ep 49/50 | reward=-8.448 loss=0 lat=11.110s E=5.786J cost=8.448 avgQ=0.00 t=3.587s
+  [full] ep 50/50 | reward=-7.737 loss=0 lat=10.225s E=5.249J cost=7.737 avgQ=0.00 t=3.572s
+[Classical] seed=2026 DONE | reward=-9.0980 lat=11.9421s E=6.2538J miss=0.9558 train=179.7s
+
+[Classical] seed=2027
+  [full] ep  1/50 | reward=-7.858 loss=0 lat=10.095s E=5.621J cost=7.858 avgQ=0.00 t=4.646s
+  [full] ep  2/50 | reward=-8.295 loss=0 lat=10.630s E=5.961J cost=8.295 avgQ=0.00 t=4.189s
+  [full] ep  3/50 | reward=-7.981 loss=0 lat=10.249s E=5.714J cost=7.981 avgQ=0.00 t=4.134s
+  [full] ep  4/50 | reward=-7.053 loss=0 lat=9.098s E=5.007J cost=7.053 avgQ=0.00 t=4.11s
+  [full] ep  5/50 | reward=-6.367 loss=0 lat=8.352s E=4.381J cost=6.367 avgQ=0.00 t=4.123s
+  [full] ep  6/50 | reward=-8.251 loss=0 lat=10.565s E=5.936J cost=8.251 avgQ=0.00 t=4.067s
+  [full] ep  7/50 | reward=-8.552 loss=0 lat=10.931s E=6.174J cost=8.552 avgQ=0.00 t=4.132s
+  [full] ep  8/50 | reward=-7.177 loss=0 lat=9.322s E=5.032J cost=7.177 avgQ=0.00 t=4.14s
+  [full] ep  9/50 | reward=-7.053 loss=0 lat=9.168s E=4.937J cost=7.053 avgQ=0.00 t=4.123s
+  [full] ep 10/50 | reward=-7.397 loss=0 lat=9.577s E=5.217J cost=7.397 avgQ=0.00 t=4.204s
+  [full] ep 11/50 | reward=-7.202 loss=0 lat=9.353s E=5.050J cost=7.202 avgQ=0.00 t=4.04s
+  [full] ep 12/50 | reward=-6.880 loss=0 lat=8.905s E=4.856J cost=6.880 avgQ=0.00 t=4.121s
+  [full] ep 13/50 | reward=-7.381 loss=0 lat=9.539s E=5.222J cost=7.381 avgQ=0.00 t=4.125s
+  [full] ep 14/50 | reward=-7.762 loss=0 lat=9.995s E=5.529J cost=7.762 avgQ=0.00 t=4.13s
+  [full] ep 15/50 | reward=-7.138 loss=0 lat=9.206s E=5.069J cost=7.138 avgQ=0.00 t=4.137s
+  [full] ep 16/50 | reward=-6.297 loss=0 lat=8.256s E=4.339J cost=6.297 avgQ=0.00 t=4.086s
+  [full] ep 17/50 | reward=-6.005 loss=0 lat=7.909s E=4.101J cost=6.005 avgQ=0.00 t=4.06s
+  [full] ep 18/50 | reward=-9.073 loss=0 lat=11.600s E=6.546J cost=9.073 avgQ=0.00 t=4.144s
+  [full] ep 19/50 | reward=-7.603 loss=0 lat=9.865s E=5.342J cost=7.603 avgQ=0.00 t=4.139s
+  [full] ep 20/50 | reward=-8.034 loss=0 lat=10.333s E=5.734J cost=8.034 avgQ=0.00 t=4.062s
+  [full] ep 21/50 | reward=-7.941 loss=0 lat=10.206s E=5.676J cost=7.941 avgQ=0.00 t=4.166s
+  [full] ep 22/50 | reward=-7.235 loss=0 lat=9.377s E=5.094J cost=7.235 avgQ=0.00 t=4.08s
+  [full] ep 23/50 | reward=-7.740 loss=0 lat=9.986s E=5.494J cost=7.740 avgQ=0.00 t=4.217s
+  [full] ep 24/50 | reward=-7.739 loss=0 lat=9.986s E=5.493J cost=7.739 avgQ=0.00 t=4.13s
+  [full] ep 25/50 | reward=-7.401 loss=0 lat=9.574s E=5.229J cost=7.401 avgQ=0.00 t=4.089s
+  [full] ep 26/50 | reward=-6.668 loss=0 lat=8.718s E=4.617J cost=6.668 avgQ=0.00 t=4.067s
+  [full] ep 27/50 | reward=-6.611 loss=0 lat=8.588s E=4.633J cost=6.611 avgQ=0.00 t=4.137s
+  [full] ep 28/50 | reward=-7.004 loss=0 lat=9.107s E=4.900J cost=7.004 avgQ=0.00 t=4.07s
+  [full] ep 29/50 | reward=-6.715 loss=0 lat=8.757s E=4.674J cost=6.715 avgQ=0.00 t=4.124s
+  [full] ep 30/50 | reward=-7.664 loss=0 lat=9.871s E=5.456J cost=7.664 avgQ=0.00 t=4.167s
+  [full] ep 31/50 | reward=-7.601 loss=0 lat=9.842s E=5.360J cost=7.601 avgQ=0.00 t=4.088s
+  [full] ep 32/50 | reward=-8.198 loss=0 lat=10.530s E=5.867J cost=8.198 avgQ=0.00 t=4.169s
+  [full] ep 33/50 | reward=-7.251 loss=0 lat=9.367s E=5.136J cost=7.251 avgQ=0.00 t=4.086s
+  [full] ep 34/50 | reward=-7.029 loss=0 lat=9.138s E=4.919J cost=7.029 avgQ=0.00 t=4.245s
+  [full] ep 35/50 | reward=-6.731 loss=0 lat=8.746s E=4.716J cost=6.731 avgQ=0.00 t=4.131s
+  [full] ep 36/50 | reward=-7.120 loss=0 lat=9.193s E=5.047J cost=7.120 avgQ=0.00 t=4.113s
+  [full] ep 37/50 | reward=-8.416 loss=0 lat=10.761s E=6.070J cost=8.416 avgQ=0.00 t=4.139s
+  [full] ep 38/50 | reward=-7.015 loss=0 lat=9.003s E=5.027J cost=7.015 avgQ=0.00 t=4.116s
+  [full] ep 39/50 | reward=-6.740 loss=0 lat=8.788s E=4.692J cost=6.740 avgQ=0.00 t=4.105s
+  [full] ep 40/50 | reward=-6.280 loss=0 lat=8.195s E=4.365J cost=6.280 avgQ=0.00 t=4.119s
+  [full] ep 41/50 | reward=-7.196 loss=0 lat=9.357s E=5.034J cost=7.196 avgQ=0.00 t=4.121s
+  [full] ep 42/50 | reward=-7.754 loss=0 lat=9.975s E=5.534J cost=7.754 avgQ=0.00 t=4.153s
+  [full] ep 43/50 | reward=-6.587 loss=0 lat=8.558s E=4.616J cost=6.587 avgQ=0.00 t=4.073s
+  [full] ep 44/50 | reward=-7.739 loss=0 lat=9.986s E=5.492J cost=7.739 avgQ=0.00 t=4.097s
+  [full] ep 45/50 | reward=-7.710 loss=0 lat=9.910s E=5.510J cost=7.710 avgQ=0.00 t=4.168s
+  [full] ep 46/50 | reward=-6.589 loss=0 lat=8.629s E=4.549J cost=6.589 avgQ=0.00 t=4.099s
+  [full] ep 47/50 | reward=-7.964 loss=0 lat=10.237s E=5.690J cost=7.964 avgQ=0.00 t=4.118s
+  [full] ep 48/50 | reward=-9.557 loss=0 lat=12.174s E=6.940J cost=9.557 avgQ=0.00 t=4.122s
+  [full] ep 49/50 | reward=-6.726 loss=0 lat=8.749s E=4.703J cost=6.726 avgQ=0.00 t=4.168s
+  [full] ep 50/50 | reward=-8.475 loss=0 lat=10.912s E=6.038J cost=8.475 avgQ=0.00 t=4.146s
+[Classical] seed=2027 DONE | reward=-7.8149 lat=10.0902s E=5.5397J miss=0.9665 train=206.8s
+
+[Classical] seed=2028
+  [full] ep  1/50 | reward=-10.053 loss=0 lat=13.276s E=6.829J cost=10.053 avgQ=0.00 t=4.104s
+  [full] ep  2/50 | reward=-8.293 loss=0 lat=11.014s E=5.571J cost=8.293 avgQ=0.00 t=3.648s
+  [full] ep  3/50 | reward=-8.896 loss=0 lat=11.797s E=5.995J cost=8.896 avgQ=0.00 t=3.574s
+  [full] ep  4/50 | reward=-9.727 loss=0 lat=12.831s E=6.622J cost=9.727 avgQ=0.00 t=3.579s
+  [full] ep  5/50 | reward=-11.306 loss=0 lat=14.885s E=7.727J cost=11.306 avgQ=0.00 t=3.574s
+  [full] ep  6/50 | reward=-9.586 loss=0 lat=12.691s E=6.481J cost=9.586 avgQ=0.00 t=3.574s
+  [full] ep  7/50 | reward=-10.829 loss=0 lat=14.258s E=7.401J cost=10.829 avgQ=0.00 t=3.516s
+  [full] ep  8/50 | reward=-8.257 loss=0 lat=10.981s E=5.533J cost=8.257 avgQ=0.00 t=3.551s
+  [full] ep  9/50 | reward=-8.599 loss=0 lat=11.428s E=5.771J cost=8.599 avgQ=0.00 t=3.662s
+  [full] ep 10/50 | reward=-10.037 loss=0 lat=13.264s E=6.811J cost=10.037 avgQ=0.00 t=3.499s
+  [full] ep 11/50 | reward=-10.193 loss=0 lat=13.426s E=6.961J cost=10.193 avgQ=0.00 t=3.535s
+  [full] ep 12/50 | reward=-8.993 loss=0 lat=11.928s E=6.058J cost=8.993 avgQ=0.00 t=3.537s
+  [full] ep 13/50 | reward=-8.668 loss=0 lat=11.494s E=5.841J cost=8.668 avgQ=0.00 t=3.524s
+  [full] ep 14/50 | reward=-9.291 loss=0 lat=12.290s E=6.292J cost=9.291 avgQ=0.00 t=3.509s
+  [full] ep 15/50 | reward=-10.829 loss=0 lat=14.266s E=7.392J cost=10.829 avgQ=0.00 t=3.554s
+  [full] ep 16/50 | reward=-10.087 loss=0 lat=13.309s E=6.865J cost=10.087 avgQ=0.00 t=3.615s
+  [full] ep 17/50 | reward=-9.013 loss=0 lat=11.958s E=6.069J cost=9.013 avgQ=0.00 t=3.542s
+  [full] ep 18/50 | reward=-10.539 loss=0 lat=13.898s E=7.180J cost=10.539 avgQ=0.00 t=3.605s
+  [full] ep 19/50 | reward=-10.138 loss=0 lat=13.379s E=6.896J cost=10.138 avgQ=0.00 t=3.559s
+  [full] ep 20/50 | reward=-10.214 loss=0 lat=13.497s E=6.932J cost=10.214 avgQ=0.00 t=3.601s
+  [full] ep 21/50 | reward=-9.626 loss=0 lat=12.725s E=6.526J cost=9.626 avgQ=0.00 t=3.505s
+  [full] ep 22/50 | reward=-8.962 loss=0 lat=11.870s E=6.054J cost=8.962 avgQ=0.00 t=3.591s
+  [full] ep 23/50 | reward=-10.386 loss=0 lat=13.696s E=7.076J cost=10.386 avgQ=0.00 t=3.541s
+  [full] ep 24/50 | reward=-10.116 loss=0 lat=13.382s E=6.851J cost=10.116 avgQ=0.00 t=3.564s
+  [full] ep 25/50 | reward=-8.884 loss=0 lat=11.785s E=5.983J cost=8.884 avgQ=0.00 t=3.505s
+  [full] ep 26/50 | reward=-11.165 loss=0 lat=14.711s E=7.619J cost=11.165 avgQ=0.00 t=3.577s
+  [full] ep 27/50 | reward=-8.888 loss=0 lat=11.812s E=5.964J cost=8.888 avgQ=0.00 t=3.6s
+  [full] ep 28/50 | reward=-9.065 loss=0 lat=12.003s E=6.128J cost=9.065 avgQ=0.00 t=3.559s
+  [full] ep 29/50 | reward=-9.137 loss=0 lat=12.120s E=6.153J cost=9.137 avgQ=0.00 t=3.593s
+  [full] ep 30/50 | reward=-8.768 loss=0 lat=11.642s E=5.894J cost=8.768 avgQ=0.00 t=3.636s
+  [full] ep 31/50 | reward=-10.316 loss=0 lat=13.588s E=7.045J cost=10.316 avgQ=0.00 t=3.532s
+  [full] ep 32/50 | reward=-9.973 loss=0 lat=13.174s E=6.773J cost=9.973 avgQ=0.00 t=3.588s
+  [full] ep 33/50 | reward=-10.007 loss=0 lat=13.240s E=6.774J cost=10.007 avgQ=0.00 t=3.669s
+  [full] ep 34/50 | reward=-10.261 loss=0 lat=13.542s E=6.981J cost=10.261 avgQ=0.00 t=3.51s
+  [full] ep 35/50 | reward=-11.580 loss=0 lat=15.233s E=7.928J cost=11.580 avgQ=0.00 t=3.534s
+  [full] ep 36/50 | reward=-11.270 loss=0 lat=14.827s E=7.713J cost=11.270 avgQ=0.00 t=3.531s
+  [full] ep 37/50 | reward=-9.735 loss=0 lat=12.868s E=6.601J cost=9.735 avgQ=0.00 t=3.578s
+  [full] ep 38/50 | reward=-9.702 loss=0 lat=12.835s E=6.569J cost=9.702 avgQ=0.00 t=3.494s
+  [full] ep 39/50 | reward=-8.987 loss=0 lat=11.927s E=6.048J cost=8.987 avgQ=0.00 t=3.591s
+  [full] ep 40/50 | reward=-11.631 loss=0 lat=15.277s E=7.986J cost=11.631 avgQ=0.00 t=3.557s
+  [full] ep 41/50 | reward=-9.433 loss=0 lat=12.506s E=6.361J cost=9.433 avgQ=0.00 t=3.618s
+  [full] ep 42/50 | reward=-9.666 loss=0 lat=12.786s E=6.546J cost=9.666 avgQ=0.00 t=3.477s
+  [full] ep 43/50 | reward=-13.506 loss=0 lat=17.692s E=9.320J cost=13.506 avgQ=0.00 t=3.545s
+  [full] ep 44/50 | reward=-6.879 loss=0 lat=9.225s E=4.533J cost=6.879 avgQ=0.00 t=3.678s
+  [full] ep 45/50 | reward=-8.999 loss=0 lat=11.913s E=6.085J cost=8.999 avgQ=0.00 t=3.575s
+  [full] ep 46/50 | reward=-10.610 loss=0 lat=13.981s E=7.240J cost=10.610 avgQ=0.00 t=3.533s
+  [full] ep 47/50 | reward=-10.729 loss=0 lat=14.142s E=7.315J cost=10.729 avgQ=0.00 t=3.614s
+  [full] ep 48/50 | reward=-13.336 loss=0 lat=17.453s E=9.219J cost=13.336 avgQ=0.00 t=3.485s
+  [full] ep 49/50 | reward=-9.606 loss=0 lat=12.729s E=6.483J cost=9.606 avgQ=0.00 t=3.636s
+  [full] ep 50/50 | reward=-9.451 loss=0 lat=12.494s E=6.408J cost=9.451 avgQ=0.00 t=3.512s
+[Classical] seed=2028 DONE | reward=-10.5194 lat=13.8762s E=7.1626J miss=0.9739 train=178.8s
+LuST-24h pool: 442557 samples; mean=16.651 m/s
+Experiment: 6 configs × 5 seeds × 50 episodes × 1000 timesteps
+
+=== TÓM TẮT SAU Classical (5 seeds) ===
+Metric                 Mean           Std
+------------------------------------------
+reward                   -8.15108      1.72219
+latency                  10.64594      2.34095
+energy                    5.65622      1.10599
+cost                      8.15108      1.72219
+deadline_miss             0.95994      0.01417
+training_time_s         191.81783     17.93467
+trainable_parameters        15744
+[LuST] speed pool: 138896 mẫu, mean=13.09 m/s, median=12.56 m/s
+[LuST-24h] speed pool: 442557 mẫu, mean=16.65 m/s, median=13.68 m/s
+
+[HRL+VQC] seed=2024
+  ep 01/50 reward=-4.4764 lat=6.0956s E=2.8571J loss=0.08597 t=3.07s
+  ep 02/50 reward=-4.3462 lat=5.9240s E=2.7684J loss=0.04458 t=3.06s
+  ep 03/50 reward=-5.1115 lat=6.8587s E=3.3643J loss=0.04775 t=2.97s
+  ep 04/50 reward=-5.8474 lat=7.8708s E=3.8240J loss=0.04973 t=3.04s
+  ep 05/50 reward=-3.6278 lat=4.9537s E=2.3020J loss=0.03379 t=2.95s
+  ep 06/50 reward=-5.4671 lat=7.2944s E=3.6399J loss=0.09779 t=3.06s
+  ep 07/50 reward=-3.6069 lat=4.9018s E=2.3121J loss=0.0544 t=2.89s
+  ep 08/50 reward=-4.3851 lat=5.9618s E=2.8084J loss=0.03959 t=3.05s
+  ep 09/50 reward=-4.2309 lat=5.7769s E=2.6850J loss=0.04576 t=3.11s
+  ep 10/50 reward=-3.6005 lat=4.8892s E=2.3118J loss=0.03896 t=2.96s
+  ep 11/50 reward=-3.7503 lat=5.0965s E=2.4041J loss=0.03534 t=2.89s
+  ep 12/50 reward=-3.7647 lat=5.0307s E=2.4987J loss=0.01197 t=3.07s
+  ep 13/50 reward=-3.8864 lat=5.3157s E=2.4571J loss=0.01512 t=2.99s
+  ep 14/50 reward=-3.9346 lat=5.3378s E=2.5314J loss=0.03062 t=3.01s
+  ep 15/50 reward=-3.7461 lat=5.0993s E=2.3929J loss=0.0008413 t=2.97s
+  ep 16/50 reward=-3.9897 lat=5.4206s E=2.5588J loss=0.0464 t=3.05s
+  ep 17/50 reward=-3.5329 lat=4.8630s E=2.2027J loss=0.05834 t=3.01s
+  ep 18/50 reward=-3.7054 lat=5.0783s E=2.3325J loss=0.01449 t=2.97s
+  ep 19/50 reward=-4.3569 lat=5.9583s E=2.7556J loss=0.03403 t=2.99s
+  ep 20/50 reward=-4.0841 lat=5.5698s E=2.5983J loss=0.02146 t=3.08s
+  ep 21/50 reward=-4.2174 lat=5.7206s E=2.7142J loss=0.01123 t=2.98s
+  ep 22/50 reward=-4.4158 lat=5.9449s E=2.8867J loss=0.08768 t=2.91s
+  ep 23/50 reward=-4.7405 lat=6.3857s E=3.0952J loss=0.005834 t=3.09s
+  ep 24/50 reward=-5.3699 lat=7.2001s E=3.5397J loss=0.0048 t=2.95s
+  ep 25/50 reward=-4.1678 lat=5.7258s E=2.6098J loss=0.001906 t=2.99s
+  ep 26/50 reward=-5.1080 lat=6.8939s E=3.3221J loss=0.002009 t=2.97s
+  ep 27/50 reward=-4.1423 lat=5.6503s E=2.6343J loss=0.0006255 t=3.02s
+  ep 28/50 reward=-4.2064 lat=5.7103s E=2.7024J loss=0.0386 t=3.00s
+  ep 29/50 reward=-4.1828 lat=5.6354s E=2.7303J loss=1.978e-05 t=3.17s
+  ep 30/50 reward=-4.2067 lat=5.6824s E=2.7309J loss=0.06078 t=3.04s
+  ep 31/50 reward=-3.8528 lat=5.2382s E=2.4674J loss=0.1154 t=3.11s
+  ep 32/50 reward=-4.1190 lat=5.6147s E=2.6234J loss=0.001877 t=3.16s
+  ep 33/50 reward=-4.1930 lat=5.6937s E=2.6923J loss=0.03751 t=3.09s
+  ep 34/50 reward=-3.9462 lat=5.3219s E=2.5705J loss=0.04916 t=2.98s
+  ep 35/50 reward=-3.8419 lat=5.2328s E=2.4509J loss=0.004312 t=3.01s
+  ep 36/50 reward=-4.2497 lat=5.7102s E=2.7892J loss=0.003774 t=3.09s
+  ep 37/50 reward=-3.6783 lat=5.0608s E=2.2958J loss=0.004475 t=3.16s
+  ep 38/50 reward=-3.8431 lat=5.2792s E=2.4069J loss=0.003515 t=3.16s
+  ep 39/50 reward=-3.8415 lat=5.2636s E=2.4194J loss=0.003846 t=3.04s
+  ep 40/50 reward=-3.8458 lat=5.2556s E=2.4360J loss=0.004261 t=3.18s
+  ep 41/50 reward=-3.8469 lat=5.2762s E=2.4176J loss=0.005091 t=3.15s
+  ep 42/50 reward=-4.0982 lat=5.5020s E=2.6943J loss=0.001935 t=3.05s
+  ep 43/50 reward=-3.8459 lat=5.2963s E=2.3955J loss=0.00298 t=3.04s
+  ep 44/50 reward=-3.9156 lat=5.2893s E=2.5420J loss=0.04126 t=3.07s
+  ep 45/50 reward=-3.9481 lat=5.3914s E=2.5048J loss=0.09626 t=3.21s
+  ep 46/50 reward=-3.7847 lat=5.1556s E=2.4138J loss=0.003009 t=3.18s
+  ep 47/50 reward=-3.9595 lat=5.3733s E=2.5457J loss=0.2347 t=3.12s
+  ep 48/50 reward=-3.8046 lat=5.1874s E=2.4219J loss=0.003571 t=3.05s
+  ep 49/50 reward=-3.8003 lat=5.2276s E=2.3731J loss=0.001862 t=2.91s
+  ep 50/50 reward=-4.7337 lat=6.4055s E=3.0619J loss=0.002462 t=3.15s
+[HRL+VQC] seed=2024 DONE | reward=-4.6047 lat=6.1804s E=3.0291J miss=0.9266 train=152.2s
+
+[HRL+VQC] seed=2025
+  ep 01/50 reward=-3.8600 lat=5.1607s E=2.5592J loss=0.08974 t=2.85s
+  ep 02/50 reward=-3.6032 lat=4.8891s E=2.3172J loss=0.04448 t=2.87s
+  ep 03/50 reward=-3.9231 lat=5.2640s E=2.5822J loss=0.08384 t=2.93s
+  ep 04/50 reward=-3.5885 lat=4.8974s E=2.2796J loss=0.3922 t=2.81s
+  ep 05/50 reward=-3.7921 lat=5.1111s E=2.4730J loss=0.07379 t=2.86s
+  ep 06/50 reward=-3.8859 lat=5.1719s E=2.6000J loss=0.06742 t=2.83s
+  ep 07/50 reward=-3.8368 lat=5.2020s E=2.4716J loss=0.06023 t=2.76s
+  ep 08/50 reward=-3.5957 lat=4.9434s E=2.2481J loss=0.05583 t=2.90s
+  ep 09/50 reward=-3.8028 lat=5.1216s E=2.4840J loss=0.04276 t=2.87s
+  ep 10/50 reward=-3.8770 lat=5.2278s E=2.5262J loss=0.1536 t=2.84s
+  ep 11/50 reward=-3.9983 lat=5.4667s E=2.5299J loss=0.2251 t=2.95s
+  ep 12/50 reward=-5.9663 lat=7.9839s E=3.9486J loss=0.08235 t=2.93s
+  ep 13/50 reward=-5.0790 lat=6.8620s E=3.2961J loss=0.007108 t=3.09s
+  ep 14/50 reward=-5.1657 lat=6.9873s E=3.3441J loss=0.006065 t=3.00s
+  ep 15/50 reward=-5.5781 lat=7.4943s E=3.6620J loss=0.1051 t=2.93s
+  ep 16/50 reward=-6.3445 lat=8.5024s E=4.1866J loss=0.01845 t=2.97s
+  ep 17/50 reward=-6.8388 lat=9.1301s E=4.5476J loss=0.02569 t=3.01s
+  ep 18/50 reward=-5.9112 lat=7.9399s E=3.8825J loss=0.08724 t=2.88s
+  ep 19/50 reward=-5.7262 lat=7.7138s E=3.7386J loss=0.000327 t=3.00s
+  ep 20/50 reward=-6.0077 lat=8.0880s E=3.9274J loss=0.07618 t=2.98s
+  ep 21/50 reward=-5.8156 lat=7.7881s E=3.8431J loss=0.0009893 t=2.92s
+  ep 22/50 reward=-6.3643 lat=8.5212s E=4.2075J loss=0.1084 t=3.06s
+  ep 23/50 reward=-6.9593 lat=9.2748s E=4.6437J loss=0.0008406 t=3.01s
+  ep 24/50 reward=-7.1013 lat=9.5020s E=4.7006J loss=0.04645 t=3.05s
+  ep 25/50 reward=-5.6655 lat=7.6253s E=3.7058J loss=0.04448 t=3.05s
+  ep 26/50 reward=-5.9645 lat=8.0364s E=3.8926J loss=0.04644 t=3.06s
+  ep 27/50 reward=-5.8987 lat=7.8265s E=3.9709J loss=0.0174 t=3.02s
+  ep 28/50 reward=-6.0502 lat=8.0258s E=4.0747J loss=0.00114 t=3.33s
+  ep 29/50 reward=-5.8594 lat=7.7944s E=3.9243J loss=0.001082 t=3.29s
+  ep 30/50 reward=-5.4354 lat=7.3103s E=3.5606J loss=0.003093 t=3.13s
+  ep 31/50 reward=-5.7821 lat=7.6814s E=3.8828J loss=0.002966 t=3.13s
+  ep 32/50 reward=-5.5533 lat=7.4656s E=3.6410J loss=0.06108 t=3.13s
+  ep 33/50 reward=-5.5060 lat=7.3722s E=3.6398J loss=0.05381 t=3.19s
+  ep 34/50 reward=-6.2093 lat=8.2078s E=4.2109J loss=0.3017 t=3.24s
+  ep 35/50 reward=-6.5008 lat=8.6131s E=4.3885J loss=0.001338 t=3.14s
+  ep 36/50 reward=-4.7598 lat=6.3890s E=3.1307J loss=0.0614 t=3.34s
+  ep 37/50 reward=-4.1513 lat=5.6421s E=2.6605J loss=0.03066 t=3.10s
+  ep 38/50 reward=-3.7326 lat=5.0712s E=2.3940J loss=0.03239 t=3.00s
+  ep 39/50 reward=-4.0861 lat=5.5051s E=2.6671J loss=0.02716 t=3.24s
+  ep 40/50 reward=-4.5215 lat=6.0935s E=2.9495J loss=0.01859 t=3.22s
+  ep 41/50 reward=-4.2093 lat=5.6950s E=2.7236J loss=0.02002 t=2.98s
+  ep 42/50 reward=-4.2840 lat=5.7934s E=2.7747J loss=0.006981 t=2.98s
+  ep 43/50 reward=-4.3967 lat=5.9143s E=2.8791J loss=0.0117 t=3.19s
+  ep 44/50 reward=-4.6429 lat=6.2446s E=3.0412J loss=0.004884 t=3.22s
+  ep 45/50 reward=-4.1107 lat=5.5120s E=2.7093J loss=0.007335 t=3.04s
+  ep 46/50 reward=-4.3747 lat=5.9287s E=2.8208J loss=0.003307 t=3.11s
+  ep 47/50 reward=-5.5579 lat=7.3714s E=3.7443J loss=0.004483 t=3.19s
+  ep 48/50 reward=-4.9002 lat=6.4293s E=3.3710J loss=0.002525 t=2.96s
+  ep 49/50 reward=-4.1825 lat=5.6773s E=2.6878J loss=0.002267 t=3.16s
+  ep 50/50 reward=-4.9160 lat=6.5750s E=3.2570J loss=0.002867 t=3.10s
+[HRL+VQC] seed=2025 DONE | reward=-5.1008 lat=6.8406s E=3.3610J miss=0.9282 train=151.8s
+
+[HRL+VQC] seed=2026
+  ep 01/50 reward=-3.3644 lat=4.5143s E=2.2145J loss=0.08966 t=2.86s
+  ep 02/50 reward=-3.2265 lat=4.2762s E=2.1769J loss=0.08284 t=2.92s
+  ep 03/50 reward=-4.0406 lat=5.3956s E=2.6857J loss=0.3859 t=2.97s
+  ep 04/50 reward=-3.9711 lat=5.2943s E=2.6479J loss=0.07697 t=3.01s
+  ep 05/50 reward=-3.3719 lat=4.4657s E=2.2781J loss=0.09167 t=2.92s
+  ep 06/50 reward=-3.2712 lat=4.2631s E=2.2793J loss=0.3526 t=2.84s
+  ep 07/50 reward=-3.3710 lat=4.5685s E=2.1736J loss=0.05391 t=2.92s
+  ep 08/50 reward=-3.3182 lat=4.5063s E=2.1301J loss=0.2386 t=2.86s
+  ep 09/50 reward=-3.2281 lat=4.2150s E=2.2412J loss=0.4646 t=2.79s
+  ep 10/50 reward=-3.1641 lat=4.2066s E=2.1216J loss=0.1599 t=2.92s
+  ep 11/50 reward=-3.3624 lat=4.5061s E=2.2186J loss=0.01775 t=2.87s
+  ep 12/50 reward=-3.3243 lat=4.5165s E=2.1320J loss=0.1168 t=2.98s
+  ep 13/50 reward=-3.5817 lat=4.7782s E=2.3853J loss=0.005706 t=2.98s
+  ep 14/50 reward=-3.3469 lat=4.5352s E=2.1587J loss=0.03292 t=2.89s
+  ep 15/50 reward=-3.3381 lat=4.5011s E=2.1750J loss=0.2289 t=2.90s
+  ep 16/50 reward=-3.3382 lat=4.3969s E=2.2794J loss=0.05094 t=2.99s
+  ep 17/50 reward=-3.3807 lat=4.5274s E=2.2340J loss=3.271e-05 t=2.99s
+  ep 18/50 reward=-3.3645 lat=4.5218s E=2.2072J loss=0.1496 t=3.04s
+  ep 19/50 reward=-3.2165 lat=4.2424s E=2.1906J loss=0.05786 t=2.82s
+  ep 20/50 reward=-3.2333 lat=4.3258s E=2.1408J loss=0.09362 t=2.83s
+  ep 21/50 reward=-3.3005 lat=4.4096s E=2.1913J loss=0.03569 t=3.05s
+  ep 22/50 reward=-3.4296 lat=4.5801s E=2.2790J loss=0.01759 t=3.03s
+  ep 23/50 reward=-3.2749 lat=4.4792s E=2.0706J loss=0.005989 t=3.03s
+  ep 24/50 reward=-3.7590 lat=4.9612s E=2.5568J loss=0.0838 t=3.02s
+  ep 25/50 reward=-4.6574 lat=6.0947s E=3.2202J loss=0.1425 t=3.00s
+  ep 26/50 reward=-4.8131 lat=6.2216s E=3.4047J loss=0.03648 t=3.03s
+  ep 27/50 reward=-4.3769 lat=5.8011s E=2.9526J loss=0.5265 t=3.04s
+  ep 28/50 reward=-4.3388 lat=5.7599s E=2.9176J loss=0.1601 t=2.98s
+  ep 29/50 reward=-4.5119 lat=6.0413s E=2.9825J loss=0.002396 t=3.06s
+  ep 30/50 reward=-4.2042 lat=5.6547s E=2.7537J loss=0.1106 t=3.02s
+  ep 31/50 reward=-4.9415 lat=6.5028s E=3.3802J loss=0.03253 t=2.97s
+  ep 32/50 reward=-4.2446 lat=5.7087s E=2.7805J loss=0.05057 t=3.13s
+  ep 33/50 reward=-4.2087 lat=5.5999s E=2.8175J loss=0.03803 t=2.93s
+  ep 34/50 reward=-4.6197 lat=6.1207s E=3.1187J loss=0.004653 t=2.86s
+  ep 35/50 reward=-4.1958 lat=5.5906s E=2.8011J loss=0.1427 t=2.80s
+  ep 36/50 reward=-4.2541 lat=5.6410s E=2.8672J loss=0.11 t=2.92s
+  ep 37/50 reward=-3.8385 lat=5.1026s E=2.5743J loss=0.004754 t=2.90s
+  ep 38/50 reward=-4.6926 lat=6.1161s E=3.2692J loss=0.0004444 t=2.89s
+  ep 39/50 reward=-4.1220 lat=5.4054s E=2.8386J loss=0.001258 t=2.97s
+  ep 40/50 reward=-3.6882 lat=4.9909s E=2.3855J loss=0.01046 t=3.13s
+  ep 41/50 reward=-3.9258 lat=5.2191s E=2.6326J loss=0.04308 t=2.99s
+  ep 42/50 reward=-3.4032 lat=4.4969s E=2.3095J loss=0.001608 t=3.13s
+  ep 43/50 reward=-4.3500 lat=5.7631s E=2.9370J loss=0.0009959 t=3.43s
+  ep 44/50 reward=-3.4056 lat=4.6011s E=2.2101J loss=0.03107 t=3.04s
+  ep 45/50 reward=-4.3013 lat=5.6275s E=2.9751J loss=0.1548 t=3.42s
+  ep 46/50 reward=-3.3513 lat=4.4864s E=2.2162J loss=0.003458 t=2.93s
+  ep 47/50 reward=-3.3733 lat=4.5535s E=2.1932J loss=0.1072 t=2.91s
+  ep 48/50 reward=-3.2988 lat=4.3589s E=2.2388J loss=0.008912 t=3.04s
+  ep 49/50 reward=-3.4991 lat=4.6540s E=2.3442J loss=0.006225 t=3.10s
+  ep 50/50 reward=-3.5627 lat=4.7829s E=2.3424J loss=0.006459 t=3.15s
+[HRL+VQC] seed=2026 DONE | reward=-3.7879 lat=5.0318s E=2.5439J miss=0.8143 train=149.2s
+
+[HRL+VQC] seed=2027
+  ep 01/50 reward=-3.6915 lat=4.9710s E=2.4120J loss=0.08989 t=2.89s
+  ep 02/50 reward=-3.7375 lat=5.0206s E=2.4545J loss=0.06177 t=3.04s
+  ep 03/50 reward=-3.7842 lat=5.0789s E=2.4895J loss=0.04389 t=2.86s
+  ep 04/50 reward=-3.5239 lat=4.7715s E=2.2762J loss=0.6894 t=2.81s
+  ep 05/50 reward=-3.6208 lat=4.9692s E=2.2724J loss=0.2229 t=2.89s
+  ep 06/50 reward=-3.7276 lat=5.0014s E=2.4537J loss=0.08271 t=2.82s
+  ep 07/50 reward=-3.5659 lat=4.7971s E=2.3347J loss=0.05306 t=2.93s
+  ep 08/50 reward=-3.6931 lat=5.0458s E=2.3403J loss=0.08056 t=2.84s
+  ep 09/50 reward=-3.7525 lat=5.1075s E=2.3975J loss=0.07893 t=2.86s
+  ep 10/50 reward=-3.7590 lat=5.0958s E=2.4223J loss=0.2128 t=2.87s
+  ep 11/50 reward=-3.6486 lat=4.9778s E=2.3194J loss=0.05603 t=2.83s
+  ep 12/50 reward=-3.6808 lat=4.9904s E=2.3713J loss=0.07109 t=2.94s
+  ep 13/50 reward=-3.6550 lat=4.9594s E=2.3505J loss=0.06203 t=2.86s
+  ep 14/50 reward=-3.5807 lat=4.8483s E=2.3130J loss=0.06425 t=2.86s
+  ep 15/50 reward=-3.7392 lat=5.0299s E=2.4484J loss=0.06036 t=2.87s
+  ep 16/50 reward=-3.7653 lat=5.1362s E=2.3945J loss=0.05621 t=2.79s
+  ep 17/50 reward=-3.6855 lat=5.0621s E=2.3088J loss=0.05171 t=2.86s
+  ep 18/50 reward=-4.1487 lat=5.5620s E=2.7354J loss=0.04687 t=2.86s
+  ep 19/50 reward=-3.8564 lat=5.2595s E=2.4533J loss=0.03977 t=2.84s
+  ep 20/50 reward=-3.6888 lat=4.9875s E=2.3902J loss=0.04341 t=2.85s
+  ep 21/50 reward=-3.9584 lat=5.3452s E=2.5715J loss=0.03243 t=2.81s
+  ep 22/50 reward=-3.6898 lat=5.0423s E=2.3374J loss=0.07132 t=2.91s
+  ep 23/50 reward=-3.9142 lat=5.3319s E=2.4964J loss=0.05061 t=2.82s
+  ep 24/50 reward=-3.6860 lat=5.0065s E=2.3656J loss=0.04734 t=2.83s
+  ep 25/50 reward=-3.9330 lat=5.3295s E=2.5364J loss=0.01646 t=2.78s
+  ep 26/50 reward=-4.0415 lat=5.5158s E=2.5672J loss=0.01325 t=2.82s
+  ep 27/50 reward=-3.9693 lat=5.3978s E=2.5408J loss=0.01027 t=2.85s
+  ep 28/50 reward=-3.6631 lat=5.0231s E=2.3031J loss=0.04331 t=2.76s
+  ep 29/50 reward=-3.7519 lat=5.1507s E=2.3532J loss=0.005474 t=2.85s
+  ep 30/50 reward=-4.6115 lat=6.2161s E=3.0068J loss=0.02945 t=2.87s
+  ep 31/50 reward=-3.7673 lat=5.1227s E=2.4119J loss=0.003659 t=2.78s
+  ep 32/50 reward=-3.7109 lat=5.0310s E=2.3908J loss=0.0441 t=2.95s
+  ep 33/50 reward=-4.1081 lat=5.5557s E=2.6606J loss=0.07261 t=2.81s
+  ep 34/50 reward=-5.1559 lat=6.9737s E=3.3381J loss=0.002498 t=2.97s
+  ep 35/50 reward=-4.8720 lat=6.5927s E=3.1512J loss=0.06579 t=2.95s
+  ep 36/50 reward=-6.1166 lat=8.1826s E=4.0505J loss=5.941e-06 t=2.87s
+  ep 37/50 reward=-7.7019 lat=10.1634s E=5.2404J loss=0.1671 t=3.04s
+  ep 38/50 reward=-7.2534 lat=9.5862s E=4.9206J loss=0.04036 t=3.00s
+  ep 39/50 reward=-6.3918 lat=8.5578s E=4.2258J loss=0.2491 t=3.00s
+  ep 40/50 reward=-6.3781 lat=8.5397s E=4.2164J loss=0.0008281 t=3.01s
+  ep 41/50 reward=-5.8668 lat=7.8900s E=3.8435J loss=0.02282 t=3.10s
+  ep 42/50 reward=-5.1891 lat=6.9787s E=3.3995J loss=0.08141 t=3.12s
+  ep 43/50 reward=-5.0831 lat=6.8640s E=3.3022J loss=0.002134 t=2.89s
+  ep 44/50 reward=-4.8781 lat=6.5907s E=3.1655J loss=0.001685 t=2.90s
+  ep 45/50 reward=-5.0478 lat=6.7814s E=3.3141J loss=0.005368 t=3.02s
+  ep 46/50 reward=-5.0263 lat=6.8336s E=3.2190J loss=0.0003475 t=2.90s
+  ep 47/50 reward=-4.6145 lat=6.2256s E=3.0035J loss=0.0003341 t=3.03s
+  ep 48/50 reward=-4.4453 lat=5.9845s E=2.9061J loss=0.05787 t=3.02s
+  ep 49/50 reward=-4.9010 lat=6.6298s E=3.1722J loss=6.369e-05 t=3.01s
+  ep 50/50 reward=-4.9435 lat=6.6636s E=3.2235J loss=0.0489 t=2.98s
+[HRL+VQC] seed=2027 DONE | reward=-5.1189 lat=6.8922s E=3.3456J miss=0.9415 train=145.1s
+
+[HRL+VQC] seed=2028
+  ep 01/50 reward=-4.9718 lat=6.7166s E=3.2270J loss=0.005737 t=3.04s
+  ep 02/50 reward=-5.2193 lat=7.0209s E=3.4177J loss=0.03027 t=3.12s
+  ep 03/50 reward=-5.6925 lat=7.6522s E=3.7328J loss=0.0529 t=2.99s
+  ep 04/50 reward=-5.1400 lat=6.9086s E=3.3714J loss=0.01317 t=2.98s
+  ep 05/50 reward=-5.8916 lat=7.8918s E=3.8914J loss=0.04438 t=3.05s
+  ep 06/50 reward=-5.2768 lat=7.1181s E=3.4355J loss=0.02431 t=2.97s
+  ep 07/50 reward=-5.7975 lat=7.7579s E=3.8371J loss=0.0366 t=3.01s
+  ep 08/50 reward=-5.3035 lat=7.1648s E=3.4423J loss=0.04573 t=3.00s
+  ep 09/50 reward=-4.8053 lat=6.5181s E=3.0925J loss=0.0013 t=3.06s
+  ep 10/50 reward=-5.5364 lat=7.4384s E=3.6344J loss=0.04321 t=2.99s
+  ep 11/50 reward=-5.8955 lat=7.8697s E=3.9213J loss=0.577 t=2.96s
+  ep 12/50 reward=-4.9753 lat=6.7176s E=3.2329J loss=0.009848 t=3.02s
+  ep 13/50 reward=-3.5190 lat=4.7974s E=2.2406J loss=0.02495 t=2.91s
+  ep 14/50 reward=-3.8838 lat=5.2513s E=2.5164J loss=0.04866 t=2.80s
+  ep 15/50 reward=-3.5835 lat=4.8602s E=2.3067J loss=0.03902 t=2.86s
+  ep 16/50 reward=-3.9103 lat=5.2781s E=2.5425J loss=0.0229 t=2.92s
+  ep 17/50 reward=-3.5912 lat=4.9207s E=2.2616J loss=0.01384 t=2.97s
+  ep 18/50 reward=-4.1273 lat=5.5559s E=2.6987J loss=0.0223 t=2.99s
+  ep 19/50 reward=-3.6851 lat=5.0012s E=2.3690J loss=0.034 t=3.04s
+  ep 20/50 reward=-3.6658 lat=4.9994s E=2.3322J loss=0.001697 t=2.98s
+  ep 21/50 reward=-3.7229 lat=5.0542s E=2.3915J loss=0.002562 t=2.95s
+  ep 22/50 reward=-3.7755 lat=5.1547s E=2.3963J loss=0.02419 t=3.16s
+  ep 23/50 reward=-4.0867 lat=5.5042s E=2.6693J loss=0.3088 t=3.02s
+  ep 24/50 reward=-4.5397 lat=6.1248s E=2.9547J loss=0.1102 t=3.11s
+  ep 25/50 reward=-4.4066 lat=5.9470s E=2.8661J loss=0.004044 t=3.03s
+  ep 26/50 reward=-5.8915 lat=7.7800s E=4.0030J loss=0.005827 t=3.18s
+  ep 27/50 reward=-4.5884 lat=6.1899s E=2.9869J loss=0.01084 t=3.20s
+  ep 28/50 reward=-4.1339 lat=5.5910s E=2.6768J loss=0.05555 t=3.17s
+  ep 29/50 reward=-4.3120 lat=5.8330s E=2.7909J loss=0.006296 t=3.11s
+  ep 30/50 reward=-5.1040 lat=6.8278s E=3.3803J loss=0.00735 t=3.23s
+  ep 31/50 reward=-8.1407 lat=10.5615s E=5.7199J loss=0.002706 t=3.13s
+  ep 32/50 reward=-7.6153 lat=9.9343s E=5.2964J loss=0.007588 t=3.55s
+  ep 33/50 reward=-5.7832 lat=7.6794s E=3.8870J loss=0.003694 t=3.47s
+  ep 34/50 reward=-5.8545 lat=7.7301s E=3.9790J loss=0.04031 t=3.38s
+  ep 35/50 reward=-6.0537 lat=7.9685s E=4.1388J loss=0.001156 t=3.20s
+  ep 36/50 reward=-4.6323 lat=6.1866s E=3.0779J loss=0.0008824 t=3.31s
+  ep 37/50 reward=-4.2026 lat=5.6710s E=2.7342J loss=0.000313 t=3.20s
+  ep 38/50 reward=-3.9410 lat=5.3561s E=2.5260J loss=0.06488 t=3.15s
+  ep 39/50 reward=-3.5846 lat=4.9190s E=2.2502J loss=0.000289 t=3.11s
+  ep 40/50 reward=-3.7329 lat=5.0540s E=2.4117J loss=0.0113 t=3.02s
+  ep 41/50 reward=-3.5616 lat=4.9051s E=2.2181J loss=0.002377 t=2.87s
+  ep 42/50 reward=-3.6453 lat=4.9667s E=2.3239J loss=0.001351 t=2.87s
+  ep 43/50 reward=-3.9467 lat=5.2960s E=2.5975J loss=0.002954 t=2.91s
+  ep 44/50 reward=-3.8604 lat=5.3168s E=2.4039J loss=0.07143 t=2.99s
+  ep 45/50 reward=-4.5492 lat=6.1084s E=2.9899J loss=0.03386 t=2.91s
+  ep 46/50 reward=-4.7587 lat=6.3587s E=3.1588J loss=0.0001864 t=2.94s
+  ep 47/50 reward=-4.7385 lat=6.3522s E=3.1249J loss=0.03284 t=3.13s
+  ep 48/50 reward=-5.0119 lat=6.6516s E=3.3723J loss=0.01461 t=3.02s
+  ep 49/50 reward=-3.9328 lat=5.3522s E=2.5134J loss=0.02872 t=3.09s
+  ep 50/50 reward=-3.8780 lat=5.2681s E=2.4880J loss=0.0009267 t=2.85s
+[HRL+VQC] seed=2028 DONE | reward=-3.8616 lat=5.2435s E=2.4798J miss=0.9223 train=153.0s
+
+=== TÓM TẮT SAU HRL+VQC (5 seeds) ===
+Metric                 Mean           Std
+------------------------------------------
+reward                   -4.49477      0.64603
+latency                   6.03768      0.87146
+energy                    2.95187      0.42355
+cost                      4.49477      0.64603
+deadline_miss             0.90657      0.05208
+training_time_s         150.26243      3.23291
+trainable_parameters        10544
+[LuST] speed pool: 138896 mẫu, mean=13.09 m/s, median=12.56 m/s
+[LuST-24h] speed pool: 442557 mẫu, mean=16.65 m/s, median=13.68 m/s
+
+[HRL+VQC+QAOA] seed=2024
+  ep 01/50 reward=-4.0954 lat=5.6543s E=2.5364J loss=0.0895 t=3.23s
+  ep 02/50 reward=-5.6108 lat=7.5417s E=3.6799J loss=0.09746 t=3.20s
+  ep 03/50 reward=-3.9466 lat=5.2668s E=2.6263J loss=0.04203 t=3.06s
+  ep 04/50 reward=-4.6485 lat=6.2496s E=3.0474J loss=0.06321 t=2.98s
+  ep 05/50 reward=-3.5840 lat=4.9184s E=2.2497J loss=0.09064 t=3.02s
+  ep 06/50 reward=-3.8704 lat=5.2384s E=2.5024J loss=0.09176 t=2.95s
+  ep 07/50 reward=-5.2897 lat=7.0785s E=3.5008J loss=0.07962 t=2.98s
+  ep 08/50 reward=-4.9240 lat=6.6353s E=3.2128J loss=0.07531 t=3.01s
+  ep 09/50 reward=-4.3462 lat=5.9188s E=2.7735J loss=0.06974 t=3.00s
+  ep 10/50 reward=-4.0387 lat=5.4711s E=2.6062J loss=0.06294 t=2.98s
+  ep 11/50 reward=-4.0560 lat=5.5406s E=2.5713J loss=0.0553 t=3.01s
+  ep 12/50 reward=-3.8896 lat=5.3134s E=2.4658J loss=0.2149 t=3.22s
+  ep 13/50 reward=-4.0192 lat=5.3777s E=2.6607J loss=0.02779 t=3.04s
+  ep 14/50 reward=-3.7357 lat=5.0792s E=2.3923J loss=0.03042 t=3.07s
+  ep 15/50 reward=-3.7107 lat=5.0730s E=2.3484J loss=0.02246 t=2.99s
+  ep 16/50 reward=-3.5697 lat=4.8211s E=2.3182J loss=0.04627 t=3.01s
+  ep 17/50 reward=-3.8166 lat=5.1883s E=2.4449J loss=0.009311 t=3.25s
+  ep 18/50 reward=-3.8057 lat=5.1707s E=2.4406J loss=0.06549 t=2.97s
+  ep 19/50 reward=-3.6466 lat=4.9703s E=2.3229J loss=0.006694 t=3.14s
+  ep 20/50 reward=-3.8758 lat=5.2465s E=2.5052J loss=0.0944 t=3.25s
+  ep 21/50 reward=-3.7176 lat=5.0001s E=2.4351J loss=0.01351 t=3.19s
+  ep 22/50 reward=-4.2156 lat=5.6257s E=2.8056J loss=0.0001185 t=3.02s
+  ep 23/50 reward=-3.6691 lat=4.9968s E=2.3414J loss=0.0004721 t=3.33s
+  ep 24/50 reward=-4.7259 lat=6.3221s E=3.1297J loss=0.0177 t=3.15s
+  ep 25/50 reward=-4.2334 lat=5.7203s E=2.7466J loss=0.05951 t=3.31s
+  ep 26/50 reward=-3.6265 lat=4.9125s E=2.3405J loss=0.6747 t=3.23s
+  ep 27/50 reward=-3.5692 lat=4.8881s E=2.2503J loss=0.1278 t=3.12s
+  ep 28/50 reward=-3.5600 lat=4.8494s E=2.2707J loss=0.1112 t=3.19s
+  ep 29/50 reward=-3.6475 lat=4.9398s E=2.3552J loss=0.001637 t=3.04s
+  ep 30/50 reward=-3.5481 lat=4.8961s E=2.2001J loss=0.1855 t=3.03s
+  ep 31/50 reward=-3.6639 lat=4.9191s E=2.4088J loss=6.204e-05 t=3.00s
+  ep 32/50 reward=-3.7474 lat=5.0741s E=2.4208J loss=0.01152 t=3.22s
+  ep 33/50 reward=-3.6079 lat=4.9404s E=2.2753J loss=0.1783 t=3.01s
+  ep 34/50 reward=-3.7681 lat=5.0847s E=2.4516J loss=0.005639 t=3.00s
+  ep 35/50 reward=-3.9817 lat=5.3532s E=2.6102J loss=0.006076 t=2.91s
+  ep 36/50 reward=-4.0910 lat=5.5681s E=2.6140J loss=0.005033 t=2.98s
+  ep 37/50 reward=-3.8624 lat=5.2469s E=2.4779J loss=0.00128 t=2.95s
+  ep 38/50 reward=-4.0503 lat=5.4595s E=2.6411J loss=0.01018 t=2.97s
+  ep 39/50 reward=-3.8318 lat=5.2444s E=2.4192J loss=0.005513 t=2.97s
+  ep 40/50 reward=-3.7996 lat=5.1486s E=2.4507J loss=0.03328 t=2.91s
+  ep 41/50 reward=-3.7051 lat=5.0148s E=2.3955J loss=0.05108 t=2.96s
+  ep 42/50 reward=-3.6719 lat=5.0167s E=2.3270J loss=0.103 t=3.12s
+  ep 43/50 reward=-3.8053 lat=5.1583s E=2.4524J loss=0.002104 t=2.88s
+  ep 44/50 reward=-3.6227 lat=4.9581s E=2.2873J loss=0.002015 t=2.99s
+  ep 45/50 reward=-3.5775 lat=4.9083s E=2.2466J loss=0.003761 t=2.98s
+  ep 46/50 reward=-3.9738 lat=5.4184s E=2.5292J loss=0.003329 t=3.01s
+  ep 47/50 reward=-4.4209 lat=6.0273s E=2.8144J loss=0.008705 t=2.95s
+  ep 48/50 reward=-5.4910 lat=7.4053s E=3.5766J loss=0.001904 t=3.02s
+  ep 49/50 reward=-5.0947 lat=6.8238s E=3.3655J loss=0.01908 t=3.06s
+  ep 50/50 reward=-4.8742 lat=6.4815s E=3.2669J loss=0.01295 t=2.93s
+[HRL+VQC+QAOA] seed=2024 DONE | reward=-7.6724 lat=10.1825s E=5.1622J miss=0.9257 train=152.8s
+
+[HRL+VQC+QAOA] seed=2025
+  ep 01/50 reward=-3.8561 lat=5.1955s E=2.5168J loss=0.08974 t=3.06s
+  ep 02/50 reward=-3.5749 lat=4.8821s E=2.2677J loss=0.08773 t=3.16s
+  ep 03/50 reward=-3.8709 lat=5.1741s E=2.5676J loss=0.3775 t=3.00s
+  ep 04/50 reward=-3.7898 lat=5.0831s E=2.4965J loss=0.1264 t=2.99s
+  ep 05/50 reward=-3.6672 lat=4.9636s E=2.3709J loss=0.1426 t=2.96s
+  ep 06/50 reward=-4.7807 lat=6.4107s E=3.1506J loss=0.2692 t=3.00s
+  ep 07/50 reward=-3.7241 lat=5.1238s E=2.3244J loss=0.06357 t=3.03s
+  ep 08/50 reward=-4.9755 lat=6.7147s E=3.2363J loss=0.05593 t=2.96s
+  ep 09/50 reward=-3.7502 lat=5.0187s E=2.4816J loss=0.07666 t=2.95s
+  ep 10/50 reward=-5.5754 lat=7.4846s E=3.6661J loss=0.02481 t=2.95s
+  ep 11/50 reward=-5.0801 lat=6.8476s E=3.3125J loss=0.03186 t=3.05s
+  ep 12/50 reward=-5.2819 lat=7.0440s E=3.5197J loss=0.02395 t=3.23s
+  ep 13/50 reward=-8.2899 lat=10.9871s E=5.5927J loss=0.03675 t=3.06s
+  ep 14/50 reward=-6.1201 lat=8.1752s E=4.0650J loss=0.02705 t=3.01s
+  ep 15/50 reward=-4.8849 lat=6.6259s E=3.1439J loss=0.003232 t=3.15s
+  ep 16/50 reward=-6.6015 lat=8.8192s E=4.3839J loss=0.006496 t=3.07s
+  ep 17/50 reward=-6.9722 lat=9.2641s E=4.6803J loss=0.0823 t=3.12s
+  ep 18/50 reward=-7.1935 lat=9.5292s E=4.8577J loss=0.2227 t=3.04s
+  ep 19/50 reward=-5.0034 lat=6.8059s E=3.2008J loss=0.0005567 t=3.15s
+  ep 20/50 reward=-4.9914 lat=6.6950s E=3.2877J loss=0.0008969 t=3.09s
+  ep 21/50 reward=-8.4043 lat=11.1489s E=5.6597J loss=0.009083 t=3.33s
+  ep 22/50 reward=-6.7103 lat=8.9834s E=4.4371J loss=0.09099 t=3.40s
+  ep 23/50 reward=-7.4746 lat=9.9484s E=5.0007J loss=0.03676 t=3.18s
+  ep 24/50 reward=-7.0450 lat=9.3977s E=4.6922J loss=0.01461 t=3.14s
+  ep 25/50 reward=-6.9529 lat=9.2768s E=4.6290J loss=0.007546 t=3.39s
+  ep 26/50 reward=-6.1164 lat=8.1896s E=4.0432J loss=0.1877 t=3.14s
+  ep 27/50 reward=-5.4430 lat=7.3231s E=3.5630J loss=0.01765 t=3.07s
+  ep 28/50 reward=-5.5918 lat=7.4704s E=3.7131J loss=0.08506 t=3.07s
+  ep 29/50 reward=-5.3437 lat=7.2219s E=3.4655J loss=0.01951 t=3.10s
+  ep 30/50 reward=-4.6189 lat=6.2656s E=2.9722J loss=0.01862 t=3.11s
+  ep 31/50 reward=-4.5558 lat=6.1615s E=2.9501J loss=0.03549 t=3.20s
+  ep 32/50 reward=-4.9974 lat=6.7075s E=3.2874J loss=0.001045 t=3.29s
+  ep 33/50 reward=-4.2171 lat=5.7246s E=2.7097J loss=0.05145 t=3.17s
+  ep 34/50 reward=-4.7229 lat=6.3997s E=3.0461J loss=0.0002661 t=3.08s
+  ep 35/50 reward=-4.8403 lat=6.4488s E=3.2317J loss=0.01866 t=3.04s
+  ep 36/50 reward=-4.3174 lat=5.8346s E=2.8003J loss=0.0004276 t=3.06s
+  ep 37/50 reward=-4.2878 lat=5.8168s E=2.7589J loss=0.04066 t=3.15s
+  ep 38/50 reward=-4.3633 lat=5.9205s E=2.8061J loss=0.01773 t=3.17s
+  ep 39/50 reward=-4.1922 lat=5.7022s E=2.6823J loss=0.003051 t=3.15s
+  ep 40/50 reward=-4.7765 lat=6.3825s E=3.1705J loss=0.009575 t=3.07s
+  ep 41/50 reward=-4.5352 lat=6.1505s E=2.9199J loss=0.1352 t=3.15s
+  ep 42/50 reward=-4.0446 lat=5.5214s E=2.5678J loss=0.003982 t=3.22s
+  ep 43/50 reward=-4.5576 lat=6.2045s E=2.9106J loss=0.03499 t=3.11s
+  ep 44/50 reward=-4.4506 lat=6.0057s E=2.8956J loss=0.02101 t=3.15s
+  ep 45/50 reward=-4.0814 lat=5.5328s E=2.6300J loss=0.3052 t=3.13s
+  ep 46/50 reward=-3.9126 lat=5.3139s E=2.5113J loss=0.01394 t=3.06s
+  ep 47/50 reward=-3.9846 lat=5.3448s E=2.6243J loss=0.05846 t=3.11s
+  ep 48/50 reward=-3.8620 lat=5.2857s E=2.4382J loss=0.01571 t=2.98s
+  ep 49/50 reward=-4.1606 lat=5.5878s E=2.7334J loss=0.05658 t=3.05s
+  ep 50/50 reward=-3.6203 lat=4.9614s E=2.2791J loss=0.06729 t=3.02s
+[HRL+VQC+QAOA] seed=2025 DONE | reward=-3.7585 lat=5.0909s E=2.4261J miss=0.9039 train=155.4s
+
+[HRL+VQC+QAOA] seed=2026
+  ep 01/50 reward=-3.9903 lat=5.2067s E=2.7739J loss=0.07376 t=2.97s
+  ep 02/50 reward=-4.5558 lat=6.0047s E=3.1069J loss=0.3999 t=3.26s
+  ep 03/50 reward=-3.8259 lat=5.1305s E=2.5214J loss=0.08694 t=3.13s
+  ep 04/50 reward=-4.1022 lat=5.5231s E=2.6813J loss=0.1769 t=3.16s
+  ep 05/50 reward=-3.7307 lat=4.9478s E=2.5135J loss=0.1691 t=3.13s
+  ep 06/50 reward=-3.4842 lat=4.6761s E=2.2924J loss=0.4572 t=3.10s
+  ep 07/50 reward=-3.4006 lat=4.5818s E=2.2194J loss=0.14 t=3.01s
+  ep 08/50 reward=-3.2701 lat=4.3873s E=2.1529J loss=0.56 t=3.02s
+  ep 09/50 reward=-3.2771 lat=4.3786s E=2.1755J loss=0.2836 t=3.08s
+  ep 10/50 reward=-3.3342 lat=4.4344s E=2.2341J loss=0.4291 t=2.98s
+  ep 11/50 reward=-3.3399 lat=4.4832s E=2.1965J loss=0.04596 t=3.07s
+  ep 12/50 reward=-3.4044 lat=4.5224s E=2.2865J loss=0.1755 t=3.09s
+  ep 13/50 reward=-3.3076 lat=4.5360s E=2.0792J loss=0.03591 t=3.07s
+  ep 14/50 reward=-3.3772 lat=4.5252s E=2.2292J loss=0.5941 t=3.00s
+  ep 15/50 reward=-3.3495 lat=4.4432s E=2.2558J loss=0.02535 t=2.96s
+  ep 16/50 reward=-3.4340 lat=4.5240s E=2.3439J loss=0.02037 t=2.90s
+  ep 17/50 reward=-3.5219 lat=4.6689s E=2.3750J loss=0.01103 t=2.92s
+  ep 18/50 reward=-3.3223 lat=4.4489s E=2.1956J loss=0.01187 t=2.94s
+  ep 19/50 reward=-3.4118 lat=4.5051s E=2.3184J loss=0.008458 t=3.02s
+  ep 20/50 reward=-3.2536 lat=4.2593s E=2.2478J loss=0.004407 t=2.99s
+  ep 21/50 reward=-3.2575 lat=4.3090s E=2.2060J loss=0.00717 t=2.97s
+  ep 22/50 reward=-3.3806 lat=4.5010s E=2.2602J loss=0.002213 t=3.16s
+  ep 23/50 reward=-3.4431 lat=4.5861s E=2.3000J loss=0.01731 t=3.02s
+  ep 24/50 reward=-3.2654 lat=4.3539s E=2.1769J loss=0.1751 t=3.07s
+  ep 25/50 reward=-3.2850 lat=4.4186s E=2.1514J loss=0.2928 t=3.13s
+  ep 26/50 reward=-3.2286 lat=4.2809s E=2.1763J loss=7.68e-05 t=2.99s
+  ep 27/50 reward=-3.4295 lat=4.6033s E=2.2557J loss=0.09018 t=3.11s
+  ep 28/50 reward=-3.4073 lat=4.5652s E=2.2495J loss=0.243 t=3.11s
+  ep 29/50 reward=-3.4278 lat=4.6019s E=2.2537J loss=0.05351 t=3.05s
+  ep 30/50 reward=-3.4101 lat=4.6459s E=2.1743J loss=0.5983 t=2.99s
+  ep 31/50 reward=-3.2236 lat=4.3145s E=2.1327J loss=0.1733 t=3.04s
+  ep 32/50 reward=-3.4006 lat=4.5620s E=2.2392J loss=0.03511 t=3.14s
+  ep 33/50 reward=-3.4468 lat=4.5415s E=2.3520J loss=0.000515 t=2.99s
+  ep 34/50 reward=-3.4561 lat=4.4795s E=2.4327J loss=1.662e-05 t=3.03s
+  ep 35/50 reward=-3.4572 lat=4.6478s E=2.2665J loss=0.0009734 t=3.01s
+  ep 36/50 reward=-3.5557 lat=4.7896s E=2.3219J loss=1.307e-05 t=2.99s
+  ep 37/50 reward=-3.4282 lat=4.5960s E=2.2605J loss=0.04872 t=3.13s
+  ep 38/50 reward=-3.3585 lat=4.4611s E=2.2559J loss=0.0001523 t=3.07s
+  ep 39/50 reward=-3.3366 lat=4.4807s E=2.1925J loss=0.05659 t=3.09s
+  ep 40/50 reward=-3.3249 lat=4.3983s E=2.2514J loss=0.07825 t=3.13s
+  ep 41/50 reward=-3.4108 lat=4.6109s E=2.2106J loss=0.104 t=3.07s
+  ep 42/50 reward=-4.3876 lat=5.7946s E=2.9805J loss=0.09162 t=3.17s
+  ep 43/50 reward=-4.1563 lat=5.4762s E=2.8363J loss=0.04677 t=3.06s
+  ep 44/50 reward=-3.7785 lat=5.0883s E=2.4687J loss=0.1235 t=3.05s
+  ep 45/50 reward=-4.2469 lat=5.6246s E=2.8691J loss=0.02976 t=3.08s
+  ep 46/50 reward=-4.3956 lat=5.7446s E=3.0466J loss=0.00068 t=3.06s
+  ep 47/50 reward=-3.9305 lat=5.2491s E=2.6119J loss=0.008266 t=3.13s
+  ep 48/50 reward=-4.2653 lat=5.6915s E=2.8391J loss=0.0007763 t=3.15s
+  ep 49/50 reward=-4.5862 lat=6.0916s E=3.0809J loss=0.007693 t=3.05s
+  ep 50/50 reward=-4.0490 lat=5.3938s E=2.7042J loss=0.05651 t=3.08s
+[HRL+VQC+QAOA] seed=2026 DONE | reward=-4.0280 lat=5.3466s E=2.7095J miss=0.8678 train=152.9s
+
+[HRL+VQC+QAOA] seed=2027
+  ep 01/50 reward=-3.6892 lat=5.0395s E=2.3389J loss=0.2366 t=3.24s
+  ep 02/50 reward=-3.8452 lat=5.2125s E=2.4780J loss=0.247 t=3.02s
+  ep 03/50 reward=-3.8319 lat=5.1424s E=2.5214J loss=0.1379 t=2.92s
+  ep 04/50 reward=-3.5402 lat=4.7938s E=2.2867J loss=0.07848 t=2.94s
+  ep 05/50 reward=-3.5223 lat=4.8016s E=2.2431J loss=0.0418 t=2.95s
+  ep 06/50 reward=-3.5992 lat=4.8546s E=2.3437J loss=0.06449 t=2.97s
+  ep 07/50 reward=-3.7712 lat=5.0761s E=2.4662J loss=0.1835 t=2.97s
+  ep 08/50 reward=-6.8520 lat=9.0971s E=4.6068J loss=0.04657 t=2.95s
+  ep 09/50 reward=-5.1227 lat=6.8630s E=3.3824J loss=0.03702 t=3.05s
+  ep 10/50 reward=-4.4955 lat=6.0915s E=2.8995J loss=0.02767 t=3.09s
+  ep 11/50 reward=-4.7887 lat=6.4432s E=3.1341J loss=0.04755 t=3.23s
+  ep 12/50 reward=-5.0499 lat=6.7699s E=3.3299J loss=0.01257 t=3.01s
+  ep 13/50 reward=-4.7167 lat=6.3754s E=3.0580J loss=0.006532 t=3.12s
+  ep 14/50 reward=-4.1379 lat=5.6243s E=2.6515J loss=0.004801 t=3.09s
+  ep 15/50 reward=-5.8787 lat=7.8242s E=3.9333J loss=0.1424 t=3.12s
+  ep 16/50 reward=-5.2856 lat=7.1490s E=3.4222J loss=0.0009503 t=3.12s
+  ep 17/50 reward=-5.8145 lat=7.8044s E=3.8245J loss=0.01202 t=3.07s
+  ep 18/50 reward=-5.4891 lat=7.3725s E=3.6058J loss=0.1588 t=3.14s
+  ep 19/50 reward=-4.5214 lat=6.2033s E=2.8395J loss=0.0443 t=3.17s
+  ep 20/50 reward=-5.5261 lat=7.4455s E=3.6067J loss=0.0006637 t=3.07s
+  ep 21/50 reward=-5.7563 lat=7.7323s E=3.7803J loss=0.1307 t=3.29s
+  ep 22/50 reward=-6.1912 lat=8.2969s E=4.0855J loss=0.0083 t=3.12s
+  ep 23/50 reward=-5.1904 lat=6.9521s E=3.4288J loss=0.09808 t=3.07s
+  ep 24/50 reward=-5.0088 lat=6.7533s E=3.2642J loss=0.003532 t=3.07s
+  ep 25/50 reward=-6.3778 lat=8.5315s E=4.2242J loss=0.03231 t=3.13s
+  ep 26/50 reward=-6.5206 lat=8.7299s E=4.3112J loss=0.1379 t=3.08s
+  ep 27/50 reward=-7.9033 lat=10.5223s E=5.2843J loss=0.008933 t=3.12s
+  ep 28/50 reward=-5.8381 lat=7.7818s E=3.8944J loss=0.1014 t=3.13s
+  ep 29/50 reward=-4.3812 lat=5.9510s E=2.8115J loss=0.0001647 t=3.07s
+  ep 30/50 reward=-4.7616 lat=6.4793s E=3.0439J loss=0.00139 t=3.11s
+  ep 31/50 reward=-5.2220 lat=7.0092s E=3.4347J loss=0.004027 t=3.17s
+  ep 32/50 reward=-4.1365 lat=5.5937s E=2.6792J loss=0.005316 t=3.09s
+  ep 33/50 reward=-4.0501 lat=5.5537s E=2.5465J loss=0.0176 t=2.98s
+  ep 34/50 reward=-4.9123 lat=6.6409s E=3.1837J loss=0.02704 t=3.11s
+  ep 35/50 reward=-3.8096 lat=5.2194s E=2.3998J loss=0.1142 t=3.09s
+  ep 36/50 reward=-3.7596 lat=5.0967s E=2.4225J loss=0.01987 t=3.04s
+  ep 37/50 reward=-3.6671 lat=4.9272s E=2.4071J loss=0.06898 t=3.01s
+  ep 38/50 reward=-3.6950 lat=4.9697s E=2.4203J loss=0.007045 t=2.99s
+  ep 39/50 reward=-3.6404 lat=4.9244s E=2.3565J loss=0.01766 t=3.08s
+  ep 40/50 reward=-3.6279 lat=4.8871s E=2.3687J loss=0.09822 t=3.01s
+  ep 41/50 reward=-3.4495 lat=4.7036s E=2.1954J loss=0.03928 t=3.18s
+  ep 42/50 reward=-3.5547 lat=4.8454s E=2.2639J loss=0.01729 t=2.93s
+  ep 43/50 reward=-3.6671 lat=4.9804s E=2.3538J loss=0.01789 t=2.91s
+  ep 44/50 reward=-3.5983 lat=4.9059s E=2.2907J loss=0.03623 t=3.02s
+  ep 45/50 reward=-3.5116 lat=4.7821s E=2.2410J loss=0.01441 t=3.03s
+  ep 46/50 reward=-3.5947 lat=4.9136s E=2.2759J loss=0.01978 t=3.01s
+  ep 47/50 reward=-3.8792 lat=5.1719s E=2.5865J loss=0.02317 t=2.93s
+  ep 48/50 reward=-3.8182 lat=5.1653s E=2.4712J loss=0.01233 t=3.07s
+  ep 49/50 reward=-3.7887 lat=5.1919s E=2.3855J loss=0.007956 t=3.14s
+  ep 50/50 reward=-3.6968 lat=4.9808s E=2.4128J loss=0.01309 t=2.94s
+[HRL+VQC+QAOA] seed=2027 DONE | reward=-3.7437 lat=5.0759s E=2.4115J miss=0.9013 train=153.2s
+
+[HRL+VQC+QAOA] seed=2028
+  ep 01/50 reward=-3.6184 lat=4.9046s E=2.3323J loss=0.0886 t=3.27s
+  ep 02/50 reward=-3.8065 lat=5.1878s E=2.4252J loss=0.003888 t=3.01s
+  ep 03/50 reward=-3.6181 lat=4.9345s E=2.3016J loss=0.08411 t=2.97s
+  ep 04/50 reward=-3.5941 lat=4.8897s E=2.2985J loss=0.07946 t=2.92s
+  ep 05/50 reward=-3.5566 lat=4.8282s E=2.2851J loss=0.07298 t=2.96s
+  ep 06/50 reward=-3.6357 lat=4.9359s E=2.3355J loss=0.06927 t=2.98s
+  ep 07/50 reward=-3.6097 lat=4.9125s E=2.3068J loss=0.1543 t=2.96s
+  ep 08/50 reward=-3.7844 lat=5.1568s E=2.4120J loss=0.0478 t=2.98s
+  ep 09/50 reward=-3.8411 lat=5.1943s E=2.4880J loss=0.1254 t=2.97s
+  ep 10/50 reward=-3.6524 lat=4.9930s E=2.3119J loss=0.06805 t=2.95s
+  ep 11/50 reward=-3.6602 lat=4.9643s E=2.3561J loss=0.02029 t=3.05s
+  ep 12/50 reward=-3.4418 lat=4.6961s E=2.1876J loss=0.01628 t=2.99s
+  ep 13/50 reward=-3.7595 lat=5.1035s E=2.4155J loss=0.008174 t=2.99s
+  ep 14/50 reward=-3.6304 lat=4.9954s E=2.2653J loss=0.0571 t=3.02s
+  ep 15/50 reward=-3.8173 lat=5.2231s E=2.4115J loss=0.01804 t=2.97s
+  ep 16/50 reward=-3.8410 lat=5.2286s E=2.4534J loss=0.008919 t=3.10s
+  ep 17/50 reward=-3.6718 lat=5.0666s E=2.2769J loss=0.0003401 t=2.98s
+  ep 18/50 reward=-3.7857 lat=5.1808s E=2.3907J loss=0.02639 t=3.03s
+  ep 19/50 reward=-3.9251 lat=5.2753s E=2.5749J loss=0.03388 t=2.94s
+  ep 20/50 reward=-3.6174 lat=4.9072s E=2.3276J loss=0.03526 t=2.91s
+  ep 21/50 reward=-3.8295 lat=5.1919s E=2.4671J loss=4.965e-06 t=3.09s
+  ep 22/50 reward=-3.6140 lat=4.9756s E=2.2525J loss=0.005533 t=3.02s
+  ep 23/50 reward=-3.8960 lat=5.2806s E=2.5113J loss=0.02578 t=3.01s
+  ep 24/50 reward=-3.8933 lat=5.2963s E=2.4903J loss=0.0003713 t=3.06s
+  ep 25/50 reward=-3.6397 lat=4.9775s E=2.3018J loss=0.004629 t=2.98s
+  ep 26/50 reward=-3.6017 lat=4.9313s E=2.2721J loss=0.0005646 t=3.01s
+  ep 27/50 reward=-3.9637 lat=5.3813s E=2.5460J loss=0.09664 t=3.18s
+  ep 28/50 reward=-3.5164 lat=4.8057s E=2.2272J loss=0.01203 t=3.00s
+  ep 29/50 reward=-3.5702 lat=4.8378s E=2.3026J loss=0.04131 t=2.91s
+  ep 30/50 reward=-3.5140 lat=4.8410s E=2.1871J loss=0.009358 t=3.14s
+  ep 31/50 reward=-3.7028 lat=5.0453s E=2.3602J loss=0.006109 t=3.09s
+  ep 32/50 reward=-3.6790 lat=5.0120s E=2.3459J loss=0.002847 t=2.99s
+  ep 33/50 reward=-3.7704 lat=5.1341s E=2.4066J loss=0.005365 t=2.93s
+  ep 34/50 reward=-3.8667 lat=5.1817s E=2.5517J loss=0.005059 t=3.14s
+  ep 35/50 reward=-3.4850 lat=4.7628s E=2.2072J loss=0.005149 t=3.04s
+  ep 36/50 reward=-3.7094 lat=5.0601s E=2.3588J loss=0.01601 t=3.20s
+  ep 37/50 reward=-3.7757 lat=5.1130s E=2.4384J loss=0.002636 t=2.98s
+  ep 38/50 reward=-3.6224 lat=4.9220s E=2.3228J loss=0.004348 t=3.09s
+  ep 39/50 reward=-3.7154 lat=5.1168s E=2.3140J loss=0.02047 t=2.98s
+  ep 40/50 reward=-3.7153 lat=5.0153s E=2.4152J loss=0.002997 t=3.14s
+  ep 41/50 reward=-3.6971 lat=5.0379s E=2.3564J loss=0.01602 t=3.02s
+  ep 42/50 reward=-3.7316 lat=5.0741s E=2.3891J loss=0.01732 t=3.02s
+  ep 43/50 reward=-3.5891 lat=4.9142s E=2.2640J loss=0.001729 t=3.03s
+  ep 44/50 reward=-3.5582 lat=4.8880s E=2.2284J loss=0.01239 t=3.07s
+  ep 45/50 reward=-3.7736 lat=5.0909s E=2.4564J loss=0.01041 t=3.01s
+  ep 46/50 reward=-3.6051 lat=4.9296s E=2.2805J loss=0.0009201 t=3.02s
+  ep 47/50 reward=-3.5536 lat=4.8338s E=2.2734J loss=0.001564 t=2.99s
+  ep 48/50 reward=-3.6680 lat=5.0225s E=2.3135J loss=0.002493 t=3.06s
+  ep 49/50 reward=-3.5646 lat=4.9054s E=2.2239J loss=0.01562 t=2.98s
+  ep 50/50 reward=-3.9216 lat=5.3487s E=2.4944J loss=0.001089 t=3.19s
+[HRL+VQC+QAOA] seed=2028 DONE | reward=-4.0675 lat=5.5092s E=2.6259J miss=0.9009 train=151.3s
+
+=== TÓM TẮT SAU HRL+VQC+QAOA (5 seeds) ===
+Metric                 Mean           Std
+------------------------------------------
+reward                   -4.65402      1.69387
+latency                   6.24102      2.21083
+energy                    3.06703      1.17821
+cost                      4.65402      1.69387
+deadline_miss             0.89995      0.02070
+training_time_s         153.13255      1.44966
+trainable_parameters        10546
+[LuST] speed pool: 138896 mẫu, mean=13.09 m/s, median=12.56 m/s
+[LuST-24h] speed pool: 442557 mẫu, mean=16.65 m/s, median=13.68 m/s
+
+[Full-QHRL] seed=2024
+  ep 01/50 reward=-2.8620 lat=3.5667s E=2.1572J loss=0.0895 t=3.25s
+  ep 02/50 reward=-2.8458 lat=3.4566s E=2.2350J loss=0.09746 t=3.20s
+  ep 03/50 reward=-2.4636 lat=2.6653s E=2.2619J loss=0.04203 t=3.06s
+  ep 04/50 reward=-2.7912 lat=3.4624s E=2.1201J loss=0.06321 t=2.98s
+  ep 05/50 reward=-2.6008 lat=2.6887s E=2.5129J loss=0.09064 t=3.02s
+  ep 06/50 reward=-2.5066 lat=2.5992s E=2.4140J loss=0.09176 t=2.97s
+  ep 07/50 reward=-2.8951 lat=3.5346s E=2.2555J loss=0.07962 t=2.98s
+  ep 08/50 reward=-2.8546 lat=3.4389s E=2.2703J loss=0.07531 t=3.01s
+  ep 09/50 reward=-2.7588 lat=3.3407s E=2.1769J loss=0.06974 t=3.02s
+  ep 10/50 reward=-2.5726 lat=2.9376s E=2.2076J loss=0.06294 t=3.00s
+  ep 11/50 reward=-2.6889 lat=3.0443s E=2.3336J loss=0.0553 t=3.01s
+  ep 12/50 reward=-2.6029 lat=2.7166s E=2.4892J loss=0.2149 t=3.22s
+  ep 13/50 reward=-2.6001 lat=2.7395s E=2.4608J loss=0.02779 t=3.05s
+  ep 14/50 reward=-2.5552 lat=2.6360s E=2.4744J loss=0.03042 t=3.09s
+  ep 15/50 reward=-2.5879 lat=2.8255s E=2.3504J loss=0.02246 t=2.99s
+  ep 16/50 reward=-2.3293 lat=2.3884s E=2.2703J loss=0.04627 t=3.03s
+  ep 17/50 reward=-2.5705 lat=2.6753s E=2.4656J loss=0.009311 t=3.27s
+  ep 18/50 reward=-2.4738 lat=2.6369s E=2.3108J loss=0.06549 t=2.99s
+  ep 19/50 reward=-2.4959 lat=2.5733s E=2.4185J loss=0.006694 t=3.12s
+  ep 20/50 reward=-2.5675 lat=2.7497s E=2.3854J loss=0.0944 t=3.25s
+  ep 21/50 reward=-2.4676 lat=2.5277s E=2.4075J loss=0.01351 t=3.19s
+  ep 22/50 reward=-2.6002 lat=2.9064s E=2.2940J loss=0.0001185 t=3.02s
+  ep 23/50 reward=-2.4004 lat=2.4562s E=2.3446J loss=0.0004721 t=3.34s
+  ep 24/50 reward=-2.7897 lat=3.5224s E=2.0569J loss=0.0177 t=3.16s
+  ep 25/50 reward=-2.7094 lat=3.3323s E=2.0865J loss=0.05951 t=3.31s
+  ep 26/50 reward=-2.4419 lat=2.5129s E=2.3709J loss=0.6747 t=3.25s
+  ep 27/50 reward=-2.3024 lat=2.3429s E=2.2619J loss=0.1278 t=3.12s
+  ep 28/50 reward=-2.4539 lat=2.5020s E=2.4058J loss=0.1112 t=3.22s
+  ep 29/50 reward=-2.4743 lat=2.5566s E=2.3920J loss=0.001637 t=3.08s
+  ep 30/50 reward=-2.3913 lat=2.4605s E=2.3222J loss=0.1855 t=3.05s
+  ep 31/50 reward=-2.3787 lat=2.4406s E=2.3168J loss=6.204e-05 t=3.01s
+  ep 32/50 reward=-2.5095 lat=2.6670s E=2.3521J loss=0.01152 t=3.22s
+  ep 33/50 reward=-2.3723 lat=2.4241s E=2.3204J loss=0.1783 t=3.01s
+  ep 34/50 reward=-2.4174 lat=2.4979s E=2.3368J loss=0.005639 t=2.97s
+  ep 35/50 reward=-2.5180 lat=2.6168s E=2.4191J loss=0.006076 t=2.91s
+  ep 36/50 reward=-2.5576 lat=2.6722s E=2.4430J loss=0.005033 t=2.99s
+  ep 37/50 reward=-2.6173 lat=2.7357s E=2.4988J loss=0.00128 t=2.96s
+  ep 38/50 reward=-2.5484 lat=2.7327s E=2.3640J loss=0.01018 t=2.97s
+  ep 39/50 reward=-2.5222 lat=2.6487s E=2.3957J loss=0.005513 t=2.96s
+  ep 40/50 reward=-2.6361 lat=2.7409s E=2.5313J loss=0.03328 t=2.91s
+  ep 41/50 reward=-2.5541 lat=2.6493s E=2.4589J loss=0.05108 t=2.96s
+  ep 42/50 reward=-2.5335 lat=2.5862s E=2.4808J loss=0.103 t=3.12s
+  ep 43/50 reward=-2.5339 lat=2.6647s E=2.4030J loss=0.002104 t=2.89s
+  ep 44/50 reward=-2.5262 lat=2.6061s E=2.4462J loss=0.002015 t=2.98s
+  ep 45/50 reward=-2.3858 lat=2.4275s E=2.3441J loss=0.003761 t=3.00s
+  ep 46/50 reward=-2.7205 lat=3.0981s E=2.3429J loss=0.003329 t=3.02s
+  ep 47/50 reward=-2.7741 lat=3.2131s E=2.3352J loss=0.008705 t=2.97s
+  ep 48/50 reward=-3.0556 lat=3.9615s E=2.1497J loss=0.001904 t=3.04s
+  ep 49/50 reward=-2.8146 lat=3.4026s E=2.2265J loss=0.01908 t=3.06s
+  ep 50/50 reward=-2.8302 lat=3.3011s E=2.3592J loss=0.01295 t=2.94s
+[Full-QHRL] seed=2024 DONE | reward=-2.7424 lat=3.3081s E=2.1767J miss=0.3278 train=153.2s
+
+[Full-QHRL] seed=2025
+  ep 01/50 reward=-2.5259 lat=2.7545s E=2.2973J loss=0.08974 t=3.09s
+  ep 02/50 reward=-2.4158 lat=2.4607s E=2.3709J loss=0.08773 t=3.19s
+  ep 03/50 reward=-2.4736 lat=2.6482s E=2.2990J loss=0.3775 t=3.02s
+  ep 04/50 reward=-2.4200 lat=2.4802s E=2.3598J loss=0.1264 t=3.02s
+  ep 05/50 reward=-2.4569 lat=2.5101s E=2.4038J loss=0.1426 t=3.00s
+  ep 06/50 reward=-2.6714 lat=3.1602s E=2.1827J loss=0.2692 t=3.02s
+  ep 07/50 reward=-2.6119 lat=2.7946s E=2.4292J loss=0.06357 t=3.04s
+  ep 08/50 reward=-2.9457 lat=3.6544s E=2.2370J loss=0.05593 t=2.98s
+  ep 09/50 reward=-2.3666 lat=2.4272s E=2.3060J loss=0.07666 t=3.00s
+  ep 10/50 reward=-2.9846 lat=3.5990s E=2.3702J loss=0.02481 t=2.97s
+  ep 11/50 reward=-2.9719 lat=3.7693s E=2.1746J loss=0.03186 t=3.05s
+  ep 12/50 reward=-2.9228 lat=3.7016s E=2.1440J loss=0.02395 t=3.24s
+  ep 13/50 reward=-3.0419 lat=3.9266s E=2.1571J loss=0.03675 t=3.07s
+  ep 14/50 reward=-3.1572 lat=3.9995s E=2.3150J loss=0.02705 t=3.02s
+  ep 15/50 reward=-3.0116 lat=3.7667s E=2.2566J loss=0.003232 t=3.15s
+  ep 16/50 reward=-3.0088 lat=3.9334s E=2.0842J loss=0.006496 t=3.08s
+  ep 17/50 reward=-3.0267 lat=4.0097s E=2.0436J loss=0.0823 t=3.13s
+  ep 18/50 reward=-3.0275 lat=3.9682s E=2.0868J loss=0.2227 t=3.04s
+  ep 19/50 reward=-2.9818 lat=3.8534s E=2.1101J loss=0.0005567 t=3.19s
+  ep 20/50 reward=-2.9790 lat=3.7519s E=2.2061J loss=0.0008969 t=3.10s
+  ep 21/50 reward=-3.2829 lat=4.2870s E=2.2788J loss=0.009083 t=3.34s
+  ep 22/50 reward=-3.3358 lat=4.4175s E=2.2541J loss=0.09099 t=3.41s
+  ep 23/50 reward=-3.2476 lat=4.3639s E=2.1314J loss=0.03676 t=3.19s
+  ep 24/50 reward=-3.3238 lat=4.4640s E=2.1836J loss=0.01461 t=3.15s
+  ep 25/50 reward=-3.3058 lat=4.5434s E=2.0682J loss=0.007546 t=3.38s
+  ep 26/50 reward=-3.2824 lat=4.4765s E=2.0882J loss=0.1877 t=3.14s
+  ep 27/50 reward=-3.1009 lat=4.0875s E=2.1144J loss=0.01765 t=3.07s
+  ep 28/50 reward=-3.1971 lat=4.1454s E=2.2489J loss=0.08506 t=3.08s
+  ep 29/50 reward=-3.1087 lat=3.5915s E=2.6260J loss=0.01951 t=3.10s
+  ep 30/50 reward=-2.8610 lat=3.1788s E=2.5431J loss=0.01862 t=3.11s
+  ep 31/50 reward=-2.7255 lat=3.3126s E=2.1383J loss=0.03549 t=3.20s
+  ep 32/50 reward=-2.7258 lat=3.2880s E=2.1636J loss=0.001045 t=3.28s
+  ep 33/50 reward=-2.7543 lat=3.1453s E=2.3632J loss=0.05145 t=3.18s
+  ep 34/50 reward=-2.9174 lat=3.3802s E=2.4546J loss=0.0002661 t=3.09s
+  ep 35/50 reward=-2.8154 lat=3.2963s E=2.3345J loss=0.01866 t=3.08s
+  ep 36/50 reward=-2.7523 lat=3.2818s E=2.2228J loss=0.0004276 t=3.08s
+  ep 37/50 reward=-2.7455 lat=3.1004s E=2.3906J loss=0.04066 t=3.15s
+  ep 38/50 reward=-2.8652 lat=3.0532s E=2.6771J loss=0.01773 t=3.18s
+  ep 39/50 reward=-2.6253 lat=3.0268s E=2.2238J loss=0.003051 t=3.16s
+  ep 40/50 reward=-2.8312 lat=3.3429s E=2.3196J loss=0.009575 t=3.08s
+  ep 41/50 reward=-2.8008 lat=3.4440s E=2.1577J loss=0.1352 t=3.15s
+  ep 42/50 reward=-2.8469 lat=3.1940s E=2.4999J loss=0.003982 t=3.24s
+  ep 43/50 reward=-2.8975 lat=3.2938s E=2.5013J loss=0.03499 t=3.13s
+  ep 44/50 reward=-2.8753 lat=3.3729s E=2.3777J loss=0.02101 t=3.19s
+  ep 45/50 reward=-2.6551 lat=3.1524s E=2.1579J loss=0.3052 t=3.12s
+  ep 46/50 reward=-2.5370 lat=2.6603s E=2.4137J loss=0.01394 t=3.05s
+  ep 47/50 reward=-2.4493 lat=2.6227s E=2.2760J loss=0.05846 t=3.13s
+  ep 48/50 reward=-2.5106 lat=2.5861s E=2.4350J loss=0.01571 t=3.01s
+  ep 49/50 reward=-2.6711 lat=2.9815s E=2.3606J loss=0.05658 t=3.13s
+  ep 50/50 reward=-2.3930 lat=2.4759s E=2.3101J loss=0.06729 t=3.08s
+[Full-QHRL] seed=2025 DONE | reward=-2.4459 lat=2.5894s E=2.3024J miss=0.0586 train=156.1s
+
+[Full-QHRL] seed=2026
+  ep 01/50 reward=-3.0248 lat=3.6367s E=2.4128J loss=0.07376 t=2.98s
+  ep 02/50 reward=-2.9182 lat=3.7639s E=2.0724J loss=0.3999 t=3.27s
+  ep 03/50 reward=-2.9117 lat=3.7052s E=2.1183J loss=0.08694 t=3.11s
+  ep 04/50 reward=-2.8531 lat=3.4742s E=2.2320J loss=0.1769 t=3.15s
+  ep 05/50 reward=-2.7420 lat=3.3419s E=2.1421J loss=0.1691 t=3.12s
+  ep 06/50 reward=-2.6544 lat=3.0158s E=2.2930J loss=0.4572 t=3.12s
+  ep 07/50 reward=-2.4590 lat=2.6320s E=2.2860J loss=0.14 t=3.01s
+  ep 08/50 reward=-2.4971 lat=2.5646s E=2.4296J loss=0.56 t=3.02s
+  ep 09/50 reward=-2.4582 lat=2.6478s E=2.2687J loss=0.2836 t=3.10s
+  ep 10/50 reward=-2.3163 lat=2.3448s E=2.2878J loss=0.4291 t=2.97s
+  ep 11/50 reward=-2.5670 lat=2.8242s E=2.3098J loss=0.04596 t=3.06s
+  ep 12/50 reward=-2.6329 lat=2.8247s E=2.4411J loss=0.1755 t=3.10s
+  ep 13/50 reward=-2.3152 lat=2.3503s E=2.2802J loss=0.03591 t=3.09s
+  ep 14/50 reward=-2.5266 lat=2.7623s E=2.2908J loss=0.5941 t=2.98s
+  ep 15/50 reward=-2.5272 lat=2.6845s E=2.3698J loss=0.02535 t=2.97s
+  ep 16/50 reward=-2.5655 lat=2.7339s E=2.3971J loss=0.02037 t=2.95s
+  ep 17/50 reward=-2.6565 lat=3.0064s E=2.3066J loss=0.01103 t=2.93s
+  ep 18/50 reward=-2.5152 lat=2.6220s E=2.4084J loss=0.01187 t=2.95s
+  ep 19/50 reward=-2.5807 lat=2.7700s E=2.3914J loss=0.008458 t=3.02s
+  ep 20/50 reward=-2.6242 lat=2.7446s E=2.5038J loss=0.004407 t=2.99s
+  ep 21/50 reward=-2.4108 lat=2.4623s E=2.3594J loss=0.00717 t=2.96s
+  ep 22/50 reward=-2.6308 lat=2.8325s E=2.4291J loss=0.002213 t=3.17s
+  ep 23/50 reward=-2.4733 lat=2.8722s E=2.0743J loss=0.01731 t=3.01s
+  ep 24/50 reward=-2.4353 lat=2.5677s E=2.3030J loss=0.1751 t=3.07s
+  ep 25/50 reward=-2.4450 lat=2.5302s E=2.3598J loss=0.2928 t=3.12s
+  ep 26/50 reward=-2.3537 lat=2.3807s E=2.3267J loss=7.68e-05 t=3.00s
+  ep 27/50 reward=-2.6355 lat=2.7933s E=2.4777J loss=0.09018 t=3.09s
+  ep 28/50 reward=-2.5521 lat=2.6544s E=2.4497J loss=0.243 t=3.09s
+  ep 29/50 reward=-2.6101 lat=2.8855s E=2.3347J loss=0.05351 t=3.05s
+  ep 30/50 reward=-2.5283 lat=2.8422s E=2.2144J loss=0.5983 t=2.99s
+  ep 31/50 reward=-2.3537 lat=2.3950s E=2.3125J loss=0.1733 t=3.03s
+  ep 32/50 reward=-2.5602 lat=2.6412s E=2.4793J loss=0.03511 t=3.11s
+  ep 33/50 reward=-2.6386 lat=2.8007s E=2.4764J loss=0.000515 t=2.98s
+  ep 34/50 reward=-2.6228 lat=2.6942s E=2.5514J loss=1.662e-05 t=3.03s
+  ep 35/50 reward=-2.7155 lat=3.0941s E=2.3368J loss=0.0009734 t=3.02s
+  ep 36/50 reward=-2.5799 lat=2.9790s E=2.1808J loss=1.307e-05 t=3.00s
+  ep 37/50 reward=-2.4948 lat=2.5789s E=2.4107J loss=0.04872 t=3.13s
+  ep 38/50 reward=-2.5332 lat=2.6529s E=2.4135J loss=0.0001523 t=3.08s
+  ep 39/50 reward=-2.6765 lat=3.0660s E=2.2870J loss=0.05659 t=3.08s
+  ep 40/50 reward=-2.4976 lat=2.6034s E=2.3918J loss=0.07825 t=3.13s
+  ep 41/50 reward=-2.7509 lat=3.1312s E=2.3707J loss=0.104 t=3.07s
+  ep 42/50 reward=-3.0608 lat=3.9112s E=2.2103J loss=0.09162 t=3.17s
+  ep 43/50 reward=-2.9237 lat=3.6110s E=2.2364J loss=0.04677 t=3.07s
+  ep 44/50 reward=-3.0801 lat=3.6587s E=2.5016J loss=0.1235 t=3.08s
+  ep 45/50 reward=-3.0225 lat=3.9842s E=2.0607J loss=0.02976 t=3.11s
+  ep 46/50 reward=-3.0883 lat=4.0275s E=2.1490J loss=0.00068 t=3.07s
+  ep 47/50 reward=-3.0096 lat=3.7610s E=2.2583J loss=0.008266 t=3.14s
+  ep 48/50 reward=-3.0536 lat=3.8726s E=2.2346J loss=0.0007763 t=3.17s
+  ep 49/50 reward=-3.0855 lat=4.0005s E=2.1705J loss=0.007693 t=3.09s
+  ep 50/50 reward=-3.0400 lat=3.8490s E=2.2311J loss=0.05651 t=3.09s
+[Full-QHRL] seed=2026 DONE | reward=-2.8710 lat=3.5508s E=2.1913J miss=0.4030 train=153.1s
+
+[Full-QHRL] seed=2027
+  ep 01/50 reward=-2.4103 lat=2.4824s E=2.3383J loss=0.2366 t=3.25s
+  ep 02/50 reward=-2.4675 lat=2.5487s E=2.3863J loss=0.247 t=3.00s
+  ep 03/50 reward=-2.5466 lat=2.7138s E=2.3793J loss=0.1379 t=2.94s
+  ep 04/50 reward=-2.4625 lat=2.6330s E=2.2920J loss=0.07848 t=2.94s
+  ep 05/50 reward=-2.4784 lat=2.5437s E=2.4131J loss=0.0418 t=2.95s
+  ep 06/50 reward=-2.4681 lat=2.5470s E=2.3892J loss=0.06449 t=2.99s
+  ep 07/50 reward=-2.4282 lat=2.4890s E=2.3673J loss=0.1835 t=2.98s
+  ep 08/50 reward=-2.9548 lat=3.8394s E=2.0701J loss=0.04657 t=2.97s
+  ep 09/50 reward=-2.7457 lat=3.3134s E=2.1780J loss=0.03702 t=3.07s
+  ep 10/50 reward=-2.7044 lat=3.1911s E=2.2177J loss=0.02767 t=3.10s
+  ep 11/50 reward=-2.8020 lat=3.3529s E=2.2510J loss=0.04755 t=3.23s
+  ep 12/50 reward=-2.8190 lat=3.3252s E=2.3128J loss=0.01257 t=3.00s
+  ep 13/50 reward=-2.8165 lat=3.5228s E=2.1101J loss=0.006532 t=3.12s
+  ep 14/50 reward=-2.5936 lat=2.7146s E=2.4725J loss=0.004801 t=3.10s
+  ep 15/50 reward=-3.1847 lat=4.0487s E=2.3208J loss=0.1424 t=3.10s
+  ep 16/50 reward=-3.0530 lat=3.9091s E=2.1969J loss=0.0009503 t=3.13s
+  ep 17/50 reward=-3.1145 lat=4.0601s E=2.1689J loss=0.01202 t=3.08s
+  ep 18/50 reward=-3.0850 lat=3.8500s E=2.3200J loss=0.1588 t=3.14s
+  ep 19/50 reward=-3.1461 lat=3.7647s E=2.5276J loss=0.0443 t=3.19s
+  ep 20/50 reward=-3.2491 lat=4.1802s E=2.3179J loss=0.0006637 t=3.09s
+  ep 21/50 reward=-3.1367 lat=4.0444s E=2.2291J loss=0.1307 t=3.31s
+  ep 22/50 reward=-3.1243 lat=3.8325s E=2.4161J loss=0.0083 t=3.13s
+  ep 23/50 reward=-3.1556 lat=4.2244s E=2.0868J loss=0.09808 t=3.08s
+  ep 24/50 reward=-3.0368 lat=3.8427s E=2.2310J loss=0.003532 t=3.08s
+  ep 25/50 reward=-2.8909 lat=3.6973s E=2.0846J loss=0.03231 t=3.14s
+  ep 26/50 reward=-2.9565 lat=3.6240s E=2.2891J loss=0.1379 t=3.08s
+  ep 27/50 reward=-3.2055 lat=4.4141s E=1.9968J loss=0.008933 t=3.14s
+  ep 28/50 reward=-3.3840 lat=4.3320s E=2.4361J loss=0.1014 t=3.11s
+  ep 29/50 reward=-2.7674 lat=3.3983s E=2.1366J loss=0.0001647 t=3.07s
+  ep 30/50 reward=-3.0728 lat=3.9937s E=2.1520J loss=0.00139 t=3.11s
+  ep 31/50 reward=-3.0453 lat=3.7347s E=2.3559J loss=0.004027 t=3.16s
+  ep 32/50 reward=-2.6126 lat=2.9778s E=2.2474J loss=0.005316 t=3.10s
+  ep 33/50 reward=-2.5887 lat=2.9130s E=2.2645J loss=0.0176 t=2.99s
+  ep 34/50 reward=-3.0517 lat=3.8919s E=2.2115J loss=0.02704 t=3.13s
+  ep 35/50 reward=-2.5926 lat=2.8869s E=2.2984J loss=0.1142 t=3.12s
+  ep 36/50 reward=-2.5069 lat=2.7126s E=2.3012J loss=0.01987 t=3.08s
+  ep 37/50 reward=-2.5094 lat=2.5970s E=2.4218J loss=0.06898 t=3.04s
+  ep 38/50 reward=-2.3505 lat=2.4134s E=2.2875J loss=0.007045 t=3.01s
+  ep 39/50 reward=-2.4455 lat=2.6180s E=2.2730J loss=0.01766 t=3.12s
+  ep 40/50 reward=-2.3715 lat=2.4239s E=2.3191J loss=0.09822 t=3.03s
+  ep 41/50 reward=-2.3970 lat=2.4345s E=2.3594J loss=0.03928 t=3.17s
+  ep 42/50 reward=-2.3756 lat=2.4333s E=2.3179J loss=0.01729 t=2.95s
+  ep 43/50 reward=-2.2800 lat=2.4156s E=2.1444J loss=0.01789 t=2.93s
+  ep 44/50 reward=-2.4911 lat=2.5346s E=2.4476J loss=0.03623 t=3.02s
+  ep 45/50 reward=-2.4298 lat=2.4969s E=2.3627J loss=0.01441 t=3.04s
+  ep 46/50 reward=-2.3813 lat=2.4515s E=2.3110J loss=0.01978 t=3.00s
+  ep 47/50 reward=-2.5593 lat=2.6410s E=2.4776J loss=0.02317 t=2.94s
+  ep 48/50 reward=-2.4585 lat=2.5313s E=2.3857J loss=0.01233 t=3.08s
+  ep 49/50 reward=-2.5279 lat=2.8458s E=2.2100J loss=0.007956 t=3.16s
+  ep 50/50 reward=-2.4324 lat=2.4989s E=2.3660J loss=0.01309 t=2.93s
+[Full-QHRL] seed=2027 DONE | reward=-2.4186 lat=2.5638s E=2.2734J miss=0.0620 train=153.6s
+
+[Full-QHRL] seed=2028
+  ep 01/50 reward=-2.5469 lat=2.6226s E=2.4711J loss=0.0886 t=3.29s
+  ep 02/50 reward=-2.4905 lat=2.6477s E=2.3334J loss=0.003888 t=3.01s
+  ep 03/50 reward=-2.4768 lat=2.5456s E=2.4080J loss=0.08411 t=2.98s
+  ep 04/50 reward=-2.4577 lat=2.5343s E=2.3811J loss=0.07946 t=2.92s
+  ep 05/50 reward=-2.3731 lat=2.4191s E=2.3271J loss=0.07298 t=2.97s
+  ep 06/50 reward=-2.3877 lat=2.4235s E=2.3519J loss=0.06927 t=2.98s
+  ep 07/50 reward=-2.5020 lat=2.5482s E=2.4558J loss=0.1543 t=2.96s
+  ep 08/50 reward=-2.4836 lat=2.5605s E=2.4067J loss=0.0478 t=2.99s
+  ep 09/50 reward=-2.5004 lat=2.6785s E=2.3222J loss=0.1254 t=3.01s
+  ep 10/50 reward=-2.5637 lat=2.7080s E=2.4195J loss=0.06805 t=2.97s
+  ep 11/50 reward=-2.4477 lat=2.5383s E=2.3571J loss=0.02029 t=3.06s
+  ep 12/50 reward=-2.2319 lat=2.2592s E=2.2045J loss=0.01628 t=2.99s
+  ep 13/50 reward=-2.4331 lat=2.5085s E=2.3577J loss=0.008174 t=3.00s
+  ep 14/50 reward=-2.5229 lat=2.6375s E=2.4083J loss=0.0571 t=3.02s
+  ep 15/50 reward=-2.5766 lat=2.7486s E=2.4047J loss=0.01804 t=2.99s
+  ep 16/50 reward=-2.5320 lat=2.7361s E=2.3280J loss=0.008919 t=3.09s
+  ep 17/50 reward=-2.4956 lat=2.6110s E=2.3802J loss=0.0003401 t=2.95s
+  ep 18/50 reward=-2.5454 lat=2.6140s E=2.4769J loss=0.02639 t=3.04s
+  ep 19/50 reward=-2.5221 lat=2.7860s E=2.2582J loss=0.03388 t=2.94s
+  ep 20/50 reward=-2.5234 lat=2.6093s E=2.4375J loss=0.03526 t=2.93s
+  ep 21/50 reward=-2.5527 lat=2.6415s E=2.4639J loss=4.965e-06 t=3.10s
+  ep 22/50 reward=-2.4490 lat=2.5410s E=2.3570J loss=0.005533 t=3.03s
+  ep 23/50 reward=-2.5491 lat=2.6647s E=2.4336J loss=0.02578 t=2.97s
+  ep 24/50 reward=-2.5104 lat=2.6918s E=2.3291J loss=0.0003713 t=3.06s
+  ep 25/50 reward=-2.4260 lat=2.5516s E=2.3005J loss=0.004629 t=2.99s
+  ep 26/50 reward=-2.4735 lat=2.5506s E=2.3964J loss=0.0005646 t=3.03s
+  ep 27/50 reward=-2.6210 lat=2.6994s E=2.5426J loss=0.09664 t=3.21s
+  ep 28/50 reward=-2.3332 lat=2.3751s E=2.2912J loss=0.01203 t=3.01s
+  ep 29/50 reward=-2.4137 lat=2.5832s E=2.2442J loss=0.04131 t=2.91s
+  ep 30/50 reward=-2.3669 lat=2.4538s E=2.2799J loss=0.009358 t=3.13s
+  ep 31/50 reward=-2.4708 lat=2.5635s E=2.3782J loss=0.006109 t=3.10s
+  ep 32/50 reward=-2.5971 lat=2.7832s E=2.4110J loss=0.002847 t=2.99s
+  ep 33/50 reward=-2.5183 lat=2.5984s E=2.4382J loss=0.005365 t=2.93s
+  ep 34/50 reward=-2.4659 lat=2.5373s E=2.3945J loss=0.005059 t=3.13s
+  ep 35/50 reward=-2.3319 lat=2.3715s E=2.2923J loss=0.005149 t=3.06s
+  ep 36/50 reward=-2.3643 lat=2.4826s E=2.2460J loss=0.01601 t=3.21s
+  ep 37/50 reward=-2.4732 lat=2.5428s E=2.4036J loss=0.002636 t=2.99s
+  ep 38/50 reward=-2.4639 lat=2.5377s E=2.3900J loss=0.004348 t=3.10s
+  ep 39/50 reward=-2.5588 lat=2.7209s E=2.3966J loss=0.02047 t=3.00s
+  ep 40/50 reward=-2.4762 lat=2.5585s E=2.3940J loss=0.002997 t=3.14s
+  ep 41/50 reward=-2.4510 lat=2.6414s E=2.2607J loss=0.01602 t=3.05s
+  ep 42/50 reward=-2.4885 lat=2.5775s E=2.3996J loss=0.01732 t=3.04s
+  ep 43/50 reward=-2.4779 lat=2.6471s E=2.3088J loss=0.001729 t=3.03s
+  ep 44/50 reward=-2.3922 lat=2.4453s E=2.3391J loss=0.01239 t=3.08s
+  ep 45/50 reward=-2.5096 lat=2.5913s E=2.4279J loss=0.01041 t=3.04s
+  ep 46/50 reward=-2.4355 lat=2.5318s E=2.3393J loss=0.0009201 t=3.03s
+  ep 47/50 reward=-2.4836 lat=2.5794s E=2.3878J loss=0.001564 t=3.01s
+  ep 48/50 reward=-2.4639 lat=2.5482s E=2.3797J loss=0.002493 t=3.07s
+  ep 49/50 reward=-2.4315 lat=2.5981s E=2.2650J loss=0.01562 t=2.98s
+  ep 50/50 reward=-2.6932 lat=2.8397s E=2.5466J loss=0.001089 t=3.20s
+[Full-QHRL] seed=2028 DONE | reward=-2.5204 lat=2.8092s E=2.2315J miss=0.1445 train=151.7s
+
+=== TÓM TẮT SAU Full-QHRL (5 seeds) ===
+Metric                 Mean           Std
+------------------------------------------
+reward                   -2.59965      0.19795
+latency                   2.96424      0.44363
+energy                    2.23506      0.05324
+cost                      2.59965      0.19795
+deadline_miss             0.19920      0.15783
+training_time_s         153.53800      1.59808
+trainable_parameters        10546
+[LuST] speed pool: 138896 mẫu, mean=13.09 m/s, median=12.56 m/s
+[LuST-24h] speed pool: 442557 mẫu, mean=16.65 m/s, median=13.68 m/s
+
+[w/o VQC] seed=2024
+  ep 01/50 reward=-3.2508 lat=4.5097s E=1.9919J loss=0 t=4.85s
+  ep 02/50 reward=-3.3650 lat=4.7400s E=1.9899J loss=0 t=4.16s
+  ep 03/50 reward=-3.3125 lat=4.6344s E=1.9906J loss=0 t=4.15s
+  ep 04/50 reward=-3.2380 lat=4.4647s E=2.0114J loss=0 t=4.15s
+  ep 05/50 reward=-3.3307 lat=4.5728s E=2.0887J loss=0 t=4.20s
+  ep 06/50 reward=-3.3154 lat=4.6024s E=2.0284J loss=0 t=4.13s
+  ep 07/50 reward=-3.3445 lat=4.7281s E=1.9608J loss=0 t=4.15s
+  ep 08/50 reward=-3.3444 lat=4.7281s E=1.9608J loss=0 t=4.13s
+  ep 09/50 reward=-3.2302 lat=4.4726s E=1.9878J loss=0 t=4.19s
+  ep 10/50 reward=-3.2537 lat=4.5316s E=1.9759J loss=0 t=4.20s
+  ep 11/50 reward=-3.3214 lat=4.6491s E=1.9937J loss=0 t=4.12s
+  ep 12/50 reward=-3.2223 lat=4.4337s E=2.0109J loss=0 t=4.23s
+  ep 13/50 reward=-3.3607 lat=4.7435s E=1.9778J loss=0 t=4.18s
+  ep 14/50 reward=-3.3988 lat=4.8115s E=1.9862J loss=0 t=4.20s
+  ep 15/50 reward=-3.3638 lat=4.7620s E=1.9656J loss=0 t=4.06s
+  ep 16/50 reward=-3.2827 lat=4.6060s E=1.9594J loss=0 t=4.15s
+  ep 17/50 reward=-3.3282 lat=4.6438s E=2.0126J loss=0 t=4.21s
+  ep 18/50 reward=-3.2245 lat=4.5054s E=1.9436J loss=0 t=4.08s
+  ep 19/50 reward=-3.2828 lat=4.6061s E=1.9595J loss=0 t=4.18s
+  ep 20/50 reward=-3.3570 lat=4.6539s E=2.0602J loss=0 t=4.13s
+  ep 21/50 reward=-3.3585 lat=4.6957s E=2.0213J loss=0 t=4.09s
+  ep 22/50 reward=-3.2953 lat=4.6005s E=1.9901J loss=0 t=4.05s
+  ep 23/50 reward=-3.2810 lat=4.5195s E=2.0425J loss=0 t=4.14s
+  ep 24/50 reward=-3.4067 lat=4.7829s E=2.0306J loss=0 t=4.09s
+  ep 25/50 reward=-3.3439 lat=4.7265s E=1.9614J loss=0 t=4.09s
+  ep 26/50 reward=-3.2885 lat=4.6044s E=1.9727J loss=0 t=4.14s
+  ep 27/50 reward=-3.2347 lat=4.4976s E=1.9719J loss=0 t=4.22s
+  ep 28/50 reward=-3.1859 lat=4.4116s E=1.9603J loss=0 t=4.22s
+  ep 29/50 reward=-3.2880 lat=4.5705s E=2.0055J loss=0 t=4.14s
+  ep 30/50 reward=-3.3573 lat=4.7246s E=1.9899J loss=0 t=4.16s
+  ep 31/50 reward=-3.2650 lat=4.5529s E=1.9772J loss=0 t=4.24s
+  ep 32/50 reward=-3.3414 lat=4.7092s E=1.9737J loss=0 t=4.16s
+  ep 33/50 reward=-3.3636 lat=4.7239s E=2.0033J loss=0 t=4.07s
+  ep 34/50 reward=-3.3012 lat=4.6404s E=1.9621J loss=0 t=4.11s
+  ep 35/50 reward=-3.3590 lat=4.7082s E=2.0099J loss=0 t=4.08s
+  ep 36/50 reward=-3.1827 lat=4.4185s E=1.9469J loss=0 t=4.14s
+  ep 37/50 reward=-3.2834 lat=4.5826s E=1.9843J loss=0 t=4.11s
+  ep 38/50 reward=-3.3586 lat=4.6981s E=2.0191J loss=0 t=4.13s
+  ep 39/50 reward=-3.2895 lat=4.5571s E=2.0219J loss=0 t=4.21s
+  ep 40/50 reward=-3.3409 lat=4.7090s E=1.9729J loss=0 t=4.13s
+  ep 41/50 reward=-3.3358 lat=4.6158s E=2.0558J loss=0 t=4.17s
+  ep 42/50 reward=-3.3584 lat=4.6956s E=2.0213J loss=0 t=4.20s
+  ep 43/50 reward=-3.2887 lat=4.5744s E=2.0031J loss=0 t=4.06s
+  ep 44/50 reward=-3.2527 lat=4.4980s E=2.0074J loss=0 t=4.19s
+  ep 45/50 reward=-3.3815 lat=4.7551s E=2.0080J loss=0 t=4.19s
+  ep 46/50 reward=-3.2737 lat=4.5006s E=2.0468J loss=0 t=4.22s
+  ep 47/50 reward=-3.3780 lat=4.7299s E=2.0261J loss=0 t=4.22s
+  ep 48/50 reward=-3.4028 lat=4.8301s E=1.9755J loss=0 t=4.14s
+  ep 49/50 reward=-3.1643 lat=4.3280s E=2.0006J loss=0 t=4.12s
+  ep 50/50 reward=-3.2585 lat=4.5539s E=1.9630J loss=0 t=4.04s
+[w/o VQC] seed=2024 DONE | reward=-3.2151 lat=4.3341s E=2.0961J miss=0.7269 train=208.1s
+
+[w/o VQC] seed=2025
+  ep 01/50 reward=-3.2278 lat=4.5242s E=1.9314J loss=0 t=4.22s
+  ep 02/50 reward=-3.3249 lat=4.6940s E=1.9558J loss=0 t=3.68s
+  ep 03/50 reward=-3.3250 lat=4.6942s E=1.9559J loss=0 t=3.62s
+  ep 04/50 reward=-3.3023 lat=4.6404s E=1.9643J loss=0 t=3.59s
+  ep 05/50 reward=-3.2828 lat=4.6061s E=1.9596J loss=0 t=3.64s
+  ep 06/50 reward=-3.3619 lat=4.7550s E=1.9688J loss=0 t=3.62s
+  ep 07/50 reward=-3.3410 lat=4.7078s E=1.9743J loss=0 t=3.73s
+  ep 08/50 reward=-3.3415 lat=4.7092s E=1.9738J loss=0 t=3.62s
+  ep 09/50 reward=-3.2472 lat=4.5582s E=1.9363J loss=0 t=3.59s
+  ep 10/50 reward=-3.3023 lat=4.6404s E=1.9643J loss=0 t=3.53s
+  ep 11/50 reward=-3.3056 lat=4.6601s E=1.9510J loss=0 t=3.53s
+  ep 12/50 reward=-3.3219 lat=4.6748s E=1.9690J loss=0 t=3.63s
+  ep 13/50 reward=-3.2633 lat=4.5800s E=1.9465J loss=0 t=3.56s
+  ep 14/50 reward=-3.2999 lat=4.6231s E=1.9768J loss=0 t=3.48s
+  ep 15/50 reward=-3.2826 lat=4.6059s E=1.9594J loss=0 t=3.67s
+  ep 16/50 reward=-3.3422 lat=4.7200s E=1.9644J loss=0 t=3.64s
+  ep 17/50 reward=-3.2041 lat=4.4750s E=1.9332J loss=0 t=3.54s
+  ep 18/50 reward=-3.3475 lat=4.7067s E=1.9882J loss=0 t=3.56s
+  ep 19/50 reward=-3.3249 lat=4.6940s E=1.9558J loss=0 t=3.68s
+  ep 20/50 reward=-3.3196 lat=4.6577s E=1.9814J loss=0 t=3.55s
+  ep 21/50 reward=-3.2827 lat=4.6060s E=1.9594J loss=0 t=3.65s
+  ep 22/50 reward=-3.2605 lat=4.5538s E=1.9672J loss=0 t=3.65s
+  ep 23/50 reward=-3.3834 lat=4.7961s E=1.9706J loss=0 t=3.67s
+  ep 24/50 reward=-3.4000 lat=4.8116s E=1.9883J loss=0 t=4.31s
+  ep 25/50 reward=-3.3250 lat=4.6941s E=1.9559J loss=0 t=3.98s
+  ep 26/50 reward=-3.3381 lat=4.6873s E=1.9888J loss=0 t=3.79s
+  ep 27/50 reward=-3.2794 lat=4.4380s E=2.1207J loss=0 t=3.79s
+  ep 28/50 reward=-3.2054 lat=4.4713s E=1.9395J loss=0 t=3.82s
+  ep 29/50 reward=-3.2886 lat=4.6030s E=1.9741J loss=0 t=3.89s
+  ep 30/50 reward=-3.4028 lat=4.8300s E=1.9755J loss=0 t=3.77s
+  ep 31/50 reward=-3.4028 lat=4.8301s E=1.9755J loss=0 t=4.25s
+  ep 32/50 reward=-3.3611 lat=4.7436s E=1.9786J loss=0 t=4.04s
+  ep 33/50 reward=-3.3816 lat=4.7900s E=1.9733J loss=0 t=4.85s
+  ep 34/50 reward=-3.3415 lat=4.7092s E=1.9738J loss=0 t=4.66s
+  ep 35/50 reward=-3.3802 lat=4.7769s E=1.9836J loss=0 t=3.95s
+  ep 36/50 reward=-3.3219 lat=4.6748s E=1.9691J loss=0 t=3.83s
+  ep 37/50 reward=-3.3619 lat=4.7550s E=1.9688J loss=0 t=3.69s
+  ep 38/50 reward=-3.2666 lat=4.5921s E=1.9411J loss=0 t=3.63s
+  ep 39/50 reward=-3.3218 lat=4.6747s E=1.9690J loss=0 t=3.63s
+  ep 40/50 reward=-3.3444 lat=4.7281s E=1.9608J loss=0 t=3.59s
+  ep 41/50 reward=-3.3023 lat=4.6403s E=1.9642J loss=0 t=3.93s
+  ep 42/50 reward=-3.3415 lat=4.7091s E=1.9738J loss=0 t=4.64s
+  ep 43/50 reward=-3.2780 lat=4.5715s E=1.9845J loss=0 t=4.23s
+  ep 44/50 reward=-3.3422 lat=4.7200s E=1.9645J loss=0 t=4.64s
+  ep 45/50 reward=-3.3445 lat=4.7281s E=1.9608J loss=0 t=4.96s
+  ep 46/50 reward=-3.4000 lat=4.8116s E=1.9883J loss=0 t=5.00s
+  ep 47/50 reward=-3.2435 lat=4.5372s E=1.9499J loss=0 t=4.87s
+  ep 48/50 reward=-3.3803 lat=4.7769s E=1.9837J loss=0 t=4.81s
+  ep 49/50 reward=-3.2666 lat=4.5921s E=1.9412J loss=0 t=4.52s
+  ep 50/50 reward=-3.3416 lat=4.7093s E=1.9739J loss=0 t=4.85s
+[w/o VQC] seed=2025 DONE | reward=-3.2676 lat=4.4737s E=2.0615J miss=0.7829 train=197.6s
+
+[w/o VQC] seed=2026
+  ep 01/50 reward=-3.3224 lat=4.6866s E=1.9582J loss=0 t=5.58s
+  ep 02/50 reward=-3.2803 lat=4.5885s E=1.9720J loss=0 t=4.87s
+  ep 03/50 reward=-3.3291 lat=4.5646s E=2.0936J loss=0 t=4.77s
+  ep 04/50 reward=-3.2632 lat=4.5716s E=1.9547J loss=0 t=5.03s
+  ep 05/50 reward=-3.3164 lat=4.6356s E=1.9972J loss=0 t=4.89s
+  ep 06/50 reward=-3.2862 lat=4.6262s E=1.9462J loss=0 t=4.63s
+  ep 07/50 reward=-3.3610 lat=4.7435s E=1.9785J loss=0 t=4.75s
+  ep 08/50 reward=-3.3829 lat=4.7948s E=1.9710J loss=0 t=4.68s
+  ep 09/50 reward=-3.2435 lat=4.5371s E=1.9499J loss=0 t=5.10s
+  ep 10/50 reward=-3.3578 lat=4.7222s E=1.9935J loss=0 t=4.97s
+  ep 11/50 reward=-3.3802 lat=4.7769s E=1.9836J loss=0 t=4.92s
+  ep 12/50 reward=-3.2830 lat=4.6150s E=1.9510J loss=0 t=4.78s
+  ep 13/50 reward=-3.2830 lat=4.6150s E=1.9511J loss=0 t=4.75s
+  ep 14/50 reward=-3.3999 lat=4.8115s E=1.9883J loss=0 t=4.52s
+  ep 15/50 reward=-3.3387 lat=4.6910s E=1.9864J loss=0 t=4.57s
+  ep 16/50 reward=-3.2633 lat=4.5800s E=1.9467J loss=0 t=4.63s
+  ep 17/50 reward=-3.3829 lat=4.7948s E=1.9710J loss=0 t=4.64s
+  ep 18/50 reward=-3.2830 lat=4.6150s E=1.9510J loss=0 t=5.19s
+  ep 19/50 reward=-3.3027 lat=4.6500s E=1.9554J loss=0 t=5.28s
+  ep 20/50 reward=-3.3250 lat=4.6941s E=1.9559J loss=0 t=4.93s
+  ep 21/50 reward=-3.2666 lat=4.5921s E=1.9412J loss=0 t=5.32s
+  ep 22/50 reward=-3.3444 lat=4.7280s E=1.9607J loss=0 t=4.97s
+  ep 23/50 reward=-3.2826 lat=4.6059s E=1.9594J loss=0 t=4.81s
+  ep 24/50 reward=-3.3640 lat=4.7622s E=1.9658J loss=0 t=4.79s
+  ep 25/50 reward=-3.2861 lat=4.6261s E=1.9461J loss=0 t=5.23s
+  ep 26/50 reward=-3.2354 lat=4.4792s E=1.9916J loss=0 t=5.35s
+  ep 27/50 reward=-3.3022 lat=4.6403s E=1.9642J loss=0 t=5.28s
+  ep 28/50 reward=-3.2473 lat=4.5583s E=1.9364J loss=0 t=4.97s
+  ep 29/50 reward=-3.3639 lat=4.7621s E=1.9657J loss=0 t=4.96s
+  ep 30/50 reward=-3.2605 lat=4.5539s E=1.9672J loss=0 t=5.15s
+  ep 31/50 reward=-3.3444 lat=4.7281s E=1.9608J loss=0 t=5.60s
+  ep 32/50 reward=-3.3445 lat=4.7281s E=1.9608J loss=0 t=4.12s
+  ep 33/50 reward=-3.3023 lat=4.6404s E=1.9643J loss=0 t=3.73s
+  ep 34/50 reward=-3.2862 lat=4.6262s E=1.9461J loss=0 t=3.70s
+  ep 35/50 reward=-3.3620 lat=4.7550s E=1.9689J loss=0 t=3.78s
+  ep 36/50 reward=-3.3196 lat=4.6578s E=1.9814J loss=0 t=3.79s
+  ep 37/50 reward=-3.3475 lat=4.7067s E=1.9882J loss=0 t=3.77s
+  ep 38/50 reward=-3.2862 lat=4.6262s E=1.9461J loss=0 t=4.98s
+  ep 39/50 reward=-3.3833 lat=4.7945s E=1.9721J loss=0 t=6.83s
+  ep 40/50 reward=-3.3055 lat=4.6601s E=1.9510J loss=0 t=5.91s
+  ep 41/50 reward=-3.2999 lat=4.6231s E=1.9768J loss=0 t=3.85s
+  ep 42/50 reward=-3.3415 lat=4.7092s E=1.9738J loss=0 t=4.17s
+  ep 43/50 reward=-3.3803 lat=4.7769s E=1.9836J loss=0 t=4.03s
+  ep 44/50 reward=-3.2861 lat=4.6261s E=1.9461J loss=0 t=4.86s
+  ep 45/50 reward=-3.4028 lat=4.8301s E=1.9755J loss=0 t=4.62s
+  ep 46/50 reward=-3.4029 lat=4.8301s E=1.9756J loss=0 t=4.45s
+  ep 47/50 reward=-3.2278 lat=4.5242s E=1.9314J loss=0 t=4.66s
+  ep 48/50 reward=-3.3225 lat=4.6850s E=1.9599J loss=0 t=4.59s
+  ep 49/50 reward=-3.3833 lat=4.7961s E=1.9706J loss=0 t=4.43s
+  ep 50/50 reward=-3.3619 lat=4.7550s E=1.9689J loss=0 t=4.40s
+[w/o VQC] seed=2026 DONE | reward=-3.2507 lat=4.4361s E=2.0652J miss=0.7652 train=238.6s
+
+[w/o VQC] seed=2027
+  ep 01/50 reward=-3.1238 lat=4.3151s E=1.9325J loss=0 t=7.18s
+  ep 02/50 reward=-3.1896 lat=4.4330s E=1.9462J loss=0 t=6.49s
+  ep 03/50 reward=-3.2807 lat=4.5643s E=1.9972J loss=0 t=6.23s
+  ep 04/50 reward=-3.2078 lat=4.3772s E=2.0384J loss=0 t=6.05s
+  ep 05/50 reward=-3.2633 lat=4.5207s E=2.0058J loss=0 t=6.79s
+  ep 06/50 reward=-3.1980 lat=4.2761s E=2.1200J loss=0 t=7.04s
+  ep 07/50 reward=-3.2800 lat=4.5539s E=2.0061J loss=0 t=6.61s
+  ep 08/50 reward=-3.3023 lat=4.6403s E=1.9643J loss=0 t=6.30s
+  ep 09/50 reward=-3.3088 lat=4.5823s E=2.0353J loss=0 t=6.61s
+  ep 10/50 reward=-3.3268 lat=4.5989s E=2.0547J loss=0 t=6.10s
+  ep 11/50 reward=-3.3013 lat=4.6405s E=1.9621J loss=0 t=5.90s
+  ep 12/50 reward=-3.2742 lat=4.5654s E=1.9829J loss=0 t=5.82s
+  ep 13/50 reward=-3.3792 lat=4.7770s E=1.9815J loss=0 t=6.21s
+  ep 14/50 reward=-3.2965 lat=4.5564s E=2.0366J loss=0 t=6.61s
+  ep 15/50 reward=-3.3989 lat=4.8116s E=1.9862J loss=0 t=5.10s
+  ep 16/50 reward=-3.2449 lat=4.5154s E=1.9743J loss=0 t=4.97s
+  ep 17/50 reward=-3.3343 lat=4.6690s E=1.9996J loss=0 t=4.87s
+  ep 18/50 reward=-3.3367 lat=4.6871s E=1.9863J loss=0 t=5.19s
+  ep 19/50 reward=-3.3584 lat=4.6996s E=2.0172J loss=0 t=5.23s
+  ep 20/50 reward=-3.3709 lat=4.7356s E=2.0061J loss=0 t=5.39s
+  ep 21/50 reward=-3.2653 lat=4.5207s E=2.0100J loss=0 t=5.54s
+  ep 22/50 reward=-3.2931 lat=4.6000s E=1.9863J loss=0 t=5.85s
+  ep 23/50 reward=-3.3587 lat=4.6982s E=2.0192J loss=0 t=5.87s
+  ep 24/50 reward=-3.2674 lat=4.4663s E=2.0684J loss=0 t=6.27s
+  ep 25/50 reward=-3.3163 lat=4.6153s E=2.0173J loss=0 t=5.35s
+  ep 26/50 reward=-3.2684 lat=4.5419s E=1.9950J loss=0 t=5.58s
+  ep 27/50 reward=-3.2834 lat=4.5826s E=1.9842J loss=0 t=5.87s
+  ep 28/50 reward=-3.2690 lat=4.5397s E=1.9983J loss=0 t=5.57s
+  ep 29/50 reward=-3.3634 lat=4.7620s E=1.9649J loss=0 t=5.21s
+  ep 30/50 reward=-3.2965 lat=4.6006s E=1.9925J loss=0 t=5.72s
+  ep 31/50 reward=-3.2304 lat=4.4444s E=2.0164J loss=0 t=5.46s
+  ep 32/50 reward=-3.2931 lat=4.5999s E=1.9863J loss=0 t=5.43s
+  ep 33/50 reward=-3.2283 lat=4.5003s E=1.9563J loss=0 t=5.37s
+  ep 34/50 reward=-3.2892 lat=4.5765s E=2.0019J loss=0 t=5.10s
+  ep 35/50 reward=-3.1766 lat=4.3407s E=2.0125J loss=0 t=5.04s
+  ep 36/50 reward=-3.2839 lat=4.5841s E=1.9837J loss=0 t=5.58s
+  ep 37/50 reward=-3.3389 lat=4.6614s E=2.0164J loss=0 t=4.94s
+  ep 38/50 reward=-3.3011 lat=4.6403s E=1.9620J loss=0 t=5.07s
+  ep 39/50 reward=-3.2187 lat=4.4426s E=1.9947J loss=0 t=4.94s
+  ep 40/50 reward=-3.3244 lat=4.6923s E=1.9565J loss=0 t=5.28s
+  ep 41/50 reward=-3.2648 lat=4.5185s E=2.0110J loss=0 t=5.27s
+  ep 42/50 reward=-3.3251 lat=4.6943s E=1.9560J loss=0 t=5.01s
+  ep 43/50 reward=-3.2839 lat=4.5035s E=2.0643J loss=0 t=5.13s
+  ep 44/50 reward=-3.3210 lat=4.6749s E=1.9670J loss=0 t=5.15s
+  ep 45/50 reward=-3.2595 lat=4.5539s E=1.9651J loss=0 t=5.22s
+  ep 46/50 reward=-3.2840 lat=4.5841s E=1.9838J loss=0 t=5.59s
+  ep 47/50 reward=-3.3591 lat=4.6995s E=2.0186J loss=0 t=5.08s
+  ep 48/50 reward=-3.3459 lat=4.7068s E=1.9849J loss=0 t=5.05s
+  ep 49/50 reward=-3.1701 lat=4.3987s E=1.9416J loss=0 t=4.92s
+  ep 50/50 reward=-3.2435 lat=4.4857s E=2.0013J loss=0 t=4.76s
+[w/o VQC] seed=2027 DONE | reward=-3.2227 lat=4.3998s E=2.0456J miss=0.7725 train=280.9s
+
+[w/o VQC] seed=2028
+  ep 01/50 reward=-3.3611 lat=4.7436s E=1.9786J loss=0 t=5.78s
+  ep 02/50 reward=-3.2684 lat=4.5667s E=1.9700J loss=0 t=5.18s
+  ep 03/50 reward=-3.2196 lat=4.4693s E=1.9699J loss=0 t=4.60s
+  ep 04/50 reward=-3.2633 lat=4.5800s E=1.9466J loss=0 t=5.48s
+  ep 05/50 reward=-3.2473 lat=4.5583s E=1.9364J loss=0 t=4.46s
+  ep 06/50 reward=-3.3055 lat=4.6601s E=1.9510J loss=0 t=3.95s
+  ep 07/50 reward=-3.3415 lat=4.7092s E=1.9738J loss=0 t=3.70s
+  ep 08/50 reward=-3.3640 lat=4.7622s E=1.9658J loss=0 t=3.67s
+  ep 09/50 reward=-3.3610 lat=4.7435s E=1.9785J loss=0 t=3.71s
+  ep 10/50 reward=-3.3422 lat=4.7200s E=1.9644J loss=0 t=3.60s
+  ep 11/50 reward=-3.3999 lat=4.8115s E=1.9883J loss=0 t=3.60s
+  ep 12/50 reward=-3.3639 lat=4.7600s E=1.9677J loss=0 t=3.71s
+  ep 13/50 reward=-3.3647 lat=4.7239s E=2.0054J loss=0 t=3.60s
+  ep 14/50 reward=-3.3619 lat=4.7550s E=1.9689J loss=0 t=3.65s
+  ep 15/50 reward=-3.3619 lat=4.7550s E=1.9688J loss=0 t=3.67s
+  ep 16/50 reward=-3.2607 lat=4.5540s E=1.9674J loss=0 t=3.63s
+  ep 17/50 reward=-3.3804 lat=4.7770s E=1.9838J loss=0 t=3.57s
+  ep 18/50 reward=-3.3619 lat=4.7550s E=1.9688J loss=0 t=3.66s
+  ep 19/50 reward=-3.3816 lat=4.7900s E=1.9733J loss=0 t=3.60s
+  ep 20/50 reward=-3.2607 lat=4.5539s E=1.9674J loss=0 t=3.53s
+  ep 21/50 reward=-3.4157 lat=4.8241s E=2.0073J loss=0 t=3.58s
+  ep 22/50 reward=-3.3415 lat=4.7092s E=1.9738J loss=0 t=3.65s
+  ep 23/50 reward=-3.3422 lat=4.7200s E=1.9644J loss=0 t=3.57s
+  ep 24/50 reward=-3.3056 lat=4.6601s E=1.9510J loss=0 t=3.67s
+  ep 25/50 reward=-3.2667 lat=4.5921s E=1.9412J loss=0 t=3.54s
+  ep 26/50 reward=-3.3817 lat=4.7900s E=1.9733J loss=0 t=3.63s
+  ep 27/50 reward=-3.2436 lat=4.5372s E=1.9499J loss=0 t=3.72s
+  ep 28/50 reward=-3.3578 lat=4.7221s E=1.9934J loss=0 t=3.68s
+  ep 29/50 reward=-3.3414 lat=4.7091s E=1.9737J loss=0 t=3.58s
+  ep 30/50 reward=-3.3445 lat=4.7282s E=1.9609J loss=0 t=3.65s
+  ep 31/50 reward=-3.3611 lat=4.7436s E=1.9785J loss=0 t=3.66s
+  ep 32/50 reward=-3.3023 lat=4.6403s E=1.9642J loss=0 t=3.59s
+  ep 33/50 reward=-3.2768 lat=4.5658s E=1.9878J loss=0 t=3.64s
+  ep 34/50 reward=-3.3027 lat=4.6500s E=1.9554J loss=0 t=3.67s
+  ep 35/50 reward=-3.3639 lat=4.7621s E=1.9657J loss=0 t=3.66s
+  ep 36/50 reward=-3.1859 lat=4.4371s E=1.9347J loss=0 t=3.71s
+  ep 37/50 reward=-3.2633 lat=4.5717s E=1.9548J loss=0 t=3.65s
+  ep 38/50 reward=-3.2435 lat=4.5372s E=1.9499J loss=0 t=3.65s
+  ep 39/50 reward=-3.2249 lat=4.5055s E=1.9444J loss=0 t=3.62s
+  ep 40/50 reward=-3.3444 lat=4.7280s E=1.9607J loss=0 t=3.60s
+  ep 41/50 reward=-3.3283 lat=4.6737s E=1.9829J loss=0 t=3.61s
+  ep 42/50 reward=-3.3219 lat=4.6748s E=1.9691J loss=0 t=3.63s
+  ep 43/50 reward=-3.3611 lat=4.7436s E=1.9786J loss=0 t=3.65s
+  ep 44/50 reward=-3.3804 lat=4.7770s E=1.9837J loss=0 t=3.69s
+  ep 45/50 reward=-3.2410 lat=4.5193s E=1.9626J loss=0 t=3.73s
+  ep 46/50 reward=-3.4000 lat=4.8116s E=1.9884J loss=0 t=3.64s
+  ep 47/50 reward=-3.4191 lat=4.8437s E=1.9944J loss=0 t=3.53s
+  ep 48/50 reward=-3.3415 lat=4.7092s E=1.9738J loss=0 t=3.74s
+  ep 49/50 reward=-3.2435 lat=4.5450s E=1.9421J loss=0 t=3.54s
+  ep 50/50 reward=-3.2633 lat=4.5800s E=1.9466J loss=0 t=3.48s
+[w/o VQC] seed=2028 DONE | reward=-3.2795 lat=4.5082s E=2.0507J miss=0.7991 train=189.3s
+
+=== TÓM TẮT SAU w/o VQC (5 seeds) ===
+Metric                 Mean           Std
+------------------------------------------
+reward                   -3.24711      0.02782
+latency                   4.43038      0.06737
+energy                    2.06384      0.01969
+cost                      3.24711      0.02782
+deadline_miss             0.76933      0.02689
+training_time_s         222.90335     37.41128
+trainable_parameters        15746
+[LuST] speed pool: 138896 mẫu, mean=13.09 m/s, median=12.56 m/s
+[LuST-24h] speed pool: 442557 mẫu, mean=16.65 m/s, median=13.68 m/s
+
+[w/o QAOA] seed=2024
+  ep 01/50 reward=-2.8114 lat=3.4685s E=2.1543J loss=0.08597 t=3.21s
+  ep 02/50 reward=-2.7827 lat=3.4833s E=2.0821J loss=0.04458 t=3.13s
+  ep 03/50 reward=-2.8608 lat=3.6457s E=2.0760J loss=0.04775 t=3.04s
+  ep 04/50 reward=-3.1050 lat=4.1079s E=2.1021J loss=0.04973 t=3.11s
+  ep 05/50 reward=-2.3874 lat=2.5392s E=2.2356J loss=0.03379 t=3.02s
+  ep 06/50 reward=-2.9951 lat=3.8151s E=2.1750J loss=0.09779 t=3.14s
+  ep 07/50 reward=-2.3784 lat=2.4450s E=2.3119J loss=0.0544 t=2.98s
+  ep 08/50 reward=-2.8692 lat=3.5070s E=2.2314J loss=0.03959 t=3.12s
+  ep 09/50 reward=-2.8302 lat=3.3659s E=2.2944J loss=0.04576 t=3.18s
+  ep 10/50 reward=-2.4104 lat=2.4800s E=2.3408J loss=0.03896 t=3.01s
+  ep 11/50 reward=-2.4390 lat=2.5410s E=2.3370J loss=0.03534 t=2.95s
+  ep 12/50 reward=-2.4003 lat=2.4661s E=2.3346J loss=0.01197 t=3.14s
+  ep 13/50 reward=-2.5778 lat=2.8247s E=2.3309J loss=0.01512 t=3.05s
+  ep 14/50 reward=-2.5022 lat=2.7672s E=2.2373J loss=0.03062 t=3.07s
+  ep 15/50 reward=-2.4230 lat=2.6048s E=2.2411J loss=0.0008413 t=3.03s
+  ep 16/50 reward=-2.5917 lat=2.9280s E=2.2553J loss=0.0464 t=3.11s
+  ep 17/50 reward=-2.4978 lat=2.5582s E=2.4374J loss=0.05834 t=3.06s
+  ep 18/50 reward=-2.4772 lat=2.5551s E=2.3993J loss=0.01449 t=3.03s
+  ep 19/50 reward=-2.5149 lat=2.8275s E=2.2022J loss=0.03403 t=3.04s
+  ep 20/50 reward=-2.5833 lat=2.8925s E=2.2740J loss=0.02146 t=3.16s
+  ep 21/50 reward=-2.5532 lat=3.0249s E=2.0816J loss=0.01123 t=3.03s
+  ep 22/50 reward=-2.7396 lat=3.1991s E=2.2800J loss=0.08768 t=2.95s
+  ep 23/50 reward=-2.7591 lat=3.0993s E=2.4189J loss=0.005834 t=3.16s
+  ep 24/50 reward=-2.7001 lat=3.3574s E=2.0427J loss=0.0048 t=3.01s
+  ep 25/50 reward=-2.6661 lat=3.2783s E=2.0539J loss=0.001906 t=3.06s
+  ep 26/50 reward=-2.7467 lat=3.3644s E=2.1291J loss=0.002009 t=3.03s
+  ep 27/50 reward=-2.7974 lat=3.1566s E=2.4383J loss=0.0006255 t=3.05s
+  ep 28/50 reward=-2.7076 lat=2.9304s E=2.4847J loss=0.0386 t=3.04s
+  ep 29/50 reward=-2.7542 lat=3.0919s E=2.4166J loss=1.978e-05 t=3.23s
+  ep 30/50 reward=-2.5987 lat=2.8912s E=2.3062J loss=0.06078 t=3.11s
+  ep 31/50 reward=-2.6437 lat=2.8592s E=2.4281J loss=0.1154 t=3.16s
+  ep 32/50 reward=-2.5846 lat=2.9252s E=2.2439J loss=0.001877 t=3.23s
+  ep 33/50 reward=-2.6052 lat=2.9104s E=2.3001J loss=0.03751 t=3.17s
+  ep 34/50 reward=-2.7014 lat=2.9062s E=2.4966J loss=0.04916 t=3.02s
+  ep 35/50 reward=-2.4692 lat=2.6799s E=2.2586J loss=0.004312 t=3.06s
+  ep 36/50 reward=-2.8417 lat=3.1670s E=2.5163J loss=0.003774 t=3.15s
+  ep 37/50 reward=-2.6099 lat=2.8798s E=2.3401J loss=0.004475 t=3.24s
+  ep 38/50 reward=-2.7275 lat=2.9471s E=2.5078J loss=0.003515 t=3.23s
+  ep 39/50 reward=-2.5933 lat=2.8812s E=2.3055J loss=0.003846 t=3.10s
+  ep 40/50 reward=-2.5537 lat=2.7479s E=2.3595J loss=0.004261 t=3.27s
+  ep 41/50 reward=-2.6566 lat=2.9097s E=2.4036J loss=0.005091 t=3.23s
+  ep 42/50 reward=-2.5852 lat=2.8296s E=2.3408J loss=0.001935 t=3.11s
+  ep 43/50 reward=-2.6323 lat=2.8200s E=2.4446J loss=0.00298 t=3.13s
+  ep 44/50 reward=-2.5207 lat=2.7161s E=2.3252J loss=0.04126 t=3.17s
+  ep 45/50 reward=-2.6692 lat=2.8814s E=2.4571J loss=0.09626 t=3.32s
+  ep 46/50 reward=-2.5692 lat=2.7033s E=2.4351J loss=0.003009 t=3.30s
+  ep 47/50 reward=-2.5736 lat=2.8762s E=2.2709J loss=0.2347 t=3.23s
+  ep 48/50 reward=-2.6431 lat=2.8349s E=2.4512J loss=0.003571 t=3.13s
+  ep 49/50 reward=-2.6294 lat=2.7346s E=2.5241J loss=0.001862 t=3.01s
+  ep 50/50 reward=-2.7524 lat=3.2396s E=2.2651J loss=0.002462 t=3.30s
+[w/o QAOA] seed=2024 DONE | reward=-2.7077 lat=3.1414s E=2.2740J miss=0.2340 train=155.8s
+
+[w/o QAOA] seed=2025
+  ep 01/50 reward=-2.5430 lat=2.5962s E=2.4898J loss=0.08974 t=2.91s
+  ep 02/50 reward=-2.4658 lat=2.5540s E=2.3777J loss=0.04448 t=2.93s
+  ep 03/50 reward=-2.6460 lat=2.8412s E=2.4507J loss=0.08384 t=3.00s
+  ep 04/50 reward=-2.4768 lat=2.6410s E=2.3125J loss=0.3922 t=2.88s
+  ep 05/50 reward=-2.3638 lat=2.4080s E=2.3196J loss=0.07379 t=2.96s
+  ep 06/50 reward=-2.4363 lat=2.6125s E=2.2600J loss=0.06742 t=2.93s
+  ep 07/50 reward=-2.5719 lat=2.7725s E=2.3713J loss=0.06023 t=2.81s
+  ep 08/50 reward=-2.5807 lat=2.6178s E=2.5437J loss=0.05583 t=2.94s
+  ep 09/50 reward=-2.4813 lat=2.7605s E=2.2022J loss=0.04276 t=2.90s
+  ep 10/50 reward=-2.5065 lat=2.6396s E=2.3734J loss=0.1536 t=2.90s
+  ep 11/50 reward=-2.5976 lat=2.8736s E=2.3216J loss=0.2251 t=3.00s
+  ep 12/50 reward=-3.0964 lat=3.9734s E=2.2193J loss=0.08235 t=2.98s
+  ep 13/50 reward=-3.0800 lat=3.9680s E=2.1921J loss=0.007108 t=3.15s
+  ep 14/50 reward=-2.9006 lat=3.6710s E=2.1303J loss=0.006065 t=3.07s
+  ep 15/50 reward=-3.0146 lat=3.8605s E=2.1687J loss=0.1051 t=2.99s
+  ep 16/50 reward=-3.1228 lat=4.1558s E=2.0899J loss=0.01845 t=3.04s
+  ep 17/50 reward=-3.2005 lat=4.3810s E=2.0200J loss=0.02569 t=3.06s
+  ep 18/50 reward=-3.0453 lat=4.0345s E=2.0561J loss=0.08724 t=2.94s
+  ep 19/50 reward=-3.0744 lat=3.9582s E=2.1905J loss=0.000327 t=3.07s
+  ep 20/50 reward=-3.1755 lat=4.2447s E=2.1062J loss=0.07618 t=3.06s
+  ep 21/50 reward=-3.0011 lat=3.9227s E=2.0795J loss=0.0009893 t=2.97s
+  ep 22/50 reward=-2.9901 lat=3.8176s E=2.1627J loss=0.1084 t=3.13s
+  ep 23/50 reward=-2.9887 lat=3.7639s E=2.2134J loss=0.0008406 t=3.07s
+  ep 24/50 reward=-3.1894 lat=3.9754s E=2.4035J loss=0.04645 t=3.18s
+  ep 25/50 reward=-3.1546 lat=4.1994s E=2.1097J loss=0.04448 t=3.63s
+  ep 26/50 reward=-3.0015 lat=3.8243s E=2.1787J loss=0.04644 t=3.44s
+  ep 27/50 reward=-3.1089 lat=3.9100s E=2.3079J loss=0.0174 t=3.43s
+  ep 28/50 reward=-3.2008 lat=4.1656s E=2.2360J loss=0.00114 t=3.44s
+  ep 29/50 reward=-3.1142 lat=4.2250s E=2.0034J loss=0.001082 t=3.40s
+  ep 30/50 reward=-3.1005 lat=3.9200s E=2.2810J loss=0.003093 t=3.21s
+  ep 31/50 reward=-3.0384 lat=3.8725s E=2.2044J loss=0.002966 t=3.21s
+  ep 32/50 reward=-3.0500 lat=4.0752s E=2.0248J loss=0.06108 t=3.20s
+  ep 33/50 reward=-3.0746 lat=3.8398s E=2.3093J loss=0.05381 t=3.25s
+  ep 34/50 reward=-3.2629 lat=4.3142s E=2.2115J loss=0.3017 t=3.30s
+  ep 35/50 reward=-3.1151 lat=4.1804s E=2.0498J loss=0.001338 t=3.22s
+  ep 36/50 reward=-2.7851 lat=3.5350s E=2.0351J loss=0.0614 t=3.45s
+  ep 37/50 reward=-2.6504 lat=3.0840s E=2.2169J loss=0.03066 t=3.34s
+  ep 38/50 reward=-2.5459 lat=2.8393s E=2.2525J loss=0.03239 t=3.05s
+  ep 39/50 reward=-2.5870 lat=2.9444s E=2.2297J loss=0.02716 t=3.35s
+  ep 40/50 reward=-2.7524 lat=3.2099s E=2.2950J loss=0.01859 t=3.33s
+  ep 41/50 reward=-2.6397 lat=3.0249s E=2.2545J loss=0.02002 t=3.05s
+  ep 42/50 reward=-2.6381 lat=2.9113s E=2.3648J loss=0.006981 t=3.04s
+  ep 43/50 reward=-2.7492 lat=3.3809s E=2.1174J loss=0.0117 t=3.27s
+  ep 44/50 reward=-2.6270 lat=2.9921s E=2.2620J loss=0.004884 t=3.29s
+  ep 45/50 reward=-2.7750 lat=3.1340s E=2.4160J loss=0.007335 t=3.11s
+  ep 46/50 reward=-2.7869 lat=3.4148s E=2.1590J loss=0.003307 t=3.17s
+  ep 47/50 reward=-2.9510 lat=3.6772s E=2.2248J loss=0.004483 t=3.25s
+  ep 48/50 reward=-2.7309 lat=3.1584s E=2.3034J loss=0.002525 t=3.02s
+  ep 49/50 reward=-2.7837 lat=3.2385s E=2.3289J loss=0.002267 t=3.22s
+  ep 50/50 reward=-2.8710 lat=3.4580s E=2.2841J loss=0.002867 t=3.15s
+[w/o QAOA] seed=2025 DONE | reward=-2.6783 lat=3.1810s E=2.1757J miss=0.2866 train=156.7s
+
+[w/o QAOA] seed=2026
+  ep 01/50 reward=-2.6006 lat=2.6875s E=2.5137J loss=0.08966 t=3.53s
+  ep 02/50 reward=-2.3352 lat=2.3749s E=2.2955J loss=0.08284 t=3.47s
+  ep 03/50 reward=-2.8702 lat=3.6905s E=2.0499J loss=0.3859 t=3.67s
+  ep 04/50 reward=-2.9207 lat=3.7508s E=2.0906J loss=0.07697 t=3.47s
+  ep 05/50 reward=-2.6201 lat=2.8355s E=2.4047J loss=0.09167 t=4.00s
+  ep 06/50 reward=-2.5363 lat=2.5908s E=2.4819J loss=0.3526 t=3.44s
+  ep 07/50 reward=-2.4811 lat=2.5626s E=2.3995J loss=0.05391 t=3.62s
+  ep 08/50 reward=-2.4371 lat=2.5215s E=2.3527J loss=0.2386 t=3.44s
+  ep 09/50 reward=-2.5451 lat=2.6326s E=2.4576J loss=0.4646 t=3.34s
+  ep 10/50 reward=-2.3989 lat=2.4340s E=2.3638J loss=0.1599 t=3.48s
+  ep 11/50 reward=-2.5032 lat=2.5902s E=2.4161J loss=0.01775 t=3.50s
+  ep 12/50 reward=-2.3931 lat=2.4521s E=2.3340J loss=0.1168 t=3.53s
+  ep 13/50 reward=-2.6745 lat=3.0850s E=2.2641J loss=0.005706 t=3.54s
+  ep 14/50 reward=-2.5247 lat=2.5998s E=2.4496J loss=0.03292 t=3.36s
+  ep 15/50 reward=-2.5130 lat=2.5909s E=2.4352J loss=0.2289 t=3.40s
+  ep 16/50 reward=-2.5135 lat=2.5958s E=2.4312J loss=0.05094 t=3.50s
+  ep 17/50 reward=-2.4470 lat=2.5246s E=2.3694J loss=3.271e-05 t=3.58s
+  ep 18/50 reward=-2.5350 lat=2.6314s E=2.4387J loss=0.1496 t=3.79s
+  ep 19/50 reward=-2.4729 lat=2.5406s E=2.4052J loss=0.05786 t=3.54s
+  ep 20/50 reward=-2.3760 lat=2.4295s E=2.3225J loss=0.09362 t=3.57s
+  ep 21/50 reward=-2.4605 lat=2.6372s E=2.2838J loss=0.03569 t=3.86s
+  ep 22/50 reward=-2.5783 lat=2.9694s E=2.1871J loss=0.01759 t=3.69s
+  ep 23/50 reward=-2.2672 lat=2.3018s E=2.2326J loss=0.005989 t=3.78s
+  ep 24/50 reward=-2.6368 lat=3.2305s E=2.0431J loss=0.0838 t=3.76s
+  ep 25/50 reward=-3.3060 lat=4.3052s E=2.3067J loss=0.1425 t=3.55s
+  ep 26/50 reward=-3.1560 lat=4.1931s E=2.1189J loss=0.03648 t=3.83s
+  ep 27/50 reward=-3.2870 lat=4.3611s E=2.2128J loss=0.5265 t=3.97s
+  ep 28/50 reward=-3.1269 lat=4.0690s E=2.1847J loss=0.1601 t=4.18s
+  ep 29/50 reward=-3.0621 lat=4.0738s E=2.0504J loss=0.002396 t=3.71s
+  ep 30/50 reward=-3.1692 lat=3.9755s E=2.3629J loss=0.1106 t=3.71s
+  ep 31/50 reward=-3.1837 lat=4.2350s E=2.1323J loss=0.03253 t=3.53s
+  ep 32/50 reward=-3.1086 lat=4.1381s E=2.0791J loss=0.05057 t=3.75s
+  ep 33/50 reward=-3.1623 lat=4.0482s E=2.2764J loss=0.03803 t=3.59s
+  ep 34/50 reward=-3.1779 lat=4.2182s E=2.1377J loss=0.004653 t=3.32s
+  ep 35/50 reward=-2.9657 lat=3.8052s E=2.1262J loss=0.1427 t=3.32s
+  ep 36/50 reward=-3.0912 lat=3.9893s E=2.1931J loss=0.11 t=3.41s
+  ep 37/50 reward=-3.1267 lat=3.9263s E=2.3270J loss=0.004754 t=3.65s
+  ep 38/50 reward=-3.2570 lat=4.3253s E=2.1887J loss=0.0004444 t=3.38s
+  ep 39/50 reward=-2.8321 lat=3.5398s E=2.1245J loss=0.001258 t=3.42s
+  ep 40/50 reward=-2.9254 lat=3.8250s E=2.0258J loss=0.01046 t=4.17s
+  ep 41/50 reward=-2.8472 lat=3.6474s E=2.0470J loss=0.04308 t=3.83s
+  ep 42/50 reward=-2.5910 lat=2.8273s E=2.3547J loss=0.001608 t=4.19s
+  ep 43/50 reward=-3.1199 lat=4.1907s E=2.0491J loss=0.0009959 t=4.86s
+  ep 44/50 reward=-2.6081 lat=2.8917s E=2.3246J loss=0.03107 t=3.81s
+  ep 45/50 reward=-3.0958 lat=3.9271s E=2.2646J loss=0.1548 t=4.02s
+  ep 46/50 reward=-2.5231 lat=2.6232s E=2.4230J loss=0.003458 t=3.32s
+  ep 47/50 reward=-2.5168 lat=2.7738s E=2.2598J loss=0.1072 t=3.27s
+  ep 48/50 reward=-2.5339 lat=2.7681s E=2.2996J loss=0.008912 t=3.44s
+  ep 49/50 reward=-2.6002 lat=2.8738s E=2.3266J loss=0.006225 t=3.48s
+  ep 50/50 reward=-2.4912 lat=2.8088s E=2.1736J loss=0.006459 t=3.54s
+[w/o QAOA] seed=2026 DONE | reward=-2.5779 lat=3.0143s E=2.1415J miss=0.2560 train=182.1s
+
+[w/o QAOA] seed=2027
+  ep 01/50 reward=-2.3771 lat=2.3908s E=2.3634J loss=0.08989 t=3.18s
+  ep 02/50 reward=-2.5256 lat=2.6172s E=2.4340J loss=0.06177 t=3.36s
+  ep 03/50 reward=-2.3830 lat=2.4081s E=2.3580J loss=0.04389 t=3.14s
+  ep 04/50 reward=-2.2903 lat=2.3295s E=2.2511J loss=0.6894 t=3.09s
+  ep 05/50 reward=-2.3871 lat=2.5445s E=2.2297J loss=0.2229 t=3.20s
+  ep 06/50 reward=-2.5224 lat=2.6040s E=2.4408J loss=0.08271 t=3.14s
+  ep 07/50 reward=-2.3891 lat=2.4262s E=2.3520J loss=0.05306 t=3.20s
+  ep 08/50 reward=-2.5476 lat=2.6342s E=2.4610J loss=0.08056 t=3.13s
+  ep 09/50 reward=-2.4116 lat=2.4749s E=2.3482J loss=0.07893 t=3.16s
+  ep 10/50 reward=-2.4392 lat=2.4882s E=2.3901J loss=0.2128 t=3.17s
+  ep 11/50 reward=-2.5093 lat=2.7629s E=2.2556J loss=0.05603 t=3.12s
+  ep 12/50 reward=-2.4067 lat=2.4536s E=2.3599J loss=0.07109 t=3.25s
+  ep 13/50 reward=-2.4917 lat=2.6584s E=2.3250J loss=0.06203 t=3.15s
+  ep 14/50 reward=-2.4507 lat=2.5025s E=2.3989J loss=0.06425 t=3.13s
+  ep 15/50 reward=-2.4764 lat=2.5585s E=2.3942J loss=0.06036 t=3.17s
+  ep 16/50 reward=-2.6093 lat=2.6541s E=2.5645J loss=0.05621 t=3.10s
+  ep 17/50 reward=-2.5884 lat=2.6795s E=2.4973J loss=0.05171 t=3.14s
+  ep 18/50 reward=-2.5430 lat=2.6569s E=2.4290J loss=0.04687 t=3.17s
+  ep 19/50 reward=-2.5529 lat=2.6283s E=2.4775J loss=0.03977 t=3.15s
+  ep 20/50 reward=-2.3854 lat=2.4106s E=2.3601J loss=0.04341 t=3.15s
+  ep 21/50 reward=-2.5667 lat=2.8543s E=2.2792J loss=0.03243 t=3.13s
+  ep 22/50 reward=-2.4797 lat=2.5762s E=2.3832J loss=0.07132 t=3.22s
+  ep 23/50 reward=-2.6173 lat=2.9476s E=2.2871J loss=0.05061 t=3.13s
+  ep 24/50 reward=-2.4758 lat=2.5622s E=2.3894J loss=0.04734 t=3.14s
+  ep 25/50 reward=-2.5714 lat=2.6318s E=2.5110J loss=0.01646 t=3.06s
+  ep 26/50 reward=-2.7089 lat=2.8431s E=2.5747J loss=0.01325 t=3.11s
+  ep 27/50 reward=-2.5918 lat=2.9504s E=2.2331J loss=0.01027 t=3.16s
+  ep 28/50 reward=-2.4774 lat=2.5831s E=2.3717J loss=0.04331 t=3.06s
+  ep 29/50 reward=-2.5291 lat=2.8690s E=2.1892J loss=0.005474 t=3.14s
+  ep 30/50 reward=-2.6276 lat=2.9382s E=2.3170J loss=0.02945 t=3.18s
+  ep 31/50 reward=-2.4591 lat=2.5425s E=2.3756J loss=0.003659 t=3.11s
+  ep 32/50 reward=-2.4327 lat=2.5155s E=2.3500J loss=0.0441 t=3.26s
+  ep 33/50 reward=-2.6284 lat=2.7930s E=2.4637J loss=0.07261 t=3.12s
+  ep 34/50 reward=-2.8787 lat=3.4719s E=2.2855J loss=0.002498 t=3.25s
+  ep 35/50 reward=-2.8622 lat=3.5722s E=2.1522J loss=0.06579 t=3.26s
+  ep 36/50 reward=-2.9273 lat=3.7760s E=2.0786J loss=5.941e-06 t=3.15s
+  ep 37/50 reward=-3.3297 lat=4.3730s E=2.2863J loss=0.1671 t=3.38s
+  ep 38/50 reward=-3.2232 lat=4.4022s E=2.0442J loss=0.04036 t=3.30s
+  ep 39/50 reward=-3.3100 lat=4.4872s E=2.1327J loss=0.2491 t=3.86s
+  ep 40/50 reward=-3.2002 lat=4.1975s E=2.2029J loss=0.0008281 t=3.75s
+  ep 41/50 reward=-3.2638 lat=4.3240s E=2.2036J loss=0.02282 t=4.09s
+  ep 42/50 reward=-2.8513 lat=3.3758s E=2.3269J loss=0.08141 t=4.53s
+  ep 43/50 reward=-2.9179 lat=3.6786s E=2.1572J loss=0.002134 t=3.98s
+  ep 44/50 reward=-2.8723 lat=3.4441s E=2.3005J loss=0.001685 t=3.63s
+  ep 45/50 reward=-2.8974 lat=3.5207s E=2.2741J loss=0.005368 t=3.60s
+  ep 46/50 reward=-2.8590 lat=3.5839s E=2.1341J loss=0.0003475 t=3.41s
+  ep 47/50 reward=-2.8384 lat=3.5052s E=2.1715J loss=0.0003341 t=3.37s
+  ep 48/50 reward=-2.7288 lat=3.2148s E=2.2428J loss=0.05787 t=3.46s
+  ep 49/50 reward=-2.8760 lat=3.4357s E=2.3164J loss=6.369e-05 t=3.82s
+  ep 50/50 reward=-2.8717 lat=3.6847s E=2.0588J loss=0.0489 t=3.75s
+[w/o QAOA] seed=2027 DONE | reward=-2.8350 lat=3.4618s E=2.2082J miss=0.3623 train=165.7s
+
+[w/o QAOA] seed=2028
+  ep 01/50 reward=-2.9045 lat=3.5366s E=2.2724J loss=0.005737 t=3.38s
+  ep 02/50 reward=-2.7589 lat=3.4486s E=2.0693J loss=0.03027 t=3.47s
+  ep 03/50 reward=-2.8691 lat=3.5633s E=2.1749J loss=0.0529 t=3.33s
+  ep 04/50 reward=-2.9586 lat=3.8031s E=2.1140J loss=0.01317 t=3.31s
+  ep 05/50 reward=-3.0023 lat=3.7389s E=2.2656J loss=0.04438 t=3.42s
+  ep 06/50 reward=-3.1116 lat=4.0385s E=2.1848J loss=0.02431 t=3.32s
+  ep 07/50 reward=-3.0410 lat=3.7992s E=2.2827J loss=0.0366 t=3.33s
+  ep 08/50 reward=-3.0247 lat=3.7520s E=2.2974J loss=0.04573 t=3.36s
+  ep 09/50 reward=-2.9322 lat=3.7486s E=2.1159J loss=0.0013 t=3.39s
+  ep 10/50 reward=-2.9800 lat=3.9459s E=2.0140J loss=0.04321 t=3.31s
+  ep 11/50 reward=-2.9533 lat=3.8134s E=2.0932J loss=0.577 t=3.30s
+  ep 12/50 reward=-2.9227 lat=3.5466s E=2.2988J loss=0.009848 t=3.34s
+  ep 13/50 reward=-2.4717 lat=2.5352s E=2.4081J loss=0.02495 t=3.25s
+  ep 14/50 reward=-2.5125 lat=2.5889s E=2.4362J loss=0.04866 t=3.10s
+  ep 15/50 reward=-2.2814 lat=2.2997s E=2.2630J loss=0.03902 t=3.19s
+  ep 16/50 reward=-2.5438 lat=2.6365s E=2.4511J loss=0.0229 t=3.24s
+  ep 17/50 reward=-2.4721 lat=2.6314s E=2.3129J loss=0.01384 t=3.31s
+  ep 18/50 reward=-2.5143 lat=2.6980s E=2.3306J loss=0.0223 t=3.33s
+  ep 19/50 reward=-2.5268 lat=2.6319s E=2.4217J loss=0.034 t=3.36s
+  ep 20/50 reward=-2.4045 lat=2.5298s E=2.2792J loss=0.001697 t=3.31s
+  ep 21/50 reward=-2.4656 lat=2.6657s E=2.2655J loss=0.002562 t=3.28s
+  ep 22/50 reward=-2.5209 lat=2.6022s E=2.4397J loss=0.02419 t=3.50s
+  ep 23/50 reward=-2.6782 lat=3.0935s E=2.2629J loss=0.3088 t=3.37s
+  ep 24/50 reward=-2.8685 lat=3.6005s E=2.1365J loss=0.1102 t=3.46s
+  ep 25/50 reward=-2.6846 lat=3.2340s E=2.1351J loss=0.004044 t=3.40s
+  ep 26/50 reward=-2.8776 lat=3.8548s E=1.9004J loss=0.005827 t=3.52s
+  ep 27/50 reward=-2.7545 lat=3.3875s E=2.1215J loss=0.01084 t=3.52s
+  ep 28/50 reward=-2.6668 lat=3.3407s E=1.9930J loss=0.05555 t=3.54s
+  ep 29/50 reward=-2.7430 lat=3.3635s E=2.1224J loss=0.006296 t=3.46s
+  ep 30/50 reward=-2.8700 lat=3.8526s E=1.8874J loss=0.00735 t=3.59s
+  ep 31/50 reward=-3.0748 lat=4.1951s E=1.9544J loss=0.002706 t=3.49s
+  ep 32/50 reward=-3.1127 lat=4.3269s E=1.8984J loss=0.007588 t=3.94s
+  ep 33/50 reward=-2.9576 lat=3.9975s E=1.9176J loss=0.003694 t=3.86s
+  ep 34/50 reward=-2.9855 lat=3.9608s E=2.0103J loss=0.04031 t=3.76s
+  ep 35/50 reward=-2.9025 lat=3.8031s E=2.0018J loss=0.001156 t=3.56s
+  ep 36/50 reward=-2.6548 lat=3.2145s E=2.0950J loss=0.0008824 t=3.66s
+  ep 37/50 reward=-2.6605 lat=3.0806s E=2.2403J loss=0.000313 t=3.58s
+  ep 38/50 reward=-2.5797 lat=2.9014s E=2.2580J loss=0.06488 t=3.52s
+  ep 39/50 reward=-2.3572 lat=2.3869s E=2.3276J loss=0.000289 t=3.49s
+  ep 40/50 reward=-2.4701 lat=2.5547s E=2.3855J loss=0.0113 t=3.36s
+  ep 41/50 reward=-2.4177 lat=2.4906s E=2.3449J loss=0.002377 t=3.77s
+  ep 42/50 reward=-2.4495 lat=2.4967s E=2.4023J loss=0.001351 t=3.40s
+  ep 43/50 reward=-2.5588 lat=2.7613s E=2.3564J loss=0.002954 t=3.23s
+  ep 44/50 reward=-2.7210 lat=3.0464s E=2.3956J loss=0.07143 t=3.37s
+  ep 45/50 reward=-2.6639 lat=3.1078s E=2.2200J loss=0.03386 t=3.17s
+  ep 46/50 reward=-2.6868 lat=3.2302s E=2.1433J loss=0.0001864 t=3.19s
+  ep 47/50 reward=-2.8237 lat=3.5477s E=2.0997J loss=0.03284 t=3.57s
+  ep 48/50 reward=-2.7677 lat=3.2172s E=2.3182J loss=0.01461 t=3.91s
+  ep 49/50 reward=-2.6086 lat=2.8042s E=2.4130J loss=0.02872 t=3.86s
+  ep 50/50 reward=-2.5383 lat=2.6278s E=2.4488J loss=0.0009267 t=3.21s
+[w/o QAOA] seed=2028 DONE | reward=-2.5151 lat=2.6783s E=2.3519J miss=0.0613 train=171.9s
+
+=== TÓM TẮT SAU w/o QAOA (5 seeds) ===
+Metric                 Mean           Std
+------------------------------------------
+reward                   -2.66280      0.12342
+latency                   3.09535      0.28472
+energy                    2.23026      0.08377
+cost                      2.66280      0.12342
+deadline_miss             0.24002      0.11106
+training_time_s         166.46132     11.00640
+trainable_parameters        10544
+
+All scenario and ablation result files have been exported.
