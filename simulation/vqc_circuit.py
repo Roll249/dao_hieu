@@ -9,6 +9,7 @@ Implements:
 The VQC acts as the high-level policy pi_theta, replacing the classical
 tier-selection and ratio-regression DQNs.
 """
+from __future__ import annotations   # defer annotation eval (qml.QuantumCircuit removed in PL>=0.40)
 
 import numpy as np
 import pennylane as qml

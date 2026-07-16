@@ -1,7 +1,0 @@
-scenario,layer_mechanism,high_level,middle_level,low_level,qaoa_variational,bo,total_trainable,classical_high_reference
-Classical,classical,5224,7085,3435,0,0,15744,5224
-HRL+VQC,vqc,24,7085,3435,0,0,10544,5224
-HRL+VQC+QAOA,vqc,24,7085,3435,2,0,10546,5224
-Full-QHRL,vqc,24,7085,3435,2,0,10546,5224
-w/o VQC,classical,5224,7085,3435,2,0,15746,5224
-w/o QAOA,vqc,24,7085,3435,0,0,10544,5224

@@ -15,6 +15,7 @@ from typing import Tuple, Dict, Optional, List
 from dataclasses import dataclass, field
 import random
 
+import config as C
 from tntn_environment import TNTNEnvironment, Task
 from vqc_circuit import VQCAgent
 from qaoa_solver import QAOASolver, classical_node_selection, random_node_selection
@@ -66,12 +67,15 @@ class QuantumHRLAgent:
         use_quantum: bool = True,
         node_random: bool = False,
         vqc_random: bool = False,
+        use_bo: bool = True,
         verbose: bool = False,
     ):
         # Ablation switches: node_random -> bypass QAOA with a random node;
-        # vqc_random -> bypass the VQC high-level policy with random (tier, ratio).
+        # vqc_random -> bypass the VQC high-level policy with random (tier, ratio);
+        # use_bo=False -> disable the Bayesian-Optimization QAOA angle refinement.
         self.node_random = node_random
         self.vqc_random = vqc_random
+        self.use_bo = use_bo
         # High-level policy-gradient hyperparameters. The ratio readout uses a
         # larger step because its single-observable signal is otherwise swamped
         # by the tier/constraint variance in the shared advantage.
@@ -119,13 +123,9 @@ class QuantumHRLAgent:
                 seed=seed + tier_idx,
             )
 
-        # Bayesian Optimizer for VQC and QAOA
-        self.bo_vqc = BayesianOptimizer(
-            param_bounds=[(0, 2 * np.pi)] * (vqc_layers * int(np.ceil(np.log2(state_dim)))),
-            n_initial=5,
-            n_iterations=bo_budget,
-            noise_std=0.1,
-        )
+        # Bayesian Optimizer for QAOA angle refinement (VQC uses PSR policy
+        # gradient, not BO — the previously-created bo_vqc was dead and removed,
+        # see urgent_need_to_fixed.md #19).
         self.bo_qaoa = BayesianOptimizer(
             param_bounds=[(0, 2 * np.pi)] * (2 * qaoa_depth),
             n_initial=5,
@@ -191,13 +191,19 @@ class QuantumHRLAgent:
 
             if self.use_quantum:
                 n_star, _, qaoa_info = self.qaoa_solvers[l_star].solve(
-                    costs, penalty=50.0, n_iterations=6
+                    costs, penalty=C.QAOA_ONEHOT_PENALTY, n_iterations=6
                 )
             else:
                 # Classical fallback
                 n_star = classical_node_selection(costs)
 
         return l_star, n_star, alpha
+
+    def qaoa_fallback_stats(self) -> Tuple[int, int, float]:
+        """Aggregate QAOA decode fallbacks across all per-tier solvers (#5)."""
+        tot_fb = sum(s.n_fallback for s in self.qaoa_solvers.values())
+        tot_ex = sum(s.n_extract for s in self.qaoa_solvers.values())
+        return tot_fb, tot_ex, tot_fb / max(tot_ex, 1)
 
     def update_vqc(self) -> float:
         """Update the VQC high-level policy via advantage-weighted REINFORCE.
@@ -240,7 +246,7 @@ class QuantumHRLAgent:
         evaluates them against the last Ising instance seen by that solver.
         The solver's angles are updated whenever BO finds an improvement.
         """
-        if self.node_random or len(self.replay) < self.batch_size:
+        if self.node_random or not self.use_bo or len(self.replay) < self.batch_size:
             return {}
 
         tier_energies = {}
@@ -292,8 +298,10 @@ class QuantumHRLAgent:
             step = 0
 
             while not done:
-                # Generate task
+                # Generate task and embed it into the observation BEFORE acting
+                # so the high-level policy conditions on the current task (#15).
                 task = env._generate_task()
+                state = env.observe(task)
 
                 # Select action
                 l_star, n_star, alpha = self.select_action(
@@ -498,6 +506,7 @@ class ClassicalHRLAgent:
 
             while not done:
                 task = env._generate_task()
+                state = env.observe(task)   # condition on current task (#15)
                 l_star, n_star, alpha = self.select_action(state, task, env, explore=True)
                 s_next, reward, done, info = env.step(l_star, n_star, alpha, task)
 
@@ -610,6 +619,7 @@ class SingleDQNAgent:
             ep_reward = 0.0; lats = []
             while not done:
                 task = env._generate_task()
+                state = env.observe(task)   # condition on current task (#15)
                 l, n, a = self.select_action(state, task, env, explore=True)
                 s_next, r, done, info = env.step(l, n, a, task)
                 self.replay.push(state, l, n, a, r, r, s_next)
@@ -663,13 +673,21 @@ class RandomAgent:
 
 
 class GreedyAgent:
-    """Greedy baseline: always select nearest RSU with alpha=1."""
+    """Greedy baseline: offload fully (alpha=1) to the NEAREST RSU (tier 0).
+
+    Picks the RSU minimising horizontal distance to the ego vehicle's current
+    position (urgent_need_to_fixed.md #12), rather than a fixed first node.
+    """
 
     def __init__(self, seed: int = 42):
         np.random.seed(seed)
 
     def select_action(self, state, task, env, explore=False):
-        return 0, 0, 1.0  # Always RSU, first node, full offload
+        rsus = [n for n in env.nodes if n.tier_idx == 0]
+        vx, vy = env.vehicle.x, env.vehicle.y
+        dists = [np.hypot(n.x - vx, n.y - vy) for n in rsus]
+        n_star = int(np.argmin(dists)) if dists else 0
+        return 0, n_star, 1.0  # nearest RSU, full offload
 
     def train(self, env, n_episodes=100):
         print("Running Greedy baseline...")

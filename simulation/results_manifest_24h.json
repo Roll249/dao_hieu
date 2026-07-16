@@ -1,0 +1,152 @@
+{
+  "timestamp": "2026-07-12T17:51:59",
+  "command": "python paper_results.py --tag _24h",
+  "seeds": [
+    42,
+    179,
+    316,
+    453,
+    590
+  ],
+  "config": {
+    "topology": {
+      "tiers": [
+        "RSU",
+        "LAP",
+        "HAP",
+        "LEO"
+      ],
+      "M_TIERS": [
+        5,
+        3,
+        2,
+        2
+      ],
+      "altitude_km": [
+        0.01,
+        0.3,
+        20.0,
+        600.0
+      ],
+      "coverage_km": [
+        0.3,
+        1.5,
+        50.0,
+        500.0
+      ],
+      "bandwidth_hz": [
+        20000000.0,
+        40000000.0,
+        60000000.0,
+        100000000.0
+      ],
+      "compute_hz": [
+        5000000000.0,
+        10000000000.0,
+        20000000000.0,
+        40000000000.0
+      ],
+      "area_km": 3.0
+    },
+    "channel": {
+      "eta0": 0.001,
+      "delta_per_tier": [
+        2.5,
+        2.2,
+        2.0,
+        2.0
+      ],
+      "N0": 1e-13,
+      "pk_vehicle": 0.1,
+      "p_rx": 0.02
+    },
+    "compute_energy": {
+      "floc_vehicle": 1000000000.0,
+      "eps_local": 5e-09,
+      "eps_edge_per_tier": [
+        1e-09,
+        2e-09,
+        3e-09,
+        4e-09
+      ],
+      "w_vu": 1.0,
+      "w_en": 0.5
+    },
+    "workload": {
+      "payload_unit": "Mbit",
+      "d_range_mbit": [
+        0.5,
+        5.0
+      ],
+      "c_range_mcycles": [
+        100.0,
+        1000.0
+      ],
+      "tmax_range_s": [
+        0.5,
+        2.0
+      ],
+      "z_services": 6
+    },
+    "reward": {
+      "beta1": 0.5,
+      "beta2": 0.5,
+      "w_f1": 50.0,
+      "w_f2": 50.0,
+      "w_f3": 50.0
+    },
+    "mobility": {
+      "source": "LuST",
+      "fcd": "figure_baseline/work/window.fcd.xml",
+      "window_clock": "17:00-18:00",
+      "roi_x_m": [
+        4702.0,
+        7702.0
+      ],
+      "roi_y_m": [
+        4640.0,
+        7640.0
+      ],
+      "min_points": 6
+    },
+    "regime": {
+      "node_scale": 1,
+      "heavy_load": false
+    }
+  },
+  "config_hash": "362cacf8efd9",
+  "mobility": {
+    "source": "LuST SUMO FCD",
+    "window": "17:00-18:00",
+    "fcd": "figure_baseline/work/window.fcd.xml",
+    "roi_x_m": [
+      4702.0,
+      7702.0
+    ],
+    "roi_y_m": [
+      4640.0,
+      7640.0
+    ],
+    "n_trajectories": 99810,
+    "area_km": 3.0
+  },
+  "n_steps_per_episode": 40,
+  "train_episodes": 30,
+  "eval_episodes": 12,
+  "git_commit": "c46159a6dbc91da53daa585a2fc9aef807f12e77",
+  "git_dirty": true,
+  "versions": {
+    "python": "3.12.13",
+    "numpy": "2.1.3",
+    "scipy": "1.18.0",
+    "sklearn": "1.9.0",
+    "pennylane": "0.45.1"
+  },
+  "qaoa_fallback_rate": {
+    "Quantum-HRL": 0.31464285714285717
+  },
+  "wallclock_s": 5924.876219749451,
+  "output_files": [
+    "paper_results_24h.json"
+  ]
+}
