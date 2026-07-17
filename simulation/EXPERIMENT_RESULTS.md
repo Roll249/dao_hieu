@@ -154,9 +154,11 @@ Quantum mean and variance:
   0.139; trimmed 0.113 < 0.133; drop-727 0.109 < 0.126). The 5-seed sample happened to miss
   Quantum's bad tail.
 - **NEW, important, honest limitation — training instability / fat tail.** 1 of 10 Quantum
-  seeds collapsed (barren-plateau / high-variance policy-gradient on the VQC); **0 of 10
-  Classical seeds collapsed** (worst classical seed-727 = 0.44 s, 4.6% miss). This is a real,
-  citable weakness of the VQC/REINFORCE tier-policy vs DQN's TD+replay+target-net stability.
+  seeds collapsed (barren-plateau / high-variance policy-gradient on the VQC); **1 of 10
+  Classical seeds also collapsed** (seed-727 = 0.4429 s, 4.6% miss, just above the 0.4 s
+  threshold). This is a real, citable weakness of the VQC/REINFORCE tier-policy, but the
+  gap vs DQN's TD+replay+target-net stability is one of *severity* (2.24 s @ 20.8% miss for
+  Quantum's worst seed vs 0.44 s @ 4.6% for Classical's), not of collapse *count*.
 - **Energy premium did NOT survive 10 seeds.** 5-seed showed Quantum energy significantly
   worse (p=0.046); at n=10 it is **comparable** — Quantum 0.889 ± 0.209 vs Classical
   0.809 ± 0.575, **p=0.69** (Classical's own seed-727 blew its energy to 2.27). So do NOT
@@ -238,8 +240,11 @@ headline. The defensible, honest thesis is:
    heavy load (0.330 vs 0.274, p=0.20), and full-24h (0.201 vs 0.114, p=0.11). On *typical*
    (median/trimmed) seeds Quantum is competitive-to-slightly-better; the mean is outlier-driven.
 3. **Training stability is a real limitation (n=10):** 1/10 Quantum seeds collapsed
-   (barren-plateau / policy-gradient variance on the VQC); 0/10 Classical seeds collapsed.
-   Report this honestly — it is the clearest weakness surfaced by more seeds.
+   (barren-plateau / policy-gradient variance on the VQC); 1/10 Classical seeds also
+   collapsed (seed-727, 0.4429 s, just above the 0.4 s threshold). The honest story is
+   carried by *severity*, not count: Quantum's worst seed is far more extreme (2.24 s @
+   20.8% miss) than Classical's (0.44 s @ 4.6%). Report this honestly — it is the clearest
+   weakness surfaced by more seeds.
 4. **Energy is comparable, NOT a systematic premium:** the 5-seed energy gap (p=0.046) did
    **not** survive 10 seeds (0.889 vs 0.809, p=0.69). Soften any energy-penalty claim.
 5. **Learning matters under congestion:** in heavy load both learned policies decisively

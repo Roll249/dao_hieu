@@ -1,7 +1,9 @@
 # Handoff — Quantum-HRL paper audit
 
-Written 2026-07-17. Branch `update-for-tuanlm`, last commit `42fc5e63`.
-All work below is **uncommitted** (user has not asked to commit).
+Written 2026-07-17, updated same day after a follow-up session. Branch `main` (the prior
+`update-for-tuanlm` work was merged via PR #1, commit `30c026b`).
+New work from the follow-up session (§5b fixes) is **uncommitted** (user has not asked to
+commit).
 
 ---
 
@@ -93,78 +95,66 @@ braces balanced, environments balanced, no stale numbers left.
 
 ---
 
-## 4. OPEN ITEM 1 — Fig. 3 / §5.3 (blocked: user is running the sweep on a VPS)
+## 4. OPEN ITEM 1 — Fig. 3 / §5.3 — **RESOLVED 2026-07-17**
 
-### Status
-User stopped the local run — **they will run it on a VPS**. Do not restart it locally
-unless they say so.
+The user asked to run `depth_sweep.py` locally on this machine (not the VPS originally
+planned) and gave explicit go-ahead — no `.venv_hrl` existed here yet.
 
-> **DO NOT SUBMIT THE PAPER IN ITS CURRENT STATE.** The fabricated assets
-> `fig3_depth_sweep.{pdf,png}` are still committed in both `simulation/figures/` and
-> `overleaf/figures/`, and §5.3 still describes them as measured. Compiling today therefore
-> still renders invented data. Only the *generator* has been disabled so far; the *assets* and
-> the surrounding prose are replaced when the VPS sweep lands (`make_depth_fig.py` overwrites
-> both directories). Until then the paper is in a known-interim state.
+### What was done
+- Created `.venv_hrl` with Python 3.14 (only interpreter available on this Windows box) and
+  installed `numpy 2.5.1`, `scipy 1.18.0`, `scikit-learn 1.9.0`, `pennylane 0.45.1`
+  (+ `pennylane-lightning`, Windows cp314 wheels exist), `matplotlib 3.11.0`.
+  `config.config_hash()` inside this venv still prints `362cacf8efd9` — environment matches.
+- Smoke-tested with `--quick --fresh` first (344s, no errors), then deleted the smoke test's
+  `depth_sweep.json`/`depth_sweep_points.json` so they couldn't be confused with real output.
+- Ran the real sweep: `python -u depth_sweep.py` (default seeds `[42,179,316]`, `train=30
+  eval=12`). First log line printed `hash=362cacf8efd9` as required. Took 4878s (~81 min) —
+  faster than the ~3h estimate. Wrote `simulation/depth_sweep.json`.
+- Ran `make_depth_fig.py` — regenerated `fig3_depth_sweep.{pdf,png}` in both
+  `simulation/figures/` and `overleaf/figures/` from the real data (confirmed identical
+  between the two copies via `cmp`), replacing the fabricated assets.
 
-### The scripts (both new, untracked)
-- `simulation/depth_sweep.py` — measures `L∈{1,2,4,6}` at `p=2` and `p∈{1,2,3}` at `L=4`,
-  3 seeds `[42,179,316]`, same env/budget/hash as `paper_results.py`, plus a Classical-HRL
-  reference on the same seeds. **Checkpoints each completed `(L,p)` point** to
-  `depth_sweep_points.json` (atomic via `os.replace`) and resumes on restart. A checkpoint is
-  reused only if `config_hash` + seeds + train/eval all match; `--fresh` forces recompute.
-  (Checkpointing exists because the machine was shut down mid-run and 4 runs were lost —
-  `depth_sweep.json` is only written at the very end.)
-- `simulation/make_depth_fig.py` — renders `fig3_depth_sweep.{pdf,png}` into both
-  `simulation/figures/` and `overleaf/figures/` from `depth_sweep.json`, and **prints the
-  table of numbers §5.3 must quote**. Plots median + min–max over seeds. No invented error bars.
+### What the sweep found — the Pareto claim was false, as anticipated
 
-### Run on VPS
-```bash
-python3.12 -m venv .venv_hrl
-.venv_hrl/bin/pip install "numpy>=2.1" "scipy>=1.15" "scikit-learn>=1.5" "pennylane>=0.40" matplotlib
-cd simulation
-setsid nohup ../.venv_hrl/bin/python -u depth_sweep.py > depth_sweep.log 2>&1 &
-# when done:
-../.venv_hrl/bin/python make_depth_fig.py
-```
-No TensorFlow, no SUMO needed (that's only the old `HRL_baseline/`). First log line must
-print `hash=362cacf8efd9` — if not, the environment diverged and the numbers must **not**
-go into the paper.
+Measured medians (3 seeds each; params = `L·5 + 2p`, `q=5` qubits since `n=20`):
 
-### Partial real data already collected locally (1 of 6 points)
-A **genuine** `L=1, p=2` point was measured on the laptop before the run was stopped:
+| | value | params | median lat (s) |
+|---|---|---|---|
+| $L$-slice ($p{=}2$) | $L{=}1$ | 9  | $0.118$ |
+| | $L{=}2$ | 14 | $0.095$ |
+| | $L{=}4$ | 24 | $0.145$ |
+| | $L{=}6$ | 34 | $0.103$ |
+| $p$-slice ($L{=}4$) | $p{=}1$ | 22 | $0.123$ |
+| | $p{=}2$ | 24 | $0.145$ |
+| | $p{=}3$ | 26 | $0.132$ |
 
-```
-L=1 p=2, 9 params : seeds [0.0837, 0.2152, 0.1177] -> median 0.1177, mean 0.1389 ± 0.0557, miss 0.0%
-```
+Classical-HRL reference on the same 3 seeds: median $0.092$\,s. Per-seed std $0.015$–$0.056$.
 
-Treat this as an **advance signal only, not as a data point for the figure.** The checkpoint
-that holds it (`simulation/depth_sweep_points.json`) is now **gitignored and untracked** — it
-was briefly committed in `f6fde0ef` and removed again, precisely because the checkpoint key
-records `config_hash`/seeds/budget but **not library versions**. Had it shipped, the VPS would
-have silently skipped `L=1` and mixed one laptop-computed point with five VPS-computed points
-in a single figure. A fresh clone now has no checkpoint, so the VPS recomputes all 6 points in
-one environment automatically. Do not copy the checkpoint across machines by hand.
+**`L=4` (the paper's chosen operating point) is the highest-median value in both slices** —
+neither axis is monotone, confirming the "likely" branch this handoff anticipated. Fixed:
+- Figure caption + main §5.3 paragraph (`subsec:depth`) — rewritten to report the real
+  medians, state plainly that neither axis is monotone, and **withdraw** the "Pareto-efficient
+  operating point" claim. Notes that `L=1` (9 params) is numerically *not worse* than the
+  24-param `L=4` point — strengthens the parameter-efficiency thesis rather than the
+  depth-sensitivity one. Explicitly does not over-read the 3-seed Classical-HRL comparison
+  against the powered ten-seed null of §5.1 (Welch $p=0.47$).
+- §6.3 Stage-III evidence paragraph — no longer claims the sweep "corroborates
+  Prop.~3.2" via saturation; states the actual non-monotone medians instead.
+- §5.6 — "QAOA approximation ratio at p=2 already saturates" replaced with the actual
+  medians and "no significant sensitivity to QAOA depth at this scale."
+- New Limitations bullet: "Circuit depth ($L$, $p$) is fixed a priori, not empirically
+  optimised" — states the finding and that the depth choice should not be read as
+  Pareto-validated.
 
-### How to write §5.3 — depends on what the sweep shows
+Verified after: `sim/verify_paper.py`-equivalent check (missing cites/undefined
+refs/brace balance/env balance/duplicate labels) — all clean. `overleaf/main.tex` re-synced,
+diff vs `quantum_hrl_paper.tex` is exactly the `\graphicspath` hunk. Figure images identical
+between `simulation/figures/` and `overleaf/figures/` (`cmp`).
 
-The paper currently claims `L=4, p=2` is a "Pareto-efficient operating point" and that
-latency "improves with L up to L=4". **The early evidence contradicts this**: `L=1` reaches
-median 0.1177 s with **9 parameters**, against the 10-seed `L=4` median of 0.105 s (different
-seed counts — the sweep's own `L=4,p=2` point is the fair comparison).
-
-- **If L=1 ≈ L=4** (likely): the Pareto claim **must die**. Rewrite §5.3 to say depth does not
-  materially affect latency in this range, that `L=4` was fixed a priori, and add a Limitations
-  bullet. Also fix §6.3 Stage-III ("The depth sweep … corroborates Prop. 3.2") and §5.6
-  ("the QAOA approximation ratio at p=2 already saturates (Fig. 3)") — both currently lean on
-  the fabricated figure.
-  **Upside worth considering:** if 9 params match 24 params, the footprint story gets
-  *stronger* (9 vs 20,224 = **2,247×**). Do not assert this without the full sweep.
-- **If latency genuinely improves with L**: keep the §5.3 argument but requote every number
-  from `depth_sweep.json`.
-
-Either way: **report what the sweep measures.** Do not reverse-engineer the figure to fit
-the existing prose — that is exactly the failure being cleaned up here.
+**The paper may now be compiled/submitted from a depth-sensitivity standpoint** — no
+fabricated assets remain. `depth_sweep.log`, `depth_sweep.json` are the ground truth for any
+future edits to this section; `depth_sweep_points.json` (checkpoint) stays gitignored/
+machine-local as before.
 
 ---
 
@@ -189,33 +179,45 @@ Traps if you attempt this: renaming node index → `e` collides with EN index `e
 
 ---
 
-## 5b. OPEN ITEM 3 — minor issues found but NOT fixed
+## 5b. OPEN ITEM 3 — minor issues found — **all four fixed this session (2026-07-17)**
 
-These were surfaced by the audit and deliberately left alone (low severity, or the fix is a
-judgement call). None is blocking, but a Q1 reviewer could plausibly raise 1–3.
+These were surfaced by the prior audit and left alone at the time (low severity, or the fix
+was a judgement call). All four have now been fixed:
 
-1. **Duplicate section labels.** `\label{sec:problem}` and `\label{sec:framework}` sit on the
-   *same* section (`quantum_hrl_paper.tex:313-314`), so `\ref{sec:problem}` and
-   `\ref{sec:framework}` both render "Section 4". The contributions list cites both, and a
-   reader sees the same number twice. Fix: drop one label, or genuinely split the section.
+1. **Duplicate section labels — fixed.** `\label{sec:framework}` (was on the same section as
+   `\label{sec:problem}`, `quantum_hrl_paper.tex:313-314`) has been dropped; its one referrer
+   (contributions bullet 2, was `Section~\ref{sec:framework}`) now cites `\ref{sec:problem}`
+   directly — correct, since it genuinely is the same section. Verified: `grep -c
+   'label{sec:framework}'` → 0, no duplicate labels remain (checked programmatically over all
+   `\label{}` in the file).
 
-2. **`fig:scaling` caption overclaims.** It says "The classical tri-DQN budget grows with the
-   state dimension **and node count**", but the generator
-   (`visualize_results.py::plot_parameter_scaling`) only sweeps `state_dims` with a *fixed*
-   output head (`n*256 + 256*14`) — node count is never varied in that plot. Either reword the
-   caption to state dimension only, or extend the plot. (The node-count growth *is* shown
-   honestly, analytically, in Table 8 — so the cheapest fix is to reword and point there.)
+2. **`fig:scaling` caption overclaim — fixed.** Reworded to state the figure sweeps the *state
+   dimension* only (per-tier node counts held fixed) and points to Table~8
+   (`tab:scalability`) for the node-count axis, which is genuinely shown there. Also fixed the
+   same overclaim in the body paragraph right before the figure (it said node-count scaling was
+   "visualised in Fig.~\ref{fig:scaling}" — same bug, just in prose instead of the caption).
 
-3. **Unverified LuST claim.** §6.1 states the ROI "carries $\approx\!50\%$ of all
-   vehicle-records in the hour". No statistic supporting this was found in `lust_mobility.py`
-   or any run log. Either compute it from `lust_roi_trajectories.npz` and cite the real number,
-   or drop the claim. Do not leave an unsupported quantitative claim in the paper.
+3. **Unverified LuST 50% claim — fixed, by dropping the unverifiable fraction.** The source
+   FCD is deleted (see §7.1), so "% of all vehicle-records in the hour" cannot be recomputed —
+   only the ROI-filtered cache exists, and it has no citywide total to divide by. Replaced with
+   the real, verifiable numbers read directly from `lust_roi_trajectories.npz`: **7,845 vehicle
+   trajectories (136,878 position records)**, plus the actual filter thresholds from
+   `config.py` (`LUST_MIN_POINTS=6`, `LUST_MIN_TRAVEL_M=150`). No unsupported percentage left
+   in the paper.
 
-4. **`EXPERIMENT_RESULTS.md` is still self-contradictory.** Line ~241 still asserts "0/10
-   Classical seeds collapsed", contradicting its own Experiment 7 table and the JSON (truth:
-   **1/10**, worst seed 0.4429 s @ 4.6% miss). The *paper* has been corrected, but the log has
-   not — leaving a trap for the next person who trusts the prose log. Fix the log to match the
-   JSON.
+4. **`EXPERIMENT_RESULTS.md` self-contradiction — fixed.** Both occurrences of "0 of 10 /
+   0/10 Classical seeds collapsed" (lines ~157-158 and ~240-241) now read "1 of 10 / 1/10 ...
+   also collapsed" (seed-727, 0.4429 s, 4.6% miss — just above the 0.4 s threshold), matching
+   the JSON and Experiment 7's own table. The severity framing (Quantum's worst seed 2.24 s @
+   20.8% miss vs. Classical's 0.44 s @ 4.6%) is preserved so the log's honest point (Quantum's
+   tail is *worse*, even though both collapse once) survives the correction.
+
+Also re-verified during this pass that items 1–12 from Section 3 (the prior session's fixes)
+are all still correctly reflected in `quantum_hrl_paper.tex` — spot-checked the `ℓ`/`q`
+notation split, the topology numbers against `config.py` (altitudes 0.01/0.3/20/600 km,
+coverage 0.3/1.5/50/500 km, `config_hash()` still `362cacf8efd9`), the ablation Δ% figures,
+the abstract's 10-vs-5-seed scoping, and the severity-not-count framing throughout. Nothing had
+drifted.
 
 ## 6. Verify after any paper edit
 
@@ -265,19 +267,41 @@ Compile on Overleaf.
 
 ## 8. Next actions, in priority order
 
-1. **Fig. 3 / §5.3** (§4) — blocked on the user's VPS sweep. Then `make_depth_fig.py`, rewrite
-   §5.3 from the measured table, fix the two other places that lean on the old figure (§6.3
-   Stage-III, §5.6), replace the fabricated assets, sync overleaf. **Until this lands the paper
-   still renders invented data and must not be submitted.**
-2. **Notation `n` / `h`** (§5) — blocked on a convention decision from the user.
-3. **Minor unfixed items** (§5b) — the four above; #4 (`EXPERIMENT_RESULTS.md`) is the one worth
-   doing unprompted, since it actively misleads the next session.
+1. ~~**Fig. 3 / §5.3** (§4)~~ — **done 2026-07-17**: ran `depth_sweep.py` locally (user's
+   explicit go-ahead), real data measured, `make_depth_fig.py` regenerated the figure, §5.3 +
+   §6.3 Stage-III + §5.6 rewritten to match, new Limitations bullet added, fabricated assets
+   replaced, overleaf synced. **No fabricated data remains for this item.**
+2. **Notation `n` / `h`** (§5) — blocked on a convention decision from the user. The only
+   remaining open item.
+3. ~~**Minor unfixed items** (§5b)~~ — **done 2026-07-17**: all four fixed (duplicate labels,
+   `fig:scaling` caption/prose overclaim, unverified LuST 50% claim, `EXPERIMENT_RESULTS.md`
+   contradiction).
+
+Item 2 is the only thing left, and it's blocked on the user's convention decision — nothing
+else is actionable without their input. **Before submitting**, still worth a real LaTeX
+compile on Overleaf (never done in this environment — no toolchain here) to catch anything
+the regex-based verify script can't see (e.g. actual over/underfull boxes, the new Fig. 3
+layout, table floats).
+
+### Local environment now available
+`.venv_hrl` (Python 3.14, Windows) was created and works end-to-end for the simulator:
+`numpy 2.5.1`, `scipy 1.18.0`, `scikit-learn 1.9.0`, `pennylane 0.45.1` (+
+`pennylane-lightning`), `matplotlib 3.11.0`. `config_hash()` = `362cacf8efd9`, matching. This
+supersedes the old "no wheels on system python" assumption — that was about the *system*
+Python (3.14, Microsoft Store), not a venv on it.
 
 ### Commit state
-Everything through this session **is committed** on `update-for-tuanlm`:
+Everything through the prior session **is committed** on `update-for-tuanlm`, since merged
+into `main` (`30c026b`, PR #1 from `Roll249/update-for-thayTuan`):
 - `f6fde0ef` — user's own repo-wide commit; swept in all the paper fixes, the new sweep
   scripts, this handoff, plus logs and `EC_HRL-main/`.
 - `b4908929` — untracks + gitignores `simulation/depth_sweep_points.json` (see §4), and records
   the "fabricated assets still committed" warning.
+- `64f7ea0` — handoff doc update only (this file, prior session).
 
-Nothing is pushed. Ask before pushing or committing further.
+The 2026-07-17 session's changes (this update) are **uncommitted**: `quantum_hrl_paper.tex`,
+`overleaf/main.tex`, `simulation/EXPERIMENT_RESULTS.md`, `simulation/figures/fig3_depth_sweep.*`,
+`overleaf/figures/fig3_depth_sweep.*`, `simulation/depth_sweep.log`, `simulation/depth_sweep.json`
+(new, untracked), and this file. Ask before committing or pushing. The user separately asked
+that `paper_results.py` (the main experiment driver) **not** be run without asking first —
+that has not been run this session.

@@ -33,7 +33,10 @@
       "Bash(command -v tlmgr)",
       "Bash(python3 *)",
       "Bash(grep -oP '^@\\\\w+\\\\{[^,]+' /home/ngochieu/repo/dao_hieu/references.bib)",
-      "Bash(grep -n \"20~km\\\\|500--1200\\\\|50--500~m\\\\|2\\\\\\\\\\\\\\\\,\\\\\\\\\\\\\\\\mathrm{km}\\\\\\\\^2\" /home/ngochieu/repo/dao_hieu/quantum_hrl_paper.tex)"
+      "Bash(grep -n \"20~km\\\\|500--1200\\\\|50--500~m\\\\|2\\\\\\\\\\\\\\\\,\\\\\\\\\\\\\\\\mathrm{km}\\\\\\\\^2\" /home/ngochieu/repo/dao_hieu/quantum_hrl_paper.tex)",
+      "Bash(grep -n \"50\\\\\\\\\\\\\\\\%\\\\|carries.*vehicle-records\\\\|approx.*50\" quantum_hrl_paper.tex)",
+      "Bash(cd \"c:/Users/ezycloudx-admin/repo/dao_hieu\" && which python3 python 2>/dev/null; python3 --version 2>/dev/null; python --version 2>/dev/null; ls .venv_hrl 2>/dev/null; find / -maxdepth 2 -iname \".venv_hrl\" 2>/dev/null)",
+      "Read(//c//**)"
     ]
   }
 }
