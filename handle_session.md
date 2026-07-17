@@ -189,6 +189,34 @@ Traps if you attempt this: renaming node index → `e` collides with EN index `e
 
 ---
 
+## 5b. OPEN ITEM 3 — minor issues found but NOT fixed
+
+These were surfaced by the audit and deliberately left alone (low severity, or the fix is a
+judgement call). None is blocking, but a Q1 reviewer could plausibly raise 1–3.
+
+1. **Duplicate section labels.** `\label{sec:problem}` and `\label{sec:framework}` sit on the
+   *same* section (`quantum_hrl_paper.tex:313-314`), so `\ref{sec:problem}` and
+   `\ref{sec:framework}` both render "Section 4". The contributions list cites both, and a
+   reader sees the same number twice. Fix: drop one label, or genuinely split the section.
+
+2. **`fig:scaling` caption overclaims.** It says "The classical tri-DQN budget grows with the
+   state dimension **and node count**", but the generator
+   (`visualize_results.py::plot_parameter_scaling`) only sweeps `state_dims` with a *fixed*
+   output head (`n*256 + 256*14`) — node count is never varied in that plot. Either reword the
+   caption to state dimension only, or extend the plot. (The node-count growth *is* shown
+   honestly, analytically, in Table 8 — so the cheapest fix is to reword and point there.)
+
+3. **Unverified LuST claim.** §6.1 states the ROI "carries $\approx\!50\%$ of all
+   vehicle-records in the hour". No statistic supporting this was found in `lust_mobility.py`
+   or any run log. Either compute it from `lust_roi_trajectories.npz` and cite the real number,
+   or drop the claim. Do not leave an unsupported quantitative claim in the paper.
+
+4. **`EXPERIMENT_RESULTS.md` is still self-contradictory.** Line ~241 still asserts "0/10
+   Classical seeds collapsed", contradicting its own Experiment 7 table and the JSON (truth:
+   **1/10**, worst seed 0.4429 s @ 4.6% miss). The *paper* has been corrected, but the log has
+   not — leaving a trap for the next person who trusts the prose log. Fix the log to match the
+   JSON.
+
 ## 6. Verify after any paper edit
 
 ```bash
@@ -235,8 +263,21 @@ Compile on Overleaf.
 
 ---
 
-## 8. Suggested next actions
+## 8. Next actions, in priority order
 
-1. Wait for the user's VPS sweep → `make_depth_fig.py` → rewrite §5.3 per §4 above → sync overleaf.
-2. Get the user's answer on notation `n`/`h` (§5).
-3. Nothing is committed. Ask before committing.
+1. **Fig. 3 / §5.3** (§4) — blocked on the user's VPS sweep. Then `make_depth_fig.py`, rewrite
+   §5.3 from the measured table, fix the two other places that lean on the old figure (§6.3
+   Stage-III, §5.6), replace the fabricated assets, sync overleaf. **Until this lands the paper
+   still renders invented data and must not be submitted.**
+2. **Notation `n` / `h`** (§5) — blocked on a convention decision from the user.
+3. **Minor unfixed items** (§5b) — the four above; #4 (`EXPERIMENT_RESULTS.md`) is the one worth
+   doing unprompted, since it actively misleads the next session.
+
+### Commit state
+Everything through this session **is committed** on `update-for-tuanlm`:
+- `f6fde0ef` — user's own repo-wide commit; swept in all the paper fixes, the new sweep
+  scripts, this handoff, plus logs and `EC_HRL-main/`.
+- `b4908929` — untracks + gitignores `simulation/depth_sweep_points.json` (see §4), and records
+  the "fabricated assets still committed" warning.
+
+Nothing is pushed. Ask before pushing or committing further.
