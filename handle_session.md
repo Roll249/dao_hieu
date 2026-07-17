@@ -99,6 +99,13 @@ braces balanced, environments balanced, no stale numbers left.
 User stopped the local run — **they will run it on a VPS**. Do not restart it locally
 unless they say so.
 
+> **DO NOT SUBMIT THE PAPER IN ITS CURRENT STATE.** The fabricated assets
+> `fig3_depth_sweep.{pdf,png}` are still committed in both `simulation/figures/` and
+> `overleaf/figures/`, and §5.3 still describes them as measured. Compiling today therefore
+> still renders invented data. Only the *generator* has been disabled so far; the *assets* and
+> the surrounding prose are replaced when the VPS sweep lands (`make_depth_fig.py` overwrites
+> both directories). Until then the paper is in a known-interim state.
+
 ### The scripts (both new, untracked)
 - `simulation/depth_sweep.py` — measures `L∈{1,2,4,6}` at `p=2` and `p∈{1,2,3}` at `L=4`,
   3 seeds `[42,179,316]`, same env/budget/hash as `paper_results.py`, plus a Classical-HRL
@@ -124,18 +131,20 @@ No TensorFlow, no SUMO needed (that's only the old `HRL_baseline/`). First log l
 print `hash=362cacf8efd9` — if not, the environment diverged and the numbers must **not**
 go into the paper.
 
-### Partial real data already collected (1 of 6 points)
-`depth_sweep_points.json` currently holds a **genuine** `L=1, p=2` point from the local run:
+### Partial real data already collected locally (1 of 6 points)
+A **genuine** `L=1, p=2` point was measured on the laptop before the run was stopped:
 
 ```
 L=1 p=2, 9 params : seeds [0.0837, 0.2152, 0.1177] -> median 0.1177, mean 0.1389 ± 0.0557, miss 0.0%
 ```
 
-> **Decide before reusing it.** The checkpoint key does not record library versions. If the
-> VPS has different numpy/pennylane, resuming would mix a locally-computed point with
-> VPS-computed points **in the same figure** — inconsistent. Safest: delete
-> `depth_sweep_points.json` (or pass `--fresh`) so all 6 points come from one environment.
-> Cost is only ~19 min.
+Treat this as an **advance signal only, not as a data point for the figure.** The checkpoint
+that holds it (`simulation/depth_sweep_points.json`) is now **gitignored and untracked** — it
+was briefly committed in `f6fde0ef` and removed again, precisely because the checkpoint key
+records `config_hash`/seeds/budget but **not library versions**. Had it shipped, the VPS would
+have silently skipped `L=1` and mixed one laptop-computed point with five VPS-computed points
+in a single figure. A fresh clone now has no checkpoint, so the VPS recomputes all 6 points in
+one environment automatically. Do not copy the checkpoint across machines by hand.
 
 ### How to write §5.3 — depends on what the sweep shows
 
