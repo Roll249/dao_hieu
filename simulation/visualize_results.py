@@ -206,10 +206,24 @@ def generate_convergence_curve(n_episodes, final_value, method='quantum', seed=4
 # =============================================================================
 
 def plot_depth_sensitivity(output_path=None):
-    """Generate Fig 3: VQC depth vs QAOA depth sensitivity.
+    """RETIRED -- this plotted hard-coded, never-measured latency values.
 
-    Shows how performance varies with circuit depth parameters.
+    The latency arrays below were written by hand, not produced by any
+    experiment, and the figure they rendered carried an "std over 3 seeds"
+    caption for error bars that were equally invented. Its baseline lines
+    (0.81 / 0.97 s) also predate the LuST pipeline and disagree with the
+    reported results by roughly 6x.
+
+    The paper's Fig. 3 is now produced by depth_sweep.py -> make_depth_fig.py,
+    which measures the (L, p) grid on the real LuST environment. This function
+    is kept only so the provenance of the retired asset stays auditable, and
+    raises rather than silently regenerating fabricated data.
     """
+    raise RuntimeError(
+        "plot_depth_sensitivity() rendered hard-coded, never-measured data and "
+        "has been retired. Use: python depth_sweep.py && python make_depth_fig.py"
+    )
+
     setup_matplotlib()
 
     fig, axes = plt.subplots(1, 2, figsize=(7, 2.8))

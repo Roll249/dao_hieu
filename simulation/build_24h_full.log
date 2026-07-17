@@ -1,0 +1,34 @@
+=== 24h LuST trajectory build: windows [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23] ===
+  source buslines:    2240 vehicles binned
+  source dua0    :   72000 vehicles binned
+  source dua1    :   72000 vehicles binned
+  source dua2    :   71526 vehicles binned
+  source transit :   70484 vehicles binned
+  route binning done in 5s
+
+  window 00 (00:00): +205 ROI trajectories (total 205) [3s]
+  window 01 (01:00): +196 ROI trajectories (total 401) [4s]
+  window 02 (02:00): +210 ROI trajectories (total 611) [5s]
+  window 03 (03:00): +204 ROI trajectories (total 815) [6s]
+  window 04 (04:00): +638 ROI trajectories (total 1453) [14s]
+  window 05 (05:00): +2147 ROI trajectories (total 3600) [35s]
+  window 06 (06:00): +5612 ROI trajectories (total 9212) [95s]
+  window 07 (07:00): +7611 ROI trajectories (total 16823) [165s]
+  window 08 (08:00): +7884 ROI trajectories (total 24707) [173s]
+  window 09 (09:00): +6527 ROI trajectories (total 31234) [111s]
+  window 10 (10:00): +4141 ROI trajectories (total 35375) [59s]
+  window 11 (11:00): +3306 ROI trajectories (total 38681) [47s]
+  window 12 (12:00): +6263 ROI trajectories (total 44944) [94s]
+  window 13 (13:00): +6405 ROI trajectories (total 51349) [122s]
+  window 14 (14:00): +4654 ROI trajectories (total 56003) [78s]
+  window 15 (15:00): +3041 ROI trajectories (total 59044) [51s]
+  window 16 (16:00): +6024 ROI trajectories (total 65068) [94s]
+  window 17 (17:00): +7843 ROI trajectories (total 72911) [150s]
+  window 18 (18:00): +8148 ROI trajectories (total 81059) [184s]
+  window 19 (19:00): +7403 ROI trajectories (total 88462) [149s]
+  window 20 (20:00): +4224 ROI trajectories (total 92686) [71s]
+  window 21 (21:00): +2614 ROI trajectories (total 95300) [40s]
+  window 22 (22:00): +2313 ROI trajectories (total 97613) [34s]
+  window 23 (23:00): +2197 ROI trajectories (total 99810) [27s]
+
+Saved /home/ngochieu/repo/dao_hieu/simulation/lust_roi_trajectories_24h.npz: 99810 trajectories, 1435900 points (1818s total)

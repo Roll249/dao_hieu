@@ -1,0 +1,12 @@
+=== 24h LuST trajectory build: windows [2, 8] ===
+  source buslines:     152 vehicles binned
+  source dua0    :   20933 vehicles binned
+  source dua1    :       0 vehicles binned
+  source dua2    :       0 vehicles binned
+  source transit :    6270 vehicles binned
+  route binning done in 2s
+
+  window 02 (02:00): +210 ROI trajectories (total 210) [5s]
+  window 08 (08:00): +7884 ROI trajectories (total 8094) [169s]
+
+Saved /home/ngochieu/repo/dao_hieu/simulation/lust_roi_trajectories_24h.npz: 8094 trajectories, 138554 points (176s total)

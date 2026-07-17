@@ -1,0 +1,90 @@
+# Code review log
+
+Scope reviewed: baseline source in `EC_HRL-main/Main_Simulation.ipynb` and quantum/source reimplementation under `simulation/`. Findings are grouped by source family and ordered by severity inside each group.
+
+## Baseline source: `EC_HRL-main`
+
+1. [Critical] `Learning_Cost` appears to skip cost branches because of tuple-vs-int comparisons.
+   Evidence: Extracted notebook lines 1554-1722 include conditions such as `if(np.nonzero(a_m)==r)`. `np.nonzero(a_m)` returns tuple/array metadata, not a scalar node id, so these comparisons are not valid action checks. The existing `figure_baseline/experiment_summary_full_lust.md` also documents this as causing inner reward/loss to collapse toward zero.
+   Impact: The DQN may train on near-zero or wrong rewards, so any "trained baseline" result can be misleading unless evaluation uses a separate true-cost pipeline.
+   Recommendation: Replace with explicit selected node ids, e.g. `selected = int(np.argmax(a_m))` or pass scalar action ids into `Learning_Cost`.
+
+2. [Critical] The DQN action-selection epsilon logic is inverted relative to standard epsilon-greedy.
+   Evidence: `Agent.act()` exploits when `rand <= epsilon` and otherwise keeps the caller's `q_values` (`EC_HRL-main/Main_Simulation.ipynb` extracted lines 829-832). `get_next_action()` and `get_next_action_M()` likewise choose argmax when `random < epsilon` and random otherwise (lines 1371-1382).
+   Impact: Configurations with high epsilon (0.7 for middle/low agents) mostly exploit instead of explore if `q_values` are meaningful. If the paper describes epsilon as exploration probability, the baseline is not doing what it says.
+   Recommendation: Either rename epsilon as exploitation probability or invert the condition.
+
+3. [Major] All Keras model weights are force-initialized to zeros.
+   Evidence: `_initialize_dummy_weights()` sets every weight array to zeros right after model build (extracted lines 821-824).
+   Impact: Zero initialization destroys symmetry breaking in dense layers and can make learning weak or degenerate, especially combined with zero/invalid rewards.
+   Recommendation: Remove dummy zero initialization and rely on Keras initializers; if build errors were the reason, run a dummy forward pass instead.
+
+4. [Major] Baseline reward is a positive cost while DQN maximizes Q.
+   Evidence: Training stores `reward_l = 0.5*Tot_LC + 0.5*Tot_EC` (lines 2051-2058), then DQN target uses `reward + gamma * max(Q)` (lines 834-840). If lower latency/energy is desired, reward should be negative cost or the policy should minimize Q.
+   Impact: A maximization DQN may prefer high-cost actions unless downstream code negates or interprets the value differently.
+   Recommendation: Store `-(weighted_cost + penalties)` or change action selection to argmin.
+
+5. [Major] Evaluation-time HRL node decisions still use random node selection in multiple branches.
+   Evidence: The notebook search shows repeated assignments such as `HRL_decisions[v][1] = random.choice(indices_with_ones.tolist())` around extracted lines 2834-2852, 3005-3023, and 3173-3191.
+   Impact: The learned middle-level node policy may not actually be used in evaluation, which weakens comparisons involving node selection.
+   Recommendation: Ensure evaluation uses the trained middle agent output whenever a feasible node set exists.
+
+6. [Moderate] The notebook is not reproducible as a clean module.
+   Evidence: It contains duplicate imports, mutable globals, repeated training blocks, and linearly executed notebook state. Important functions depend on large positional `IP` arrays.
+   Impact: Small ordering changes can change results, and integration with LuST or quantum code is brittle.
+   Recommendation: Extract environment, agents, training, and evaluation into Python modules with explicit config dataclasses.
+
+## Quantum/source reimplementation: `simulation/`
+
+1. [Critical] The main environment does not consume LuST trajectory files.
+   Evidence: `TNTNEnvironment.reset()` samples random vehicle position/speed (lines 150-158), `_move_vehicle()` applies random perturbations (lines 327-342), and no LuST parser is imported in `simulation/`.
+   Impact: Results from `simulation/paper_results.py` are synthetic-mobility results, not LuST trajectory results.
+   Recommendation: Add a mobility provider abstraction and a LuST provider that reads SUMO FCD/window outputs, then use it in both training and evaluation.
+
+2. [Critical] QAOA solution extraction silently falls back to a classical heuristic on analytic devices.
+   Evidence: QAOA devices are created with `shots=None` (`simulation/qaoa_solver.py`:228-232), but `_extract_solution()` calls `qml.sample()` (lines 351-360). If sampling fails, it returns `argmin(abs(h))` (lines 373-377), which is a classical fallback and not necessarily the QAOA-measured bitstring.
+   Impact: Reported "QAOA node selection" can be partially classical fallback, hiding quantum solver failures and biasing results.
+   Recommendation: Use a finite-shot device for sampling, or return probabilities/statevector amplitudes analytically and decode the lowest-cost sampled/most-probable feasible bitstring explicitly. Log fallback counts.
+
+3. [Critical] QAOA is optimized by gradient descent during action selection, while BO is only periodic refinement.
+   Evidence: `select_action()` calls `solve(... n_iterations=6)` every decision (`simulation/quantum_hrl.py`:190-195); `solve()` performs gradient descent (qaoa_solver.py:287-305). BO runs later in `update_qaoa()` on cached instances (`quantum_hrl.py`:236-280).
+   Impact: Runtime, training dynamics, and ablation meaning differ from the paper's BO-centric algorithm.
+   Recommendation: Decide one design: BO-only QAOA, gradient-only QAOA, or hybrid. Then expose it in config and ablate it.
+
+4. [Major] `use_quantum=False` is not the same as "w/o QAOA random node" in older experiment runner.
+   Evidence: In `QuantumHRLAgent.select_action()`, `use_quantum=False` calls `classical_node_selection(costs)` (lines 192-198). Only `node_random=True` performs random node selection (lines 185-187). `simulation/run_experiments.py` labels `use_quantum=False` as `w/o QAOA (random node)`, while `paper_results.py` uses the correct `node_random=True`.
+   Impact: Ablation numbers can be mislabeled depending on which script generated the table.
+   Recommendation: Remove/repair the older runner or make config names match behavior.
+
+5. [Major] Node load update is effectively negligible.
+   Evidence: `load_increase = alpha*c/(capacity*dt)` is then multiplied by `1e-9` before adding to CPU load (`simulation/tntn_environment.py`:292-295). With typical `c=1e8..1e9`, capacity `5e9..4e10`, and `dt=0.1`, the extra `1e-9` makes the update nearly zero.
+   Impact: Queue/load dynamics are almost static, so claims about congestion/load-aware learning are weak.
+   Recommendation: Remove the extra `1e-9` or derive a bounded utilization update with units.
+
+6. [Major] Queueing, waiting time, service fallback, and cloud relay are described but simplified away.
+   Evidence: `compute_latency()` sets waiting to zero and includes only tx/edge compute/rx (`simulation/utils.py`:175-180). `compute_energy()` sets wait energy to zero and has no cloud relay/service subset logic (`simulation/utils.py`:230-239). `xi_k` is generated but unused for costs.
+   Impact: The simulator does not implement the full system model in the paper.
+   Recommendation: Either implement these terms or mark them as omitted in the experimental setup.
+
+7. [Major] Greedy baseline is not nearest RSU.
+   Evidence: `GreedyAgent.select_action()` returns `(0,0,1.0)` unconditionally (`simulation/quantum_hrl.py`:674-676).
+   Impact: The "Greedy" row can be unfairly weak or arbitrarily strong depending on node 0 placement.
+   Recommendation: Compute nearest valid RSU from current vehicle position and choose that node.
+
+8. [Moderate] Reward weights are hard-coded in several places.
+   Evidence: `compute_reward()` defaults to `beta1=beta2=1.0` (`simulation/utils.py`:258-266), `QuantumHRLAgent.train()` sets `beta1,beta2=1.0,1.0` (lines 306-316), and `get_qubo_costs()` uses `lat + en` (tntn_environment.py:376-383).
+   Impact: Changing paper/config weights will not propagate.
+   Recommendation: Move beta/penalty weights into a single config object used by reward, QUBO costs, and tables.
+
+9. [Moderate] `bo_vqc` is allocated but never used.
+   Evidence: `QuantumHRLAgent.__init__()` creates `self.bo_vqc` (lines 122-128), but VQC updates are done by `reinforce_update()` (lines 202-234).
+   Impact: Confusing implementation and misleading "Bayesian Optimizer for VQC and QAOA" comment.
+   Recommendation: Remove `bo_vqc` or implement a real VQC BO mode.
+
+10. [Moderate] State's task features are stale during action selection.
+    Evidence: The task is generated, then `select_action(state, task, ...)` is called before `env.step()` writes task fields into `self._state` (`simulation/quantum_hrl.py`:294-304; `simulation/tntn_environment.py`:258-261). The VQC sees previous/default task parameters, while QAOA sees the current task through `get_qubo_costs()`.
+    Impact: High-level tier/ratio policy may not condition on the actual task it is deciding for.
+    Recommendation: Update/assemble the state with current task before selecting action.
+
+11. [Low] Syntax check passed.
+    `python -m py_compile simulation/*.py` completed successfully.

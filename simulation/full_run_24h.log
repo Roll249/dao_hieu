@@ -1,0 +1,89 @@
+Config: seeds=[42, 179, 316, 453, 590] train=30 eval=12 mobility=lust hash=362cacf8efd9
+
+== Random ==
+    [Random] seed=42 lat=1.9626 en=1.8710 miss=24.4% (0s)
+    [Random] seed=179 lat=1.8104 en=1.8891 miss=22.5% (0s)
+    [Random] seed=316 lat=1.9358 en=1.8151 miss=21.9% (0s)
+    [Random] seed=453 lat=1.9827 en=1.7978 miss=25.0% (0s)
+    [Random] seed=590 lat=1.6678 en=1.7958 miss=19.6% (0s)
+
+== Greedy ==
+    [Greedy] seed=42 lat=0.1585 en=0.2816 miss=0.0% (0s)
+    [Greedy] seed=179 lat=0.1597 en=0.2863 miss=0.0% (0s)
+    [Greedy] seed=316 lat=0.1562 en=0.2850 miss=0.0% (0s)
+    [Greedy] seed=453 lat=0.1580 en=0.2735 miss=0.0% (0s)
+    [Greedy] seed=590 lat=0.1638 en=0.2896 miss=0.0% (0s)
+
+== Single-DQN ==
+Starting Single-DQN training...
+    [Single-DQN] seed=42 lat=0.1728 en=0.8129 miss=0.0% (1s)
+Starting Single-DQN training...
+    [Single-DQN] seed=179 lat=0.1781 en=1.2372 miss=0.0% (1s)
+Starting Single-DQN training...
+    [Single-DQN] seed=316 lat=0.2225 en=1.5311 miss=1.9% (1s)
+Starting Single-DQN training...
+    [Single-DQN] seed=453 lat=0.1965 en=1.2297 miss=0.0% (1s)
+Starting Single-DQN training...
+    [Single-DQN] seed=590 lat=0.1187 en=0.9785 miss=0.6% (1s)
+
+== Classical-HRL ==
+Starting Classical HRL training...
+  Episode    0: reward=-561.95, lat=1.1102s
+  Episode   20: reward=-417.68, lat=1.6387s
+    [Classical-HRL] seed=42 lat=0.1005 en=0.5717 miss=0.0% (2s)
+Starting Classical HRL training...
+  Episode    0: reward=-296.69, lat=0.7332s
+  Episode   20: reward=-361.68, lat=1.2377s
+    [Classical-HRL] seed=179 lat=0.0783 en=0.8454 miss=0.0% (2s)
+Starting Classical HRL training...
+  Episode    0: reward=-471.54, lat=1.7514s
+  Episode   20: reward=-410.79, lat=1.4030s
+    [Classical-HRL] seed=316 lat=0.0819 en=0.6658 miss=0.0% (2s)
+Starting Classical HRL training...
+  Episode    0: reward=-625.70, lat=1.9545s
+  Episode   20: reward=-680.66, lat=2.2117s
+    [Classical-HRL] seed=453 lat=0.1754 en=0.2746 miss=0.0% (2s)
+Starting Classical HRL training...
+  Episode    0: reward=-737.99, lat=2.4648s
+  Episode   20: reward=-782.08, lat=2.5516s
+    [Classical-HRL] seed=590 lat=0.1347 en=0.4192 miss=0.0% (2s)
+
+== Quantum-HRL ==
+Starting Quantum-HRL training...
+    [Quantum-HRL] seed=42 lat=0.1412 en=0.5011 miss=0.0% (489s)
+Starting Quantum-HRL training...
+    [Quantum-HRL] seed=179 lat=0.0724 en=0.7422 miss=0.0% (367s)
+Starting Quantum-HRL training...
+    [Quantum-HRL] seed=316 lat=0.2961 en=1.6139 miss=0.2% (486s)
+Starting Quantum-HRL training...
+    [Quantum-HRL] seed=453 lat=0.2669 en=1.7413 miss=0.0% (331s)
+Starting Quantum-HRL training...
+    [Quantum-HRL] seed=590 lat=0.2274 en=1.4164 miss=0.6% (400s)
+
+== Ablation ==
+Starting Quantum-HRL training...
+    [abl:Full Quantum-HRL] seed=42 lat=0.1412 en=0.5011 miss=0.0%
+Starting Quantum-HRL training...
+    [abl:Full Quantum-HRL] seed=179 lat=0.0724 en=0.7422 miss=0.0%
+Starting Quantum-HRL training...
+    [abl:Full Quantum-HRL] seed=316 lat=0.2961 en=1.6139 miss=0.2%
+Starting Quantum-HRL training...
+    [abl:w/o VQC (random tier/ratio)] seed=42 lat=1.9219 en=1.8014 miss=19.6%
+Starting Quantum-HRL training...
+    [abl:w/o VQC (random tier/ratio)] seed=179 lat=1.7455 en=1.8720 miss=21.5%
+Starting Quantum-HRL training...
+    [abl:w/o VQC (random tier/ratio)] seed=316 lat=1.9467 en=1.9051 miss=24.8%
+Starting Quantum-HRL training...
+    [abl:w/o QAOA (random node)] seed=42 lat=0.1635 en=0.5453 miss=0.0%
+Starting Quantum-HRL training...
+    [abl:w/o QAOA (random node)] seed=179 lat=0.0726 en=0.7067 miss=0.0%
+Starting Quantum-HRL training...
+    [abl:w/o QAOA (random node)] seed=316 lat=1.1073 en=0.8596 miss=9.6%
+Starting Quantum-HRL training...
+    [abl:w/o BO (fixed QAOA refine)] seed=42 lat=0.1451 en=0.4759 miss=0.0%
+Starting Quantum-HRL training...
+    [abl:w/o BO (fixed QAOA refine)] seed=179 lat=0.0727 en=0.7781 miss=0.0%
+Starting Quantum-HRL training...
+    [abl:w/o BO (fixed QAOA refine)] seed=316 lat=0.1067 en=0.7316 miss=0.0%
+
+Saved /home/ngochieu/repo/dao_hieu/simulation/paper_results_24h.json and /home/ngochieu/repo/dao_hieu/simulation/results_manifest_24h.json  (total 5925s)
