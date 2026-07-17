@@ -1,2 +1,0 @@
-SUMO_EXIT=0
-done

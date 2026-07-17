@@ -1,0 +1,86 @@
+{
+  "n_instances": 60,
+  "rows": [
+    {
+      "m": 3,
+      "depth": 2,
+      "qaoa_params": 4,
+      "dqn_node_head_params": 5888,
+      "acc": 0.45,
+      "fallback": 0.0
+    },
+    {
+      "m": 3,
+      "depth": 4,
+      "qaoa_params": 8,
+      "dqn_node_head_params": 5888,
+      "acc": 0.4166666666666667,
+      "fallback": 0.0
+    },
+    {
+      "m": 5,
+      "depth": 2,
+      "qaoa_params": 4,
+      "dqn_node_head_params": 6400,
+      "acc": 0.26666666666666666,
+      "fallback": 0.08333333333333333
+    },
+    {
+      "m": 5,
+      "depth": 4,
+      "qaoa_params": 8,
+      "dqn_node_head_params": 6400,
+      "acc": 0.23333333333333334,
+      "fallback": 0.016666666666666666
+    },
+    {
+      "m": 8,
+      "depth": 2,
+      "qaoa_params": 4,
+      "dqn_node_head_params": 7168,
+      "acc": 0.48333333333333334,
+      "fallback": 0.45
+    },
+    {
+      "m": 8,
+      "depth": 4,
+      "qaoa_params": 8,
+      "dqn_node_head_params": 7168,
+      "acc": 0.23333333333333334,
+      "fallback": 0.11666666666666667
+    },
+    {
+      "m": 10,
+      "depth": 2,
+      "qaoa_params": 4,
+      "dqn_node_head_params": 7680,
+      "acc": 0.6333333333333333,
+      "fallback": 0.6
+    },
+    {
+      "m": 10,
+      "depth": 4,
+      "qaoa_params": 8,
+      "dqn_node_head_params": 7680,
+      "acc": 0.3,
+      "fallback": 0.26666666666666666
+    },
+    {
+      "m": 12,
+      "depth": 2,
+      "qaoa_params": 4,
+      "dqn_node_head_params": 8192,
+      "acc": 0.6333333333333333,
+      "fallback": 0.5833333333333334
+    },
+    {
+      "m": 12,
+      "depth": 4,
+      "qaoa_params": 8,
+      "dqn_node_head_params": 8192,
+      "acc": 0.2833333333333333,
+      "fallback": 0.2833333333333333
+    }
+  ],
+  "wallclock_s": 1493.6779174804688
+}

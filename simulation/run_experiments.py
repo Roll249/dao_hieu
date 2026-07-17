@@ -1,12 +1,18 @@
-"""Main experiment runner for Quantum-HRL.
+"""Main experiment runner for Quantum-HRL — DEPRECATED.
 
-Runs all experiments:
+DEPRECATED: paper_results.py is the single canonical driver for all reported
+numbers (LuST mobility, seed-level statistics, provenance manifest). This
+script is kept only for the legacy convergence/depth-sweep figure data. Its
+ablation labelled 'w/o QAOA (random node)' actually used use_quantum=False
+(classical greedy node selection, NOT random) — see urgent_need_to_fixed.md
+#18; the label below has been corrected. Do NOT use this script to produce
+the paper's main comparison or ablation tables.
+
+Runs (legacy):
   (a) Convergence curves for Quantum-HRL vs all baselines
   (b) Ablation study
   (c) VQC/QAOA depth sensitivity sweep
   (d) Parameter count scaling comparison
-
-Saves raw results to .npz files for visualization.
 """
 
 import numpy as np
@@ -109,7 +115,7 @@ def run_ablation_study(seed_base: int = 42) -> dict:
         'Full Quantum-HRL': {
             'use_quantum': True, 'vqc_layers': 4, 'qaoa_depth': 2,
         },
-        'w/o QAOA (random node)': {
+        'w/o QAOA (classical greedy node)': {   # label corrected (#18): use_quantum=False = greedy, not random
             'use_quantum': False, 'vqc_layers': 4, 'qaoa_depth': 2,
         },
         'w/o VQC (classical MLP)': {

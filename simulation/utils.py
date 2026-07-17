@@ -1,47 +1,36 @@
-"""Shared utilities for the Quantum-HRL simulation framework."""
+"""Shared utilities for the Quantum-HRL simulation framework.
+
+All paper-facing constants are sourced from ``config.py`` (single source of
+truth). This module keeps the physics helpers plus a few derived aliases.
+"""
 
 import random
 import numpy as np
 from typing import Tuple, Dict, Any, Optional
 from scipy.stats import norm as _scipy_norm
 
+import config as _cfg
 
 # ============================================================================
-# CONSTANTS matching the paper (Shinde & Tarchi 2024)
+# CONSTANTS — imported from config.py (do NOT redefine here)
 # ============================================================================
 CLIGHT = 3e8          # Speed of light (m/s)
 
-# --- Unified channel model constants ---
-ETA0 = 1e-3           # Reference channel gain at 1 m
-# Path-loss exponents per tier (RSU, LAP, HAP, LEO)
-DELTA_PER_TIER = [2.5, 2.2, 2.0, 2.0]
-
-# Bandwidths per tier (Hz)
-B_TIER = [20e6, 40e6, 60e6, 100e6]   # RSU, LAP, HAP, LEO
-
-N0 = 1e-13            # Noise power W (N_T * B, pre-computed for reference)
-PK_VEHICLE = 0.1      # Vehicle transmit power (W)
-P_RX = 0.02           # Receive power (W)
-FLOC_VEHICLE = 1e9    # Local CPU frequency (cycles/s)
-EPS_LOCAL = 5e-9      # Local computation energy (J/cycle)
-
-# EN computation energy per cycle per tier (J/cycle)
-EPS_EDGE_PER_TIER = [1e-9, 2e-9, 3e-9, 4e-9]   # RSU, LAP, HAP, LEO
-
-# VU and EN energy weighting factors
-W_VU = 1.0
-W_EN = 0.5
+ETA0 = _cfg.ETA0
+DELTA_PER_TIER = _cfg.DELTA_PER_TIER
+B_TIER = list(_cfg.TIER_BANDWIDTH_HZ)          # RSU, LAP, HAP, LEO
+N0 = _cfg.N0
+PK_VEHICLE = _cfg.PK_VEHICLE
+P_RX = _cfg.P_RX
+FLOC_VEHICLE = _cfg.FLOC_VEHICLE
+EPS_LOCAL = _cfg.EPS_LOCAL
+EPS_EDGE_PER_TIER = _cfg.EPS_EDGE_PER_TIER
+W_VU = _cfg.W_VU
+W_EN = _cfg.W_EN
 
 # --- Legacy constants kept for backward compatibility ---
 KAPPA = 1e-27         # (no longer used in main formulas)
 SIGMA2 = 1e-11        # (no longer used in main formulas)
-
-# Reference distances (kept for backward compat but not used in unified model)
-D0_RSU = 10.0
-D0_LAP = 50.0
-D0_HAP = 100.0
-FC_HAP = 2e9
-FC_LEO = 12e9
 
 # Bandwidth aliases (kept for backward compat)
 B_RSU = B_TIER[0]
@@ -49,33 +38,21 @@ B_LAP = B_TIER[1]
 B_HAP = B_TIER[2]
 B_LEO = B_TIER[3]
 
-# Per-tier one-way propagation delays (s) — kept for backward compat
-PROP_DELAY = {
-    'RSU': 0.0001,
-    'LAP': 0.001,
-    'HAP': 6.67e-5,
-    'LEO': 0.004,
-}
-
-# Per-tier edge compute frequencies (cycles/s)
-F_EDGE = {
-    'RSU': 5e9,
-    'LAP': 10e9,
-    'HAP': 20e9,
-    'LEO': 40e9,
-}
+# Per-tier edge compute frequencies (cycles/s), keyed by tier name
+F_EDGE = {name: freq for name, freq in
+          zip(_cfg.TIER_NAMES, _cfg.TIER_COMPUTE_HZ)}
 
 # Tier names for indexing
-TIER_NAMES = ['RSU', 'LAP', 'HAP', 'LEO']
-TIER_LABELS = ['RSU', 'LAP', 'HAP', 'LEO']
-N_TIERS = len(TIER_NAMES)
+TIER_NAMES = list(_cfg.TIER_NAMES)
+TIER_LABELS = list(_cfg.TIER_NAMES)
+N_TIERS = _cfg.N_TIERS
 
 # Per-tier node counts
-M_TIERS = np.array([5, 3, 2, 2], dtype=int)  # M1, M2, M3, M4
+M_TIERS = np.array(_cfg.M_TIERS, dtype=int)  # M1, M2, M3, M4
 M_TOTAL = int(M_TIERS.sum())
 
 # State dimension
-STATE_DIM = 20
+STATE_DIM = _cfg.STATE_DIM
 
 
 # =============================================================================
@@ -176,7 +153,15 @@ def compute_latency(
     t_tx = alpha * d_bits / R
     t_rx = t_tx                              # symmetric channel
     t_c_edge = alpha * c_cycles / F_EDGE[tier_name]
-    t_off = t_tx + t_c_edge + t_rx          # T_w simplified to 0
+    # Queueing/waiting time: proportional to the target node's utilisation.
+    # Zero unless the environment supplies per-node loads (heavy-load regime),
+    # so the light-load results are unchanged.
+    t_w = 0.0
+    loads = env_state.get('node_loads') if isinstance(env_state, dict) else None
+    if loads is not None:
+        load = float(loads[tier_idx, node_idx])
+        t_w = _cfg.QUEUE_BASE_S * (load ** 2) if alpha > 0 else 0.0
+    t_off = t_tx + t_w + t_c_edge + t_rx
 
     # Local branch
     t_c_local = c_cycles / FLOC_VEHICLE
@@ -261,11 +246,11 @@ def compute_reward(
     Tsoj: float,
     Tmax: float,
     c_cycles: float,           # task workload (replaces Emax)
-    beta1: float = 1.0,
-    beta2: float = 1.0,
-    w1: float = 50.0,
-    w2: float = 50.0,
-    w3: float = 50.0,
+    beta1: float = _cfg.BETA1,
+    beta2: float = _cfg.BETA2,
+    w1: float = _cfg.W_F1,
+    w2: float = _cfg.W_F2,
+    w3: float = _cfg.W_F3,
 ) -> Tuple[float, Dict[str, int]]:
     """Compute reward (Eq. 32).
 
@@ -330,7 +315,7 @@ class BayesianOptimizer:
         # (a standard moving-window GP surrogate); avoids the cubic blow-up of
         # an ever-growing design matrix without changing the optimisation logic.
         self.max_history = 40
-        self.n_acquisition_samples = 64
+        self.n_acquisition_samples = 24
 
     def _build_gp(self):
         """Build Gaussian Process surrogate model."""
@@ -345,7 +330,7 @@ class BayesianOptimizer:
         kernel = Matern(length_scale=1.0, nu=2.5) + WhiteKernel(noise_level=self.noise_std ** 2)
         gp = GaussianProcessRegressor(
             kernel=kernel,
-            n_restarts_optimizer=1,
+            n_restarts_optimizer=0,
             random_state=42,
             normalize_y=True,
         )

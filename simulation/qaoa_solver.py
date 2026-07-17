@@ -14,7 +14,10 @@ import numpy as np
 import pennylane as qml
 from pennylane import numpy as pnp
 from typing import Tuple, Optional, Dict, List
-import sympy as sp
+try:
+    import sympy as sp   # optional; not required at runtime
+except ModuleNotFoundError:
+    sp = None
 
 
 # ============================================================================
@@ -221,6 +224,12 @@ class QAOASolver:
         self.energy_history = []
         self.bitstring_history = []
 
+        # Fallback accounting (urgent_need_to_fixed.md #5): count how often the
+        # quantum decode is unusable (flat distribution / exception) and we fall
+        # back to the classical min-cost node.
+        self.n_extract = 0
+        self.n_fallback = 0
+
         # Cache last Ising params so update_qaoa() can re-evaluate angles
         self.last_h: Optional[np.ndarray] = None
         self.last_J: Optional[np.ndarray] = None
@@ -260,14 +269,14 @@ class QAOASolver:
     def solve(
         self,
         costs: np.ndarray,
-        penalty: float = 50.0,
+        penalty: float = 2.0,
         n_iterations: int = 100,
     ) -> Tuple[int, float, Dict]:
         """Solve the node selection QUBO using QAOA.
 
         Args:
             costs:   Node costs c_n (lower is better)
-            penalty: One-hot constraint penalty A
+            penalty: One-hot constraint penalty A (relative to normalised costs)
             n_iterations: Number of classical optimization iterations
 
         Returns:
@@ -275,18 +284,27 @@ class QAOASolver:
             energy:       QAOA energy (lower is better)
             info:         Additional diagnostics
         """
-        # Build QUBO matrix
-        Q = build_qubo_matrix(costs, penalty)
+        costs = np.asarray(costs, dtype=float)
+        # Normalise costs to [0,1] so the Ising coefficients stay O(1) and the
+        # QAOA angle landscape is well-conditioned (node selection only depends
+        # on relative costs, so this preserves the optimum / argmin).
+        cmin, cmax = float(costs.min()), float(costs.max())
+        cnorm = (costs - cmin) / (cmax - cmin) if (cmax - cmin) > 1e-12 else np.zeros_like(costs)
+
+        # Build QUBO matrix on normalised costs
+        Q = build_qubo_matrix(cnorm, penalty)
 
         # Convert to Ising (with correct signs from peer review)
-        h, J, E0 = qubo_to_ising(Q, costs)
+        h, J, E0 = qubo_to_ising(Q, cnorm)
 
         # Build QNode
         qnode = self.build_qnode(h, J)
 
-        # Optimize angles using gradient descent
-        angles = self.angles.copy()
-        opt = qml.GradientDescentOptimizer(stepsize=0.1)
+        # Optimize angles by per-decision gradient descent. Angles must be a
+        # pennylane-trainable array or qml.grad silently returns nothing
+        # (autograd needs requires_grad=True), which previously made this loop a
+        # no-op (see urgent_need_to_fixed.md #4).
+        angles = pnp.array(self.angles.copy(), requires_grad=True)
 
         energies = []
         for iteration in range(n_iterations):
@@ -301,13 +319,15 @@ class QAOASolver:
             # Gradient descent update
             try:
                 grad = qml.grad(qnode)(angles)
-                angles = angles - 0.1 * grad
+                angles = pnp.array(angles - 0.1 * grad, requires_grad=True)
             except Exception:
                 # Random perturbation if gradient fails
-                angles = angles + self.rng.uniform(-0.1, 0.1, size=len(angles))
+                angles = pnp.array(
+                    angles + self.rng.uniform(-0.1, 0.1, size=len(angles)),
+                    requires_grad=True)
 
             # Clip to reasonable range
-            angles = np.clip(angles, 0, 2 * np.pi)
+            angles = pnp.array(np.clip(angles, 0, 2 * np.pi), requires_grad=True)
 
             # Track best
             if float(energy) < self.best_energy:
@@ -321,8 +341,8 @@ class QAOASolver:
         self.last_h = h.copy()
         self.last_J = J.copy()
 
-        # Extract solution by measuring
-        selected_node = self._extract_solution(h, J, angles)
+        # Extract solution from the optimised QAOA measurement distribution
+        selected_node, fell_back = self._extract_solution(h, J, angles, costs=costs)
 
         info = {
             'final_energy': float(energy),
@@ -332,49 +352,62 @@ class QAOASolver:
             'h': h,
             'J': J,
             'E0': E0,
+            'fell_back': fell_back,
+            'fallback_rate': self.fallback_rate(),
         }
 
         return selected_node, self.best_energy, info
 
-    def _extract_solution(self, h: np.ndarray, J: np.ndarray, angles: np.ndarray) -> int:
-        """Extract the optimal bitstring from the QAOA state.
+    def fallback_rate(self) -> float:
+        """Fraction of node decodes that fell back to the classical heuristic."""
+        return self.n_fallback / max(self.n_extract, 1)
 
-        We sample the circuit many times and pick the bitstring
-        that minimizes the Ising energy.
+    def _extract_solution(self, h: np.ndarray, J: np.ndarray, angles: np.ndarray,
+                          costs: Optional[np.ndarray] = None) -> Tuple[int, bool]:
+        """Decode the selected node from the QAOA measurement distribution.
+
+        The device is analytic (shots=None), so we read the EXACT measurement
+        probability vector (qml.probs) — this is the ideal-measurement QAOA
+        readout (finite-shot noise is studied separately in the noise scenario).
+        The node is the qubit with the highest marginal selection probability.
+        If the distribution carries no signal (flat) or the circuit errors, we
+        fall back to the classical min-cost node and flag it.
         """
         m = self.n_nodes
         wires = list(range(m))
-
         H_C = build_qaoa_cost_hamiltonian(h, J)
         H_M = build_qaoa_mixer(m)
 
         @qml.qnode(self.dev, interface='autograd')
-        def sample_circuit(params):
+        def probs_circuit(params):
             for wire in wires:
                 qml.Hadamard(wires=wire)
             for q in range(self.depth):
-                gamma_q = params[q]
-                beta_q = params[self.depth + q]
-                qml.qaoa.cost_layer(gamma_q, H_C)
-                qml.qaoa.mixer_layer(beta_q, H_M)
-            return [qml.sample(qml.PauliZ(w)) for w in wires]
+                qml.qaoa.cost_layer(params[q], H_C)
+                qml.qaoa.mixer_layer(params[self.depth + q], H_M)
+            return qml.probs(wires=wires)
+
+        self.n_extract += 1
+
+        def _classical_node():
+            if costs is not None:
+                return int(np.argmin(costs))
+            return int(np.argmax(h))    # min cost <-> max local field
 
         try:
-            samples = sample_circuit(angles)
-            # samples is a list of m arrays, each shape (shots,)
-            # Average over shots: +1 = unselected (z=0), -1 = selected (z=1)
-            z_means = np.array([np.mean(s) for s in samples])
-            bitstring = np.round((1 - z_means) / 2).astype(int)  # +1->0, -1->1
-
-            # One-hot decode: find the index with bit 1
-            one_hot = np.where(bitstring == 1)[0]
-            if len(one_hot) > 0:
-                return int(one_hot[0])
+            p = np.asarray(probs_circuit(angles), dtype=float).ravel()  # len 2^m
+            idx = np.arange(2 ** m)
+            # PennyLane orders basis states with the first wire as MSB.
+            marg = np.array([
+                p[((idx >> (m - 1 - n)) & 1) == 1].sum() for n in range(m)
+            ])
+            if float(marg.max() - marg.min()) < 1e-6:
+                self.n_fallback += 1
+                return _classical_node(), True
+            return int(np.argmax(marg)), False
         except Exception:
-            pass
-
-        # Fallback: greedy selection
-        return int(np.argmin(np.abs(h)))
+            self.n_fallback += 1
+            return _classical_node(), True
 
     def _classical_energy(self, angles: np.ndarray, h: np.ndarray, J: np.ndarray, m: int) -> float:
         """Classical approximation of QAOA energy.

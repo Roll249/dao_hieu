@@ -11,3 +11,10 @@ __pycache__/
 
 # OS / editor junk
 .DS_Store
+
+# Resume checkpoints for long sweeps. Machine-local by design: the checkpoint key
+# records config_hash/seeds/budget but NOT library versions, so a checkpoint shipped
+# to another machine would be silently reused there and mix points computed under
+# different numpy/pennylane builds into a single figure. Always recompute per machine
+# (or pin versions exactly and opt in by hand).
+simulation/depth_sweep_points.json
