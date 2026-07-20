@@ -1,0 +1,46 @@
+```mermaid
+flowchart LR
+    INIT["|0⟩^⊗M\n───────\nH^⊗M\n───────\n|+⟩^⊗M"]
+
+    subgraph P1["QAOA layer  q = 1"]
+        direction TB
+        C1["Cost unitary\ne^{−iγ₁H_C}\n(ZZ + Z rotations)"]
+        M1["Mixer unitary\ne^{−iβ₁H_M}\n(X rotations on each qubit)"]
+        C1 --> M1
+    end
+
+    subgraph P2["QAOA layer  q = 2"]
+        direction TB
+        C2["Cost unitary\ne^{−iγ₂H_C}"]
+        M2["Mixer unitary\ne^{−iβ₂H_M}"]
+        C2 --> M2
+    end
+
+    MEAS["Measure\ncomputational basis\n─────────────\nz* = argmax prob\nn* = selected node"]
+
+    INIT --> C1
+    M1  --> C2
+    M2  --> MEAS
+
+    subgraph PARAMS["Variational angles  (W_QAOA = 2p = 4)"]
+        G["γ₁, γ₂\n(cost phases)"]
+        B["β₁, β₂\n(mixer angles)"]
+    end
+    PARAMS -. "tuned by\nBayesian Opt." .-> C1
+    PARAMS -. "tuned by\nBayesian Opt." .-> M1
+
+    subgraph HC["Cost Hamiltonian  H_C"]
+        HN["hₙ = −cₙ/2 + A(1−M/2)\n(local fields, diagonal)"]
+        JNM["J_nm = +A/2\n(couplings, off-diagonal)"]
+        E0["E₀ = Σcₙ/2 + A(1−M/2+M(M−1)/4)\n(constant offset)"]
+    end
+
+    HC -. "encodes\nnode costs" .-> C1
+
+    style INIT fill:#e8f5e9,stroke:#388e3c
+    style P1 fill:#fff8e1,stroke:#f9a825
+    style P2 fill:#fff8e1,stroke:#f9a825
+    style MEAS fill:#fce4ec,stroke:#c62828
+    style HC fill:#ede7f6,stroke:#6a1b9a
+    style PARAMS fill:#e3f2fd,stroke:#1565c0
+```

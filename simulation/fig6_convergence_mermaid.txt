@@ -1,0 +1,22 @@
+```mermaid
+xychart-beta
+    title "Convergence — Average Reward vs Training Episode"
+    x-axis "Episode" [0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000]
+    y-axis "Average Reward" -500 --> -50
+    line [name: "Quantum-HRL (ours)", -480, -390, -280, -200, -148, -112, -92, -80, -74, -71, -69]
+    line [name: "Classical HRL",      -480, -430, -360, -295, -248, -215, -195, -183, -177, -173, -171]
+    line [name: "Single DQN",         -480, -455, -420, -388, -362, -345, -333, -325, -319, -315, -313]
+    line [name: "Greedy (static)",    -480, -340, -330, -328, -327, -327, -326, -326, -326, -326, -325]
+```
+
+%%
+%% NOTE: values above are illustrative placeholders.
+%% Replace with actual output from run_experiments.py once simulations complete.
+%%
+%% Interpretation guide:
+%%   • Quantum-HRL converges fastest due to BO outer loop (avoids gradient instability)
+%%   • Classical HRL converges but slower (3 independent DQN gradient updates)
+%%   • Single DQN plateaus higher (flat action space, no combinatorial structure)
+%%   • Greedy stabilizes quickly but at a suboptimal fixed level
+%%   • Shaded ±1 std bands (over 5 seeds) not shown in Mermaid — add in matplotlib
+%%

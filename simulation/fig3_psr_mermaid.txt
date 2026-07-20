@@ -1,0 +1,42 @@
+```mermaid
+flowchart TD
+    PARAM(["Parameter  θⱼ\nin VQC layer ℓ"])
+
+    subgraph CIRCUIT1["Circuit evaluation  #1"]
+        SHIFT_P["θⱼ  →  θⱼ + π/2"]
+        RUN_P["Run full VQC\nU(…, θⱼ+π/2, …)"]
+        OUT_P["f₊ = ⟨Ô⟩_{θⱼ+π/2}"]
+        SHIFT_P --> RUN_P --> OUT_P
+    end
+
+    subgraph CIRCUIT2["Circuit evaluation  #2"]
+        SHIFT_M["θⱼ  →  θⱼ − π/2"]
+        RUN_M["Run full VQC\nU(…, θⱼ−π/2, …)"]
+        OUT_M["f₋ = ⟨Ô⟩_{θⱼ−π/2}"]
+        SHIFT_M --> RUN_M --> OUT_M
+    end
+
+    GRAD["∂f/∂θⱼ  =  ½ (f₊ − f₋)\n━━━━━━━━━━━━━━━━━━━━━\nExact analytic gradient\n— no finite-difference bias\n— no backprop through quantum ops\n2 evaluations per parameter"]
+
+    PARAM --> SHIFT_P
+    PARAM --> SHIFT_M
+    OUT_P  --> GRAD
+    OUT_M  --> GRAD
+
+    subgraph WHY["Why π/2 works  (mathematical basis)"]
+        direction LR
+        G1["Gate: RY(θ) = e^{−iθσʸ/2}\ngenerator P = σʸ, eigenvalues ±1"]
+        G2["Spectrum condition ⟹\nanalytic gradient exists\nwith shift s = π/2"]
+        G1 --> G2
+    end
+
+    subgraph COMPARE["vs. Finite Differences"]
+        FD["∂f/∂θⱼ ≈ [f(θⱼ+ε) − f(θⱼ−ε)] / 2ε\n• requires tuning ε\n• O(ε) truncation error\n• amplifies shot noise for small ε"]
+    end
+
+    style CIRCUIT1 fill:#e8f5e9,stroke:#388e3c
+    style CIRCUIT2 fill:#fce4ec,stroke:#c62828
+    style GRAD fill:#fff8e1,stroke:#f9a825,font-weight:bold
+    style WHY fill:#ede7f6,stroke:#6a1b9a
+    style COMPARE fill:#f5f5f5,stroke:#9e9e9e
+```

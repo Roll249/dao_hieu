@@ -1,0 +1,52 @@
+```mermaid
+flowchart LR
+    subgraph INPUT["Input"]
+        S["s_t ∈ ℝ²⁰\n──────────\nnormalize\nš_t = s_t/‖s_t‖"]
+    end
+
+    subgraph AE["Amplitude Encoding"]
+        Q0["q₀"]
+        Q1["q₁"]
+        Q2["q₂"]
+        Q3["q₃"]
+        Q4["q₄"]
+        NOTE["q = ⌈log₂ 20⌉ = 5 qubits\n|ψ(š_t)⟩ = Σ š_tⁱ |i⟩"]
+    end
+
+    subgraph VQC["VQC  U(θ)  —  L = 4 layers,  W_VQC = L·q = 20 params"]
+        direction LR
+        subgraph L1["ℓ=1"]
+            RY11["RY(θ₁₁)"]
+            RY12["RY(θ₁₂)"]
+            RY13["RY(θ₁₃)"]
+            RY14["RY(θ₁₄)"]
+            RY15["RY(θ₁₅)"]
+            CNOT1["CNOT\nladder"]
+        end
+        subgraph L2["ℓ=2"]
+            RY21["RY(θ₂₁)"]
+            RY25["RY(θ₂₅)"]
+            CNOT2["CNOT\nladder"]
+            DOT2["  ···  "]
+        end
+        subgraph L3L4["ℓ=3,4  (same pattern)"]
+            DOTS["  ···  "]
+        end
+        L1 --> L2 --> L3L4
+    end
+
+    subgraph MEAS["Measurement  →  Classical outputs"]
+        TIER["⟨Ô₁⟩…⟨Ô₄⟩\n──────────\nsoftmax\nl* = argmax"]
+        RATIO["⟨Ô_α⟩\n──────────\nsigmoid\nα ∈ (0,1)"]
+    end
+
+    S --> AE
+    AE --> VQC
+    VQC --> TIER
+    VQC --> RATIO
+
+    style INPUT fill:#dfe6f7,stroke:#4a6fa5
+    style AE fill:#e8f5e9,stroke:#388e3c
+    style VQC fill:#fff8e1,stroke:#f9a825
+    style MEAS fill:#fce4ec,stroke:#c62828
+```

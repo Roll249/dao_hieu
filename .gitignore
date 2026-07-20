@@ -1,0 +1,61 @@
+# Python virtual environments
+.venv_hrl/
+.venv/
+venv/
+env/
+
+# Python caches
+__pycache__/
+*.py[cod]
+*$py.class
+
+# OS / editor junk
+.DS_Store
+*~
+*.swp
+.idea/
+.vscode/
+
+# Run logs (regenerated on every experiment run)
+*.log
+
+# LaTeX build artifacts
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.out
+*.synctex.gz
+*.toc
+*.lof
+*.lot
+
+# Build / export artifacts
+overleaf_upload.zip
+*.zip
+
+# Machine-local resource probe
+.scenario_resources.json
+
+# Claude Code / agent skill bundles (machine-local tooling, not project source)
+.claude/skills/
+.claude/settings.local.json
+.agents/
+scientific-agent-skills/
+skills-lock.json
+paper/
+
+# Raw LuST dataset (third-party, ~400 MB of SUMO route/network XML). Download
+# from the LuST source (see Lust_dataset/README.md, Lust_dataset/Citations.bib).
+# Paper results reproduce from the committed caches simulation/lust_roi_trajectories*.npz;
+# the raw data is only needed to regenerate those caches via build_lust_24h.py.
+Lust_dataset/scenario/
+Lust_dataset/misc/
+
+# Resume checkpoints for long sweeps. Machine-local by design: the checkpoint key
+# records config_hash/seeds/budget but NOT library versions, so a checkpoint shipped
+# to another machine would be silently reused there and mix points computed under
+# different numpy/pennylane builds into a single figure. Always recompute per machine
+# (or pin versions exactly and opt in by hand).
+simulation/depth_sweep_points.json
