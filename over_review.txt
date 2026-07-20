@@ -1,0 +1,370 @@
+================================================================================
+OVER-REVIEW — Tổng hợp toàn bộ rà soát, sửa code, thí nghiệm & kết luận
+Quantum-HRL cho T-NTN Vehicular Edge Computing (Hướng B: LuST thật)
+Ngày tổng hợp: 2026-07-10
+================================================================================
+
+Tài liệu này gói gọn TẤT CẢ những gì đã làm để xử lý `urgent_need_to_fixed.md`
+theo Hướng B (tích hợp LuST thật vào simulation/, baseline công bằng, giữ kiến
+trúc 24 tham số, chạy lại toàn bộ), kết quả thí nghiệm trung thực, lý do
+classical ngang/vượt quantum, và việc còn lại.
+
+Nguồn số liệu chi tiết: simulation/EXPERIMENT_RESULTS.md,
+paper_results.json, paper_results_heavy.json, noise_sweep.json, qaoa_scaling.json,
+results_manifest*.json.
+
+
+================================================================================
+PHẦN 0 — QUYẾT ĐỊNH & BỐI CẢNH
+================================================================================
+
+- urgent_need_to_fixed.md liệt kê 24 lỗi; #1–#3 là ngã ba chặn: paper claim dùng
+  LuST + 24 params + "Quantum thắng Classical có ý nghĩa thống kê", nhưng KHÔNG
+  run nào thỏa đủ cả ba.
+- Người dùng chọn HƯỚNG B: nối LuST FCD thật vào simulation/, sửa baseline cho
+  công bằng, giữ full-replacement 24 params, chạy lại end-to-end.
+- Sau khi có kết quả không có lợi thế lượng tử, người dùng yêu cầu thử các "đòn
+  bẩy" để quantum nổi bật một cách TRUNG THỰC (không p-hack): tăng node/tier,
+  heavy-load, noise sweep — và giữ parameter-efficiency làm story nền.
+
+
+================================================================================
+PHẦN 1 — CẤU HÌNH THÍ NGHIỆM (đã chốt, single source of truth)
+================================================================================
+
+- Mobility: LuST SUMO FCD thật, cửa sổ 17:00–18:00, sampling 60s. Trích các quỹ
+  đạo xe trong ô đô thị dày đặc nhất 3 km (chứa ~50% vehicle-records) → 7,845 quỹ
+  đạo. Mỗi episode replay quỹ đạo thật của 1 xe; vị trí nội suy theo slot, tốc độ
+  suy ra từ dịch chuyển (không dùng speed tức thời thưa của FCD).
+  => Đây là mobility MỨC QUỸ ĐẠO (không chỉ phân phối tốc độ) — giải quyết #21.
+- Topology (config.py, single source): RSU/LAP/HAP/LEO ở 0.01/0.3/20/600 km;
+  coverage 0.3/1.5/50/500 km; M_TIERS=[5,3,2,2]; băng thông 20/40/60/100 MHz.
+- Workload: d_k ~ U(0.5,5) Mbit; c_k ~ U(100,1000) Mcycles; Tmax ~ U(0.5,2) s.
+- Reward: beta1=beta2=0.5; penalty cố định w1=w2=w3=50.2
+- Thống kê: 5 seeds [42,179,316,453,590], 30 train / 12 eval episodes × 40 tasks.
+  MỨC SEED là chính (n=5); pooled per-task chỉ là phụ (pseudo-replication).
+- Runtime: ~85 phút/run (CPU-only, i5-1135G7).
+
+
+================================================================================
+PHẦN 2 — TRẠNG THÁI 24 LỖI TRONG urgent_need_to_fixed.md
+================================================================================
+
+ĐÃ XỬ LÝ TRONG CODE (simulation/):
+  #1  LuST thật: tntn_environment.py + lust_mobility.py replay FCD quỹ đạo.  DONE
+  #2  Một pipeline hợp lệ duy nhất: simulation/ = LuST + baseline đúng + 24 params.
+      DONE (nhưng kết quả: không có lợi thế lượng tử — xem Phần 4/5).
+  #3  Baseline EC_HRL lỗi: KHÔNG dùng notebook gốc; ClassicalHRLAgent là bản
+      reimplement sạch (epsilon-greedy đúng, TD + target net + replay).  DONE
+  #4  QAOA/BO mô tả sai: QAOA giờ tối ưu góc bằng gradient THẬT (trước là no-op),
+      BO refine định kỳ. Paper cần mô tả đúng "gradient/decision + BO refine".  CODE DONE
+  #5  QAOA fallback ẩn: trước dùng qml.sample() trên device shots=None → LUÔN
+      fallback về argmin(|h|). Sửa: decode từ statevector probs thật + đếm & log
+      tỉ lệ fallback (base 28.7%, heavy 22%).  DONE
+  #12 Greedy: nearest-RSU thật theo khoảng cách (trước trả (0,0,1)).  DONE
+  #14 Node load / queueing: sửa đơn vị load (EMA bounded); thêm chế độ heavy-load
+      có waiting-time phụ thuộc tải + background load.  DONE
+  #15 Task feature stale: thêm env.observe(task) điền feature task vào state TRƯỚC
+      select_action (VQC/DQN giờ điều kiện hóa trên task hiện tại).  DONE
+  #16 Pseudo-replication: driver mới báo cáo THỐNG KÊ MỨC SEED làm chính, pooled
+      chỉ phụ.  DONE
+  #18 Nhãn ablation: paper_results.py là driver DUY NHẤT; run_experiments.py bị
+      deprecate + sửa nhãn "w/o QAOA".  DONE
+  #19 bo_vqc chết: đã xóa; VQC dùng REINFORCE/PSR (không BO).  DONE
+  #21 LuST trajectory: đã dùng mức quỹ đạo (không chỉ speed-pool).  DONE
+  #22 Deadline không bind: ở light-load 0% miss (đúng là không bind); heavy-load
+      miss 5–7% cho heuristic → constraint bind thật.  DONE (qua heavy-load)
+  #24 Reproducibility: results_manifest.json ghi config+hash, git, versions, seeds,
+      nguồn mobility, fallback, wallclock, output.  DONE
+
+ĐÃ SỬA TRONG PAPER (quantum_hrl_paper.tex) — độc lập số liệu:
+  #6  Mệnh đề QAOA hội tụ đơn điệu theo p: viết lại thận trọng (không đảm bảo
+      monotonic).  DONE
+  #7  Thông số mạng lệch: bảng cấu hình + phần intro đã đồng bộ theo config
+      (LAP 0.3 / HAP 20 / LEO 600 km; coverage 0.3/1.5/50/500; ROI 3 km).  DONE
+  #8  Mbit vs Mbyte: đổi paper sang Mbit (khớp code).  DONE
+  #9  Penalty 99th-pctile → cố định 50 (khớp code), ghi rõ + log.  DONE
+  #10 Đếm tham số: tách rõ trainable ONLINE 20,224 vs stored online+target 40,448;
+      843× dùng online, 1,686× dùng stored.  DONE
+  #11 Kiến trúc baseline: ghi rõ Classical-HRL là REIMPLEMENT trung thực, không
+      phải notebook gốc.  DONE
+  #13 Service subset / cloud fallback: ghi rõ thí nghiệm OMIT (mọi node
+      service-complete, không cloud relay).  DONE
+  #20 Node ≤6 → ≤5 (khớp M_TIERS max=5; cloud là fallback riêng).  DONE
+
+CÒN LẠI (phụ thuộc số liệu — để session sau viết lại paper):
+  #16/#17/#23 và toàn bộ bảng/claim số: xem Phần 6.
+
+
+================================================================================
+PHẦN 3 — THAY ĐỔI CODE CHÍNH (simulation/)
+================================================================================
+
+MỚI:
+  config.py            Single source: topology/channel/workload/reward/mobility +
+                       config_hash(); env vars QHRL_NODE_SCALE, QHRL_HEAVY_LOAD.
+  lust_mobility.py     Parse window.fcd.xml → cache 7,845 quỹ đạo ROI; sample_episode
+                       replay vị trí thật + tốc độ suy từ dịch chuyển.
+  noise_sweep.py       BO vs gradient-descent tuning góc QAOA dưới nhiễu σ_n.
+  qaoa_scaling.py      Độ chính xác/fallback QAOA vs số node m (depth 2/4).
+  EXPERIMENT_RESULTS.md  Log kết quả đầy đủ.
+
+SỬA:
+  tntn_environment.py  LuST mobility; observe(task) (#15); reward/QUBO theo config;
+                       node load EMA + heavy-load queueing (#14).
+  utils.py             Hằng số lấy từ config; compute_latency thêm T_w (queueing);
+                       BO nhanh hơn (ít acquisition/GP restart).
+  quantum_hrl.py       Greedy nearest-RSU (#12); bỏ bo_vqc (#19); cờ use_bo cho
+                       ablation "w/o BO"; điền observe(task) mọi vòng train.
+  qaoa_solver.py       Decode statevector probs + đếm fallback (#5); góc là pnp
+                       trainable → gradient descent CHẠY THẬT (#4); chuẩn hóa cost
+                       + penalty vừa phải để landscape ổn định.
+  paper_results.py     Driver duy nhất: multi-seed, seed-level + pooled (#16),
+                       manifest (#24), ablation +w/o BO, --tag, --abl-seeds.
+  vqc_circuit.py       from __future__ import annotations (vá pennylane>=0.40).
+
+Chưa commit — thay đổi nằm trên đĩa.
+
+
+================================================================================
+PHẦN 4 — KẾT QUẢ THÍ NGHIỆM (5 seeds, mức seed)
+================================================================================
+
+--- 4.1 BASE (light load) — paper_results.json ---
+  Method         Latency(s)      Energy(J)  Miss    Params
+  Random         1.897 ± 0.123   1.837      22.7%   —
+  Greedy         0.162 ± 0.003   0.283       0.0%   —
+  Single-DQN     0.176 ± 0.046   1.098       0.5%   17,920
+  Classical-HRL  0.130 ± 0.042   0.507       0.0%   20,224
+  Quantum-HRL    0.118 ± 0.034   0.830       0.0%   24
+
+  - Latency Quantum vs Classical: Welch t=-0.50, p=0.63, Hedges g=-0.29
+    => KHÔNG có ý nghĩa thống kê (ngang nhau). Pooled n=2400 cho p=4e-10 nhưng
+       là pseudo-replication → chỉ để phụ.
+  - Energy: Quantum CAO HƠN có ý nghĩa (0.83 vs 0.51, t=2.38, p=0.046, g=1.36).
+  - Ablation: Full 0.127 | w/o VQC 1.880 (+1382%) | w/o QAOA 0.129 (+1.5%) |
+    w/o BO 0.117 (-7.7%).  QAOA fallback 28.7%.
+  - Đọc: ở light-load ngay cả heuristic (Greedy) đã gần tối ưu latency; Quantum
+    competitive chứ không vượt, và tốn energy hơn.
+
+--- 4.2 HEAVY-LOAD (queueing/tắc nghẽn) — paper_results_heavy.json ---
+  Method         Latency(s)      Energy(J)  Miss    Params
+  Random         2.138 ± 0.118   1.801      27.7%   —
+  Greedy         0.530 ± 0.027   0.281       7.1%   —
+  Single-DQN     0.433 ± 0.065   1.386       5.3%   17,920
+  Classical-HRL  0.274 ± 0.055   0.855       1.5%   20,224
+  Quantum-HRL    0.330 ± 0.063   1.073       2.3%   24
+
+  - Heuristic Greedy HỎNG dưới tắc nghẽn (7.1% miss). Cả hai learned policy áp đảo
+    heuristic.
+  - Latency Quantum vs Classical: t=1.41, p=0.20 (NS), hướng nghiêng về CLASSICAL
+    (0.274 < 0.330, g=0.81). Energy ngang (p=0.58).
+    => Tín hiệu 1-seed "Quantum thắng" (0.240<0.317) KHÔNG sống sót với 5 seeds.
+  - Ablation: Full 0.284 | w/o VQC 2.022 (+611%) | w/o QAOA 0.385 (+35.4%) |
+    w/o BO 0.290 (+1.8%).  => QAOA GIỜ CÓ GIÁ TRỊ (+35% vs +1.5% light-load): chọn
+    node giữa các node đang tải là bài tổ hợp thật. QAOA fallback 22%.
+
+--- 4.3 NOISE SWEEP (BO robustness) — noise_sweep.json ---
+  Tỉ lệ chọn đúng min-cost node dưới nhiễu đọc σ_n (60 instance, m=5, depth 2):
+  σ_n    BO     GD     fixed
+  0.00   0.37   0.17   0.27
+  0.05   0.33   0.13   0.23
+  0.10   0.52   0.17   0.17
+  0.20   0.43   0.23   0.28
+  0.40   0.28   0.23   0.23
+  0.80   0.47   0.23   0.32
+  => BO THẮNG gradient-descent ở MỌI mức nhiễu (GP averaging). Dữ liệu thật cho
+     claim BO noise-robustness (#17).
+
+--- 4.4 QAOA SCALING — qaoa_scaling.json ---
+  QAOA giữ 4–8 params khi số node m tăng, trong khi DQN node-head phình
+  5,888 → 8,192. Độ chính xác QAOA xấp xỉ (0.23–0.63), fallback tăng theo m (tới
+  ~60% ở m=10–12, depth 2). => Lợi thế QAOA là PARAM SCALING, không phải chất
+  lượng nghiệm (greedy cổ điển vốn CHÍNH XÁC).
+
+--- 4.5 THAM SỐ ---
+  W_HRL online = 20,224 ; stored (online+target) = 40,448.
+  W_QHRL = 24 (VQC 20 + QAOA 4).  Reduction: 843× (online) / 1,686× (stored).
+
+--- 4.6 FULL 24h LuST — GENERALIZATION — paper_results_24h.json ---
+  Câu hỏi (user): chạy TOÀN BỘ 1 ngày LuST (24 window, đủ diurnal + rush-hour) thì
+  quantum có vượt classical không?
+  Cache: lust_roi_trajectories_24h.npz = 99,810 quỹ đạo / 1,435,900 điểm, gộp cả 24
+  giờ (đêm ~200/h, cao điểm 6k–8k/h). Base regime, 5 seeds, hash 362cacf8efd9, ~99 phút.
+
+  Method         Latency(s)      Energy(J)  Miss    Params
+  Random         1.872 ± 0.118   1.834      22.7%   —
+  Greedy         0.159 ± 0.003   0.283       0.0%   —
+  Single-DQN     0.178 ± 0.034   1.158       0.5%   17,920
+  Classical-HRL  0.114 ± 0.041   0.555       0.0%   20,224
+  Quantum-HRL    0.201 ± 0.092   1.203       0.2%   24
+
+  - VERDICT KHÔNG ĐỔI — và quantum còn TỆ HƠN chút. Latency Quantum TĂNG 0.118→0.201
+    trong khi Classical đứng yên 0.130→0.114. Classical giờ thắng latency với effect
+    size LỚN (Hedges g=+1.09); Welch t=1.92, p=0.108 — chưa "significant" ở n=5 CHỈ VÌ
+    phương sai Quantum bung ra (std 0.034→0.092). Energy: Classical 0.555 < Quantum
+    1.203 (g=1.40, p=0.056, nghiêng Classical).
+  - VÌ SAO thêm dữ liệu không cứu được quantum: mobility đa dạng cả ngày LÀM LỘ chỗ
+    underfit của VQC 20-tham-số chứ không chữa được — variance latency/seed tăng gần
+    3×. Bài vẫn không quantum-hard; 20k tham số classical tổng quát hoá tốt hơn.
+  - Ablation (24h, 3 seeds): Full 0.170 | w/o VQC 1.871 (+1001%, 22% miss) |
+    w/o QAOA 0.448 (+164%) | w/o BO 0.108 (-36%, TỐT NHẤT). => VQC thiết yếu; QAOA
+    CÓ GIÁ TRỊ cả trên 24h (bỏ nó latency gấp ~3, do seed cao điểm 316) — khớp phát
+    hiện heavy-load; BO VẪN không cải thiện mean latency (w/o-BO tốt nhất ở mọi regime,
+    giá trị BO chỉ là noise-robustness §4.3). QAOA fallback tăng 0.287→0.315.
+  - Ý nghĩa 24h vs 1h: thí nghiệm generalization CỦNG CỐ câu chuyện trung thực — thêm
+    regime thứ 2 mà (a) quantum không có lợi thế latency (còn thụt lùi), (b) hiệu quả
+    tham số không đổi, (c) QAOA được biện minh, (d) BO thì không. KHÔNG lật headline nào.
+
+
+--- 4.7 10-SEED base regime (power + robustness) — paper_results_10seed.json ---
+  Chạy lại base (light, 1h) với 10 SEED (superset của 5 seed cũ) + 5 abl-seed, để đủ
+  power cho Q1 (reviewer không nhận n=5). hash 362cacf8efd9, ~179 phút.
+
+  !! MEAN GÂY HIỂU LẦM — phải đọc thống kê ROBUST. 1 seed (727) làm Quantum SỤP ĐỔ
+     khi train (lat 2.23s, miss 20.8%), kéo mean+variance lên.
+
+  Latency(s)        Quantum-HRL     Classical-HRL
+  mean ± std        0.321 ± 0.673   0.158 ± 0.107
+  MEDIAN            0.105           0.139
+  10%-trimmed       0.113           0.133
+  mean (bỏ seed727) 0.109           0.126
+
+  - KHÔNG có khác biệt latency có ý nghĩa Ở MỌI TEST: Welch p=0.47; Mann-Whitney
+    (rank, robust) p=0.47; bỏ outlier p=0.32. Khớp null 5-seed (p=0.63). Headline
+    "quantum thắng" vẫn chết.
+  - Trên run ĐIỂN HÌNH (median/trimmed) Quantum thực ra NGANG/nhỉnh hơn chút (median
+    0.105 < 0.139). 5 seed cũ tình cờ né được cái đuôi xấu của Quantum.
+  - LIMITATION MỚI, QUAN TRỌNG, TRUNG THỰC — BẤT ỔN KHI TRAIN. 1/10 seed Quantum
+    collapse (barren-plateau / policy-gradient variance trên VQC); 0/10 seed Classical
+    collapse (seed xấu nhất của Classical chỉ 0.44s, 4.6% miss). Đây là điểm yếu thật,
+    đáng ghi: VQC/REINFORCE kém ổn định hơn DQN (TD+replay+target-net).
+  - ENERGY PREMIUM KHÔNG SỐNG SÓT với 10 seed. 5-seed energy Quantum tệ hơn có ý nghĩa
+    (p=0.046); n=10 thì NGANG NHAU — Q 0.889±0.209 vs C 0.809±0.575, p=0.69 (seed727
+    làm energy Classical vọt 2.27). => ĐỪNG claim quantum tốn energy có hệ thống nữa.
+  - Ablation (5 seed, base): Full 0.118 | w/o VQC 1.810 (+1431%, 22% miss) |
+    w/o QAOA 0.155 (+31%) | w/o BO 0.159 (+35%). VQC thiết yếu; QAOA/BO đóng góp dương
+    vừa phải nhưng ablation base NHIỄU theo seed → câu chuyện robust: VQC thiết yếu mọi
+    nơi, QAOA quyết định ở heavy/24h, BO rõ nhất dưới nhiễu (4.3). QAOA fallback 25.0%.
+
+  TÓM 5→10 seed: (1) null latency ĐƯỢC XÁC NHẬN mạnh hơn + test rank; (2) Quantum ngang
+  trên seed điển hình nhưng có ĐUÔI BÉO/collapse — limitation mới; (3) energy-premium
+  YẾU ĐI thành non-significant — phải làm mềm trong paper.
+
+
+--- 4.8 M1 — PARAMETER-MATCHED CLASSICAL CONTROL — paper_results_m1.json ---
+  Reviewer #2 nêu M1 (High) = "thí nghiệm thiếu thuyết phục nhất": 843× có thể chỉ
+  do bài ít chiều dễ tối ưu, không phải do quantum. Thêm TinyClassical-PG = bản sinh
+  đôi cổ điển của VQC (cùng input L2, cùng readout softmax4+sigmoid-sum bias1.5, cùng
+  advantage REINFORCE lr/σ/update, node argmin) — khác DUY NHẤT: MLP nhỏ state->h(3,tanh)
+  ->5 out = 83 params, thay cho mạch VQC. Base regime, 10 seed, hash 362cacf8efd9, ~193 phút.
+
+  Method (10-seed)     lat_median  lat_mean±std   miss   energy  params  collapse(lat>0.4)
+  Classical-HRL(TD)    0.139       0.158±0.102    0.5%   0.809   20,224  1/10
+  TinyClassical-PG     0.166       0.285±0.224    4.0%   1.425   83      4/10
+  Quantum-HRL          0.105       0.321±0.639    2.1%   0.889   24      1/10
+
+  Significance seed-level:
+  - Q vs TinyPG latency: Welch p=0.877, Mann-Whitney p=0.571 — KHÔNG khác có ý nghĩa,
+    nhưng Q median TỐT HƠN (0.105 vs 0.166).
+  - Q vs TinyPG energy: Welch p=0.189, Q THẤP HƠN (0.889 vs 1.425, g=-0.61).
+  - TinyPG vs Classical latency: Welch p=0.146, MW p=0.734 (ngang).
+
+  VERDICT — M1 BẢO VỆ đóng góp quantum (kèm caveat trung thực):
+  1. 843× KHÔNG phải chỉ low-dim artifact. Control cổ điển cùng cỡ (83 params, cùng
+     REINFORCE) KHÔNG thắng Quantum — median ngang/tốt hơn, energy tốt hơn, ở ~3.5× params.
+     Nỗi lo reviewer ("policy cổ điển nhỏ sẽ ngang/thắng → quantum vô nghĩa") KHÔNG xảy ra.
+  2. Bất ổn train là thuộc tính của POLICY-GRADIENT, KHÔNG phải của quantum. Collapse:
+     TinyPG 4/10 vs Quantum 1/10 vs Classical(TD) 1/10. VQC thực ra ỔN ĐỊNH HƠN twin cổ
+     điển của nó; TD-DQN ổn định nhất. => làm MỀM limitation training-stability: không
+     phải "quantum mong manh" mà "REINFORCE mong manh", và VQC không tệ hơn PG cổ điển.
+  3. Caveat trung thực: khoảng cách Q-vs-TinyPG KHÔNG significant (p=0.88) — không claim
+     quantum THẮNG control, chỉ competitive-to-better (median/energy/ít collapse) ở footprint
+     nhỏ hơn. Collapse của Q sâu hơn (2.24s) so với TinyPG (~0.55s) → mean/std Q cao hơn.
+
+  TÁC ĐỘNG: M1 trung hoà tử huyệt reviewer + cho phép nói efficiency là do REPRESENTATION
+  chứ không chỉ do ít chiều; đồng thời reframe training-stability đúng bản chất (REINFORCE
+  vs TD). Đây là củng cố rõ cho case Q1.
+
+
+================================================================================
+PHẦN 5 — TẠI SAO CLASSICAL NGANG/VƯỢT QUANTUM (phân tích)
+================================================================================
+
+1. BÀI TOÁN KHÔNG "QUANTUM-HARD". Offload (tier,node,ratio) là điều khiển nhỏ,
+   trơn, chi phí tính trực tiếp được. Classical ~20k tham số thừa capacity; VQC
+   chỉ 20 tham số → UNDERFIT khi môi trường phức tạp (heavy-load). Đó là lý do
+   khoảng cách nới rộng ở heavy-load. 843× ít tham số vừa là ưu điểm vừa là giới
+   hạn biểu diễn.
+
+2. HUẤN LUYỆN VQC YẾU HƠN DQN. VQC học bằng REINFORCE + parameter-shift (variance
+   cao, kém sample-efficient); DQN học bằng TD + replay + target network (ổn định).
+   Thêm barren-plateau và output bị chặn (kỳ vọng Pauli-Z) → khó biểu diễn ranh
+   giới quyết định sắc.
+
+3. QAOA CHỈ XẤP XỈ, GREEDY CỔ ĐIỂN CHÍNH XÁC. Vì chi phí node tính được, argmin cổ
+   điển là tối ưu tuyệt đối; QAOA depth-2 chỉ xấp xỉ + fallback 22–29%. Trên bài
+   chọn node, quantum giỏi lắm là hoà.
+
+4. ENERGY CAO HƠN LÀ OPERATING POINT. VQC hội tụ về chính sách offload rất mạnh
+   (alpha≈0.8–0.97) → hạ latency nhưng tăng năng lượng; classical dè dặt hơn →
+   energy thấp hơn. Điểm khác trên Pareto, chỉnh bằng beta2.
+
+5. LÝ THUYẾT: KHÔNG KỲ VỌNG QUANTUM ADVANTAGE Ở ĐÂY. MDP cổ điển dễ, action space
+   nhỏ có cấu trúc; QML chưa có lợi thế được chứng minh. Giá trị thật = hiệu quả
+   tham số, không phải chất lượng nghiệm.
+
+KẾT: classical thắng/hoà vì có ~843× tham số cho bài vốn không cần lượng tử; VQC
+quá nhỏ nên underfit ở regime khó; QAOA chỉ xấp xỉ; policy-gradient kém ổn định
+hơn TD.
+
+
+================================================================================
+PHẦN 6 — KẾT LUẬN TRUNG THỰC: PAPER ĐƯỢC/KHÔNG ĐƯỢC CLAIM GÌ
+================================================================================
+
+KHÔNG ĐƯỢC claim (không có bằng chứng):
+  - "Quantum-HRL giảm latency 20.3% có ý nghĩa thống kê so với Classical" — SAI
+    (p=0.63 light, p=0.20 heavy).
+  - "QAOA halves latency / giảm 7× variance" — SAI (+1.5% light).
+  - "843× speedup" — SAI (843× là FOOTPRINT mô hình, không phải tốc độ).
+  - Bất kỳ khẳng định "quantum advantage" nào.
+
+ĐƯỢC claim (trung thực, có bằng chứng):
+  1. HIỆU QUẢ THAM SỐ (lõi): Quantum-HRL đạt hiệu năng NGANG Classical tri-DQN với
+     24 vs 20,224 tham số trainable (843×) — đổi scaling O(n·h) → O(L·log n + p).
+  2. COMPETITIVE MỌI REGIME: latency ngang Classical ở cả light (0.118 vs 0.130,
+     p=0.63) lẫn heavy (0.330 vs 0.274, p=0.20); có ĐÁNH ĐỔI energy (minh bạch,
+     chỉnh bằng beta2).
+  3. HỌC CÓ GIÁ TRỊ KHI TẮC NGHẼN: heavy-load, cả hai learned policy áp đảo
+     heuristic (Greedy/Single-DQN miss 5–7%).
+  4. MODULE CÓ GIÁ TRỊ ĐÚNG REGIME: QAOA +35% khi tắc nghẽn; BO thắng
+     gradient-descent ở mọi mức nhiễu; QAOA giữ param không đổi khi node tăng.
+
+Đây là bài PARAMETER-EFFICIENCY + COMPETITIVENESS, không phải bài "quantum thắng".
+
+
+================================================================================
+PHẦN 7 — VIỆC CÒN LẠI (session sau)
+================================================================================
+
+Viết lại quantum_hrl_paper.tex theo kết luận Phần 6 (các số ở Phần 4):
+  - Abstract (L124) + Contributions (L168–169): bỏ "significant 20.3%", chuyển
+    sang param-efficiency + competitive + energy tradeoff.
+  - Bảng kết quả tab:results (L944–948): điền số base 5-seed.
+  - Thống kê (L957–958): seed-level làm chính (t=-0.50, p=0.63), pooled phụ.
+  - Bảng ablation tab:ablation (L980–982): thêm dòng w/o BO; tương phản QAOA
+    light (+1.5%) vs heavy (+35%).
+  - Thêm mục Heavy-load scenario (Greedy hỏng, learned thắng) + Noise sweep
+    (BO vs GD) — #17 dùng số thật thay vì lời suông.
+  - #23: báo cáo thêm sojourn(F1)/energy-subopt(F3)/fallback đã có trong JSON.
+  - Conclusion (L1191): reframe.
+  - Đồng bộ overleaf/main.tex (chỉ khác \graphicspath).
+
+Tùy chọn nâng cao (nếu muốn mạnh hơn, vẫn trung thực):
+  - Chạy heavy-load ở node-scale lớn hơn (QHRL_NODE_SCALE=2) + QAOA depth cao hơn
+    để xem QAOA có thắng rõ hơn khi node-selection thực sự khó.
+
+================================================================================
+HẾT
+================================================================================
